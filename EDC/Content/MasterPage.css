@@ -1,0 +1,99 @@
+﻿/* ------------------------Меню----------------*/
+.menu
+{
+    font-size: 1em;
+    font-weight: 600;
+    text-align: center;
+    float:none;
+}
+ul.menu > li{
+    display: inline;
+    list-style: none;
+    padding: 5px;
+    background-color:#6EB2C4;
+    border:solid;
+    border-width:1px 1px 1px 0px;
+    border-color:#739EB4;
+}
+ul.menu > li:first-child{
+    border-width:1px;
+}
+ul.menu > li > a{
+    background:none;
+    color:#FFF;
+    text-decoration:none;
+    padding:1px;
+}
+
+ul.menu > li:hover{
+    position:relative;
+    background-color:#7EA2D4;
+}
+
+ul.menu > li:hover > ul.submenu{
+    display:block;
+}
+
+.submenu
+{
+    font-size: 0.9em;
+    font-weight: 600;
+    text-align: center;
+    float:none;
+}
+
+ul.submenu{   /*подменю*/
+    display: none;
+    position: absolute;
+    width: 200px;
+    top: 30px;
+    left: -41px;
+}
+
+ul.submenu li {
+    list-style: none;
+    padding: 5px;
+    background-color:#6EB2C4;
+    border:solid;
+    border-width:0px 1px 1px 1px;
+    border-color:#739EB4;
+}
+ul.submenu > li > a{
+    display:block;
+    background:none;
+    color:#FFF;
+    text-decoration:none;
+    padding:1px;
+}
+ul.submenu li:hover {
+    background:#7EA2D4;
+}
+
+
+/* login
+----------------------------------------------------------*/
+#login {
+    display: block;
+    font-size: .85em;
+    text-align: right;
+}
+
+    #login a {
+        text-decoration: none;
+    }
+
+    #login a:hover{
+        background-color:#7EA2D4;
+    }
+    
+    #login a.logout{
+        text-decoration:underline;
+    }
+    #login ul {
+        margin: 0;
+    }
+
+    #login li {
+        display: inline;
+        list-style: none;
+    }
