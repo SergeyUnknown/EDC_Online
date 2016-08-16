@@ -53,7 +53,7 @@ mark {
 .clear-fix:after {
     content: ".";
     clear: both;
-    display: block;
+    display:flex;
     height: 0;
     visibility: hidden;
 }
