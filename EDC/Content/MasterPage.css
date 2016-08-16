@@ -1,29 +1,22 @@
 ﻿/* ------------------------Меню----------------*/
 .menu
 {
-    position:absolute;
-    top:50px;
-    left:0px;
     font-size: 1em;
     font-weight: 600;
-    text-align: left;
+    text-align: center;
     float:none;
 }
-
 ul.menu > li{
-    display:block;
-    box-sizing:content-box;
-    width:200px;
+    display: inline;
     list-style: none;
     padding: 5px;
     background-color:#6EB2C4;
     border:solid;
     border-width:1px 1px 1px 0px;
     border-color:#739EB4;
-    
 }
 ul.menu > li:first-child{
-    border-top-width:1px;
+    border-width:1px;
 }
 ul.menu > li > a{
     background:none;
@@ -53,9 +46,8 @@ ul.submenu{   /*подменю*/
     display: none;
     position: absolute;
     width: 200px;
-    top: 0px;
-    left: 210px;
-    padding:1px;
+    top: 30px;
+    left: -41px;
 }
 
 ul.submenu li {
