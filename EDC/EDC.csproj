@@ -224,6 +224,7 @@
     <Content Include="Pages\Event\Events.aspx" />
     <Content Include="Pages\MedicalCenter\CreateEditMC.aspx" />
     <Content Include="Pages\MedicalCenter\MedicalCenters.aspx" />
+    <Content Include="Pages\Subject\Subjects.aspx" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
     <Content Include="Scripts\jquery-ui-1.8.24.js" />
@@ -401,6 +402,13 @@
     </Compile>
     <Compile Include="Pages\MedicalCenter\MedicalCenters.aspx.designer.cs">
       <DependentUpon>MedicalCenters.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Subject\Subjects.aspx.cs">
+      <DependentUpon>Subjects.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Subject\Subjects.aspx.designer.cs">
+      <DependentUpon>Subjects.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Site.Master.cs">
