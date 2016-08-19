@@ -20,6 +20,7 @@ namespace EDC.Models
         public DbSet<Event> Events { get; set; } //События
         public DbSet<EventCRF> EventsCRFs { get; set; } //Связующая таблица
         public DbSet<Note> Notes { get; set; } // 
+        public DbSet<Subject> Subjects { get; set; } // Субъекты исследования 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<EventCRF>()

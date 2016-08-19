@@ -23,7 +23,6 @@
                                 <asp:DropDownList ID="ddlPosition" runat="server" OnSelectedIndexChanged="ddlPosition_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:BoundField DataField="Position" HeaderText="№" />
                         <asp:TemplateField HeaderText="Название">
                             <ItemTemplate>
                                 <%#Eval("CRF.Name") %>

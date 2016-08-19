@@ -19,5 +19,6 @@ namespace EDC.Models
         public string House { get; set; }
         public string Phone { get; set; }
         public string PrincipalInvestigator { get; set; }
+        public virtual List<Subject> Subjects { get; set; }
     }
 }

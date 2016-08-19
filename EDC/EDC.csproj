@@ -285,6 +285,7 @@
     <Compile Include="Models\Repository\EventCRFRepository.cs" />
     <Compile Include="Models\Repository\EventRepository.cs" />
     <Compile Include="Models\Repository\MedicalCenterRepository.cs" />
+    <Compile Include="Models\Repository\SubjectRepository.cs" />
     <Compile Include="Models\Tables\Audit.cs" />
     <Compile Include="Models\Tables\CRF\CRF.cs" />
     <Compile Include="Models\Tables\CRF\CRF_Group.cs" />
@@ -294,6 +295,7 @@
     <Compile Include="Models\Tables\EventCRF.cs" />
     <Compile Include="Models\Tables\MedicalCenter.cs" />
     <Compile Include="Models\Tables\Note.cs" />
+    <Compile Include="Models\Tables\Subject.cs" />
     <Compile Include="Pages\Account\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -20,7 +20,6 @@
                             <asp:DropDownList ID="ddlPos" runat="server" OnSelectedIndexChanged="ddlPosition_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:BoundField DataField="Position" HeaderText="№" />
                     <asp:BoundField DataField="Name" HeaderText="Название" />
                     <asp:BoundField DataField="Identifier" HeaderText="Идентификатор" />
                     <asp:BoundField DataField="DateCreation" HeaderText="Дата создания" />
