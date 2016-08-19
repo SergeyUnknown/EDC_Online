@@ -21,10 +21,14 @@ namespace EDC.Models
         public DbSet<EventCRF> EventsCRFs { get; set; } //Связующая таблица
         public DbSet<Note> Notes { get; set; } // 
         public DbSet<Subject> Subjects { get; set; } // Субъекты исследования 
+        public DbSet<EventSubject> EventSubjects { get; set; } //Связующая таблица
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<EventCRF>()
                 .HasKey(t => new { t.CRFID, t.EventID });
+
+            modelBuilder.Entity<EventSubject>()
+                .HasKey(t => new { t.EventID,t.SubjectID});
 
         }
     }

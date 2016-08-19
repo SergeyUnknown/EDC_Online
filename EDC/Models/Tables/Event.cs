@@ -16,5 +16,6 @@ namespace EDC.Models
         public string CreatedBy { get; set; }
         public int Position { get; set; }
         public List<EventCRF> CRFs { get; set; }
+        public List<EventSubject> Subjects { get; set; }
     }
 }

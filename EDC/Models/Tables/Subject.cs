@@ -9,11 +9,12 @@ namespace EDC.Models
     public class Subject
     {
         public long SubjectID { get; set; }
-        public virtual List<Event> Events { get; set; } //subjectEvents
+        public virtual List<EventSubject> Events { get; set; }
         public MedicalCenter MedicalCenter { get; set; }
 
         [ForeignKey("MedicalCenter")]
         public long MedicalCenterID { get; set; }
-
+        public string CreatedBy { get; set; }
+        public DateTime? CreationDate { get; set; }
     }
 }

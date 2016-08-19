@@ -293,6 +293,7 @@
     <Compile Include="Models\Tables\CRF\CRF_Section.cs" />
     <Compile Include="Models\Tables\Event.cs" />
     <Compile Include="Models\Tables\EventCRF.cs" />
+    <Compile Include="Models\Tables\EventSubject.cs" />
     <Compile Include="Models\Tables\MedicalCenter.cs" />
     <Compile Include="Models\Tables\Note.cs" />
     <Compile Include="Models\Tables\Subject.cs" />
