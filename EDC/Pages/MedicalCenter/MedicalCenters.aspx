@@ -10,7 +10,7 @@
     </section>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MainContent" runat="server">
-    <asp:Label CssClass="lable_error" ID="ErrorLable" runat="server" Text=""></asp:Label><br />
+    <asp:Label CssClass="lable_error" ID="ErrorLable" runat="server" Text="" Width="950px"></asp:Label><br />
 
     <asp:Table runat="server">
         <asp:TableRow>
@@ -29,7 +29,7 @@
         </asp:TableRow>
     </asp:Table>
 
-    <asp:GridView runat="server" ID="gvMedicalCenters" AutoPostBack="True" AutoGenerateColumns="False" CellPadding="4" ForeColor="#333333" OnRowEditing="gvMedicalCenters_RowEditing" OnRowDeleting="gvMedicalCenters_RowDeleting">
+    <asp:GridView runat="server" class="tableMedicalCenters" ID="gvMedicalCenters" AutoPostBack="True" AutoGenerateColumns="False" CellPadding="4" ForeColor="#333333" OnRowEditing="gvMedicalCenters_RowEditing" OnRowDeleting="gvMedicalCenters_RowDeleting">
         <AlternatingRowStyle BackColor="White" />
         <Columns>
 
@@ -40,7 +40,7 @@
                     <%# Eval("Country") %>, <%# Eval("Region") %>, <%# Eval("City") %>, <%# Eval("Street") %>, <%# Eval("House") %>
                 </ItemTemplate>
             </asp:TemplateField>
-            <asp:BoundField HeaderText="Гланый исследователь" DataField="PrincipalInvestigator" />
+            <asp:BoundField HeaderText="Главный исследователь" DataField="PrincipalInvestigator" />
             <asp:BoundField HeaderText="Телефон" DataField="Phone" />
 
             <asp:CommandField ShowEditButton="true" ShowDeleteButton="true" EditText="Редактировать" DeleteText="Удалить" />
