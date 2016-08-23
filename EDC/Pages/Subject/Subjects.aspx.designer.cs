@@ -11,5 +11,23 @@ namespace EDC.Pages.Subject {
     
     
     public partial class Subjects {
+        
+        /// <summary>
+        /// gvSubjects элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvSubjects;
+        
+        /// <summary>
+        /// dtInfo элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::EDC.Controls.DownTable dtInfo;
     }
 }
