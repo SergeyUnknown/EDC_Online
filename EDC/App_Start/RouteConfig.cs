@@ -42,6 +42,7 @@ namespace EDC
             routes.MapPageRoute(null, "", "~/Default.aspx");
 
             routes.RouteExistingFiles = true;
+            routes.EnableFriendlyUrls();
         }
     }
 }
