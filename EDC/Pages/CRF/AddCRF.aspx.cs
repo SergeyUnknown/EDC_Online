@@ -136,6 +136,7 @@ namespace EDC.Pages.CRF
                 newCRF.Name = CRFInfo[0];
             else
                 CRF_Errors.Add(new CRF_Error(table.TableName,2,1,"Не указано название CRF"));
+            List<Models.CRF> addedCRF = crfRepository.GetManyByFilter(x => x.Name.ToLower() == newCRF.Name.ToLower()).ToList();
 
             newCRF.Identifier = newCRF.Name.Replace(" ","").ToUpper();
             if(newCRF.Identifier.Length>23)
@@ -146,6 +147,10 @@ namespace EDC.Pages.CRF
             newCRF.CreationDate = DateTime.Now;
             newCRF.CreatedBy = User.Identity.Name;
             newCRF.Version = CRFInfo[1];
+            if(addedCRF.Any(x=>x.Version.ToLower() == newCRF.Version.ToLower()))
+            {
+                CRF_Errors.Add(new CRF_Error(table.TableName, 2, 1, "CRF с указанным именем и версий уже существует"));
+            }
             newCRF.FilePath = filePath;
 
             return newCRF;
@@ -165,7 +170,7 @@ namespace EDC.Pages.CRF
                 if(string.IsNullOrWhiteSpace(rowItems[0]))
                     CRF_Errors.Add(new CRF_Error(table.TableName, i+1, 2, "Не указана метка Секции"));
                 else if(CRF_Sections.Any(x=>x.Label == rowItems[0]))
-                    CRF_Errors.Add(new CRF_Error(table.TableName, i + 1, 1, "Указанная метка Секции уже добавлена"));
+                    CRF_Errors.Add(new CRF_Error(table.TableName, i + 1, 1, "Секция с указанной меткой уже добавлена"));
                 else
                     newSection.Label = rowItems[0];
 
@@ -194,6 +199,9 @@ namespace EDC.Pages.CRF
 
             var CRF_GroupRows = table.Rows;
 
+            List<CRF_Group> addedGroups = crfGroupRepository.SelectAll().ToList();
+
+
             for(int i =0;i< CRF_GroupRows.Count;i++)
             {
                 DataRow row = CRF_GroupRows[i];
@@ -202,10 +210,16 @@ namespace EDC.Pages.CRF
 
                 if (string.IsNullOrWhiteSpace(rowItems[0]))
                     CRF_Errors.Add(new CRF_Error(table.TableName, i + 1, 1, "Не указано название Группы"));
-                else if(CRF_Groups.Any(x=>x.Label.ToLower() == rowItems[0].ToLower()))
-                    CRF_Errors.Add(new CRF_Error(table.TableName, i + 1, 1, "Данное название группы уже используется"));
                 else
-                    newGroup.Label = rowItems[0];
+                {
+                    string lowerLabel = rowItems[0].ToLower();
+                    if (CRF_Groups.Any(x => x.Label.ToLower() == lowerLabel))
+                        CRF_Errors.Add(new CRF_Error(table.TableName, i + 1, 1, "Группа с указанным названием уже добавлена"));
+                    else if (addedGroups.Any(x => x.Label.ToLower() == lowerLabel))
+                        CRF_Errors.Add(new CRF_Error(table.TableName, i + 1, 1, "Группа с указанным названием уже добавлена"));
+                    else
+                        newGroup.Label = rowItems[0];
+                }
 
                 newGroup.Identifier = newGroup.Label.Replace(" ", "").ToUpper();
                 if (newGroup.Identifier.Length > 23)
@@ -238,10 +252,15 @@ namespace EDC.Pages.CRF
                 List<string> rowItems = row.ItemArray.Select(x=>x.ToString()).ToList();
                 CRF_Item newItem = new CRF_Item();
                 string name = rowItems[0].ToUpper();
+
+                List<CRF_Item> addedItems = crfItemRepository.SelectAll().ToList();
+
                 if(string.IsNullOrWhiteSpace(name))
                     CRF_Errors.Add(new CRF_Error(table.TableName, i + 1, 1, "Не указано название параметра"));
                 else if (CRF_Items.Any(x => x.Name.ToUpper() == name))
-                    CRF_Errors.Add(new CRF_Error(table.TableName, i + 1, 1, "Указанное название параметра уже используется"));
+                    CRF_Errors.Add(new CRF_Error(table.TableName, i + 1, 1, "Параметр с указанным названием уже добавлен"));
+                else if(addedItems.Any(x=>x.Name == name))
+                    CRF_Errors.Add(new CRF_Error(table.TableName, i + 1, 1, "Параметр с указанным названием уже добавлен"));
                 else
                     newItem.Name = name;
 

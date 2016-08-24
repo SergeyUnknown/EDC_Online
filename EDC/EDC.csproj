@@ -220,6 +220,7 @@
     <Content Include="Pages\Administration\Users.aspx" />
     <Content Include="Pages\CRF\AddCRF.aspx" />
     <Content Include="Pages\CRF\CRFs.aspx" />
+    <Content Include="Pages\CRF\ViewCRF.aspx" />
     <Content Include="Pages\Event\ConfigurationEvent.aspx" />
     <Content Include="Pages\Event\CreateEditEvent.aspx" />
     <Content Include="Pages\Event\Events.aspx" />
@@ -370,6 +371,13 @@
       <DependentUpon>CRFs.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\CRF\CRF_Error.cs" />
+    <Compile Include="Pages\CRF\ViewCRF.aspx.cs">
+      <DependentUpon>ViewCRF.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\CRF\ViewCRF.aspx.designer.cs">
+      <DependentUpon>ViewCRF.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Event\ConfigurationEvent.aspx.cs">
       <DependentUpon>ConfigurationEvent.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
