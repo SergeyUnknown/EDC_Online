@@ -1,0 +1,168 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="EDC.SiteMaster" %>
+
+<!DOCTYPE html>
+<html lang="ru">
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta charset="utf-8" />
+    <title><%: Page.Title %></title>
+    <asp:PlaceHolder runat="server">     
+          <%: Scripts.Render("~/bundles/modernizr") %>
+    </asp:PlaceHolder>  
+    <webopt:BundleReference runat="server" Path="~/Content/css" /> 
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    <asp:ContentPlaceHolder runat="server" ID="HeadContent" />
+</head>
+<body>
+    <form runat="server">
+    <asp:ScriptManager runat="server">
+        <Scripts>
+            <%--To learn more about bundling scripts in ScriptManager see http://go.microsoft.com/fwlink/?LinkID=272931&clcid=0x409 --%>
+            <%--Framework Scripts--%>
+            
+            <asp:ScriptReference Name="MsAjaxBundle" />
+            <asp:ScriptReference Name="jquery" />
+            <asp:ScriptReference Name="jquery.ui.combined" />
+            <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
+            <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
+            <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />
+            <asp:ScriptReference Name="GridView.js" Assembly="System.Web" Path="~/Scripts/WebForms/GridView.js" />
+            <asp:ScriptReference Name="DetailsView.js" Assembly="System.Web" Path="~/Scripts/WebForms/DetailsView.js" />
+            <asp:ScriptReference Name="TreeView.js" Assembly="System.Web" Path="~/Scripts/WebForms/TreeView.js" />
+            <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
+            <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
+            <asp:ScriptReference Name="WebFormsBundle" />
+            <%--Site Scripts--%>
+
+        </Scripts>
+    </asp:ScriptManager>
+    <header>
+        <div class="content-wrapper">
+            <div class="float-left">
+                <p class="site-title">
+                    <a runat="server" href="~/">MDP-Group</a>
+                </p>
+            </div>
+            <div class="float-right">
+                <section id="login">
+                    <asp:LoginView runat="server" ViewStateMode="Disabled">
+                        <AnonymousTemplate>
+                            <ul>
+                                <li><a id="loginLink" runat="server" href="~/Account/Login">Вход</a></li>
+                            </ul>
+                        </AnonymousTemplate>
+                        <LoggedInTemplate>
+                                Здравствуйте, <a runat="server" class="username" href="~/Account/Manage" title="Настройки аккаунта">
+                                    <asp:LoginName runat="server" CssClass="username" /></a>!</br>
+                                <asp:LoginStatus runat="server" LogoutAction="Redirect" CssClass="logout" LogoutText="Выйти из системы" LogoutPageUrl="~/" />
+                        </LoggedInTemplate>
+                    </asp:LoginView>
+                </section>
+            </div>
+            <div class="clear-fix"></div>
+            <nav>
+                <ul class="menu">
+                    <li>
+                        <a runat="server" href="~/">Домашняя</a>
+                    <li>
+                        <a runat="server" href="#">Данные</a>
+                        <ul class="submenu">
+                            <li>
+                                <a runat="server" href="~/Subjects">Субъекты</a>
+                            </li>
+                            <li>
+                                <a runat="server" href="#">Создать событие</a>
+                            </li>
+                        </ul>
+                    <li>
+                        <a runat="server" href="#">Мониторинг данных и управление данными</a>
+                        <ul class="submenu">
+                            <li>
+                                <a runat="server" href="#">Сверка с первичными данными</a>
+                            </li>
+                            <li>
+                                <a runat="server" href="#">Аудит данных исследования</a>
+                            </li>
+                            <li>
+                                <a runat="server" href="#">Выгрузка данные</a>
+                            </li>
+                            <li>
+                                <a runat="server" href="#">Импорт данных</a>
+                            </li>
+                        </ul>
+                    <li>
+                        <a runat="server" href="#">Query и заметки</a>
+                        <ul class="submenu">
+                            <li>
+                                <a runat="server" href="#">Query</a>
+                            </li>
+                            <li>
+                                <a runat="server" href="#">Заметки</a>
+                            </li>
+                        </ul>
+                    
+                    <li>
+                        <a runat="server" href="~/About">Иное</a>
+                        <ul class="submenu">
+                            <li>
+                                <a runat="server" href="~/Account/Manage">Профиль</a>
+                            </li>
+                            <li>
+                                <a runat="server" href="#">Помощь</a>
+                            </li>
+                            <li>
+                                <a runat="server" href="#">Поддержка</a>
+                            </li>
+                            <li>
+                                <a runat="server" href="#">О продукте</a>
+                            </li>
+                        </ul>
+                    <li>
+                        <a runat="server" href="~/Contact">Администрирование/Дизайн</a>
+                        <ul class="submenu">
+                            <li>
+                                <a runat="server" href="#">Просмотр исследования</a>
+                            </li>
+                            <li>
+                                <a runat="server" href="~/CRFs">ИРК</a>
+                            </li>
+                            <li>
+                                <a runat="server" href="~/Events">События</a>
+                            </li>
+                            <li>
+                                <a runat="server" href="~/MedicalCenters">Центры исследования</a>
+                            </li>
+                            <li>
+                                <a runat="server" href="#">Rules</a>
+                            </li>
+                            <li>
+                                <a runat="server" href="~/Administration/Users">Пользователи</a>
+                            </li>
+                            <li>
+                                <a runat="server" href="#">Задания</a>
+                            </li>
+                            <li>
+                                <a runat="server" href="#">Конфигурирование свойств системы</a>
+                            </li>
+                        </ul>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div id="body">
+        <asp:ContentPlaceHolder runat="server" ID="FeaturedContent" />
+        <section class="content-wrapper main-content clear-fix">
+            <asp:ContentPlaceHolder runat="server" ID="MainContent" />
+        </section>
+    </div>
+    <footer>
+        <div class="content-wrapper">
+            <div class="float-left">
+                <p>&copy; <%: DateTime.Now.Year %> - мое приложение ASP.NET</p>
+            </div>
+        </div>
+    </footer>
+    </form>
+</body>
+</html>

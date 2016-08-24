@@ -20,7 +20,6 @@ namespace EDC.Pages.Subject
             if(!IsPostBack)
             {
                 LoadSubjects();
-                
             }
             LoadDTDataItem();
         }

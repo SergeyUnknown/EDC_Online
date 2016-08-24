@@ -214,6 +214,7 @@
     <Content Include="packages.config" />
     <Content Include="Pages\Administration\EditCreateUser.aspx" />
     <Content Include="Pages\Administration\Web.config" />
+    <None Include="Properties\PublishProfiles\ToComp.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Pages\Administration\ErrorLog.aspx" />
     <Content Include="Pages\Administration\Users.aspx" />
@@ -329,8 +330,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Repository\ProfileRepository.cs" />
-    <Compile Include="Models\Tables\Profile.cs" />
+    <Compile Include="Models\Repository\UserProfileRepository.cs" />
+    <Compile Include="Models\Tables\UserProfile.cs" />
     <Compile Include="Models\Repository\EDCContext.cs" />
     <Compile Include="Models\Repository\IRepository.cs" />
     <Compile Include="Pages\Administration\ErrorLog.aspx.cs">

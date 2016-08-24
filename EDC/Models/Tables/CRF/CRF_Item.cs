@@ -9,6 +9,7 @@ namespace EDC.Models
     public class CRF_Item
     {
         public long CRF_ItemID { get; set; }
+        public string Identifier { get; set; }
         public long CRFID { get; set; }
         [ForeignKey("CRFID")]
         public CRF CRF { get; set; }

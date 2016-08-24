@@ -30,7 +30,7 @@ namespace EDC.Pages.Administration
                 btnOk.Text = "Изменить аккаунт";
 
                 MembershipUser user = Membership.GetUser(GetUserGuidFromRequest());
-                Models.Repository.ProfileRepository pr = new Models.Repository.ProfileRepository();
+                Models.Repository.UserProfileRepository pr = new Models.Repository.UserProfileRepository();
                 var userProfile = pr.SelectByUserID((Guid)user.ProviderUserKey);
 
                 tbEmail.Text = user.Email;

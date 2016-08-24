@@ -22,6 +22,7 @@
                     </asp:TemplateField>
                     <asp:BoundField DataField="Name" HeaderText="Название" />
                     <asp:BoundField DataField="Identifier" HeaderText="Идентификатор" />
+                    <asp:BoundField DataField="Required" HeaderText="Обязательно" />
                     <asp:BoundField DataField="DateCreation" HeaderText="Дата создания" />
                     <asp:BoundField DataField="CreatedBy" HeaderText="Создал" />
                     <asp:CommandField HeaderText="Действия" ShowSelectButton="true" ShowDeleteButton="True" ShowEditButton="true" DeleteText="Удалить" EditText="Редактировать" SelectText="Настроить" />
