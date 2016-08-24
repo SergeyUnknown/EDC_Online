@@ -13,18 +13,25 @@
 
 <asp:Content ID="Content3" ContentPlaceHolderID="MainContent" runat="server">
     <asp:Label ID="labelStatus" runat="server" Visible="false" Text="" />
-                <ol>
-                    <li>
-                        <asp:Label runat="server" AssociatedControlID="tbNumber">Номер пациента</asp:Label>
-                        <asp:TextBox runat="server" ID="tbNumber" />
-                        <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="tbNumber"
-                            CssClass="field-validation-error" ErrorMessage="Данное поле обязательно для заполнения" />
-                    </li>
-                    <li>
-                        <asp:Label runat="server" AssociatedControlID="ddlCenters">Мед. центр</asp:Label>
-                        <asp:DropDownList runat="server" ID="ddlCenters"/>
-                    </li>
-                </ol>
+    <ol>
+        <li>
+            <asp:Label runat="server" AssociatedControlID="tbNumber">Номер субъекта</asp:Label>
+            <asp:TextBox runat="server" ID="tbNumber" />
+            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="tbNumber"
+                CssClass="field-validation-error" ErrorMessage="Данное поле обязательно для заполнения" />
+        </li>
+        <li>
+            <asp:Label runat="server" AssociatedControlID="tbDate">Дата включения в исследование</asp:Label>
+            <asp:TextBox runat="server" ID="tbDate" />
+            <ajaxToolkit:CalendarExtender runat="server" ID="ajaxCalendar" FirstDayOfWeek="Monday" TargetControlID="tbDate" Format="dd.MM.yyyy" />
+            <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="tbDate"
+                CssClass="field-validation-error" ErrorMessage="Данное поле обязательно для заполнения" />
+        </li>
+        <li>
+            <asp:Label runat="server" AssociatedControlID="ddlCenters">Мед. центр</asp:Label>
+            <asp:DropDownList runat="server" ID="ddlCenters" />
+        </li>
+    </ol>
 
     <asp:Button ID="btnOk" runat="server" OnClick="btnOk_Click" />
     <asp:Button ID="btnCancel" runat="server" Text="Отмена" CausesValidation="false" OnClick="btnCancel_Click" />

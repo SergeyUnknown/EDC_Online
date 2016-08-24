@@ -20,7 +20,6 @@ namespace EDC.Pages.Subject
         {
             if (!IsPostBack)
             {
-
                 LoadMC();
 
                 if (Request.Url.ToString().IndexOf("Edit") == -1)
@@ -36,6 +35,8 @@ namespace EDC.Pages.Subject
                         throw new NullReferenceException();
                     btnOk.Text = "Изменить";
                     Title = "Редактирование Субъекта ";
+                    tbDate.Text = _subject.InclusionDate.ToShortDateString();
+                    tbNumber.Text = _subject.Number;
                     Editing = true;
 
                 }
@@ -89,6 +90,8 @@ namespace EDC.Pages.Subject
             _subject.MedicalCenterID = _MCs[ddlCenters.SelectedIndex - 1].MedialCenterID;
             _subject.CreatedBy = User.Identity.Name;
             _subject.CreationDate = DateTime.Now;
+            _subject.Number = tbNumber.Text;
+            _subject.InclusionDate = Convert.ToDateTime(tbDate.Text);
 
             if (Editing)
             {

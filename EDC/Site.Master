@@ -64,19 +64,11 @@
             <nav>
                 <ul class="menu">
                     <li>
-                        <a runat="server" href="~/">Домашняя</a>
+                        <a runat="server" href="~/">Главная</a>
                     <li>
-                        <a runat="server" href="#">Данные</a>
-                        <ul class="submenu">
-                            <li>
-                                <a runat="server" href="~/Subjects">Субъекты</a>
-                            </li>
-                            <li>
-                                <a runat="server" href="#">Создать событие</a>
-                            </li>
-                        </ul>
+                        <a runat="server" href="~/Subjects">Субъекты</a>
                     <li>
-                        <a runat="server" href="#">Мониторинг данных и управление данными</a>
+                        <a runat="server" href="#">Мониторинг данных</a>
                         <ul class="submenu">
                             <li>
                                 <a runat="server" href="#">Сверка с первичными данными</a>
@@ -84,24 +76,50 @@
                             <li>
                                 <a runat="server" href="#">Аудит данных исследования</a>
                             </li>
+                        </ul>
+                    <li>
+                        <a runat="server" href="#">Управление данными</a>
+                        <ul class="submenu">
                             <li>
-                                <a runat="server" href="#">Выгрузка данные</a>
+                                <a runat="server" href="#">Выгрузка данных</a>
                             </li>
                             <li>
                                 <a runat="server" href="#">Импорт данных</a>
                             </li>
                         </ul>
                     <li>
-                        <a runat="server" href="#">Query и заметки</a>
+                        <a runat="server" href="#">Заметки и замечания</a>
                         <ul class="submenu">
                             <li>
-                                <a runat="server" href="#">Query</a>
+                                <a runat="server" href="#">Замечания</a>
                             </li>
                             <li>
                                 <a runat="server" href="#">Заметки</a>
                             </li>
                         </ul>
                     
+                    <li>
+                        <a runat="server" href="~/Contact">Администрирование/Дизайн</a>
+                        <ul class="submenu">
+                            <li>
+                                <a runat="server" href="#">Настройка исследования</a>
+                            </li>
+                            <li>
+                                <a runat="server" href="~/Events">События</a>
+                            </li>
+                            <li>
+                                <a runat="server" href="~/CRFs">ИРК</a>
+                            </li>
+                            <li>
+                                <a runat="server" href="#">Валидаия данных</a>
+                            </li>
+                            <li>
+                                <a runat="server" href="~/MedicalCenters">Центры исследования</a>
+                            </li>
+                            <li>
+                                <a runat="server" href="~/Administration/Users">Пользователи</a>
+                            </li>
+                        </ul>
                     <li>
                         <a runat="server" href="~/About">Иное</a>
                         <ul class="submenu">
@@ -116,34 +134,6 @@
                             </li>
                             <li>
                                 <a runat="server" href="#">О продукте</a>
-                            </li>
-                        </ul>
-                    <li>
-                        <a runat="server" href="~/Contact">Администрирование/Дизайн</a>
-                        <ul class="submenu">
-                            <li>
-                                <a runat="server" href="#">Просмотр исследования</a>
-                            </li>
-                            <li>
-                                <a runat="server" href="~/CRFs">ИРК</a>
-                            </li>
-                            <li>
-                                <a runat="server" href="~/Events">События</a>
-                            </li>
-                            <li>
-                                <a runat="server" href="~/MedicalCenters">Центры исследования</a>
-                            </li>
-                            <li>
-                                <a runat="server" href="#">Rules</a>
-                            </li>
-                            <li>
-                                <a runat="server" href="~/Administration/Users">Пользователи</a>
-                            </li>
-                            <li>
-                                <a runat="server" href="#">Задания</a>
-                            </li>
-                            <li>
-                                <a runat="server" href="#">Конфигурирование свойств системы</a>
                             </li>
                         </ul>
                 </ul>

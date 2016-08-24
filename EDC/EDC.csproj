@@ -330,8 +330,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Repository\ProfileRepository.cs" />
-    <Compile Include="Models\Tables\Profile.cs" />
+    <Compile Include="Models\Repository\UserProfileRepository.cs" />
+    <Compile Include="Models\Tables\UserProfile.cs" />
     <Compile Include="Models\Repository\EDCContext.cs" />
     <Compile Include="Models\Repository\IRepository.cs" />
     <Compile Include="Pages\Administration\ErrorLog.aspx.cs">

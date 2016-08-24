@@ -37,9 +37,9 @@ namespace EDC.Account
                 tbQuestion.Text = user.PasswordQuestion;
                 
 
-                ProfileRepository pr = new ProfileRepository();
-                List<Profile> profiles = pr.SelectAll().ToList();
-                Profile userProfile = profiles.FirstOrDefault(x => x.UserID == (Guid)user.ProviderUserKey);
+                UserProfileRepository pr = new UserProfileRepository();
+                List<UserProfile> profiles = pr.SelectAll().ToList();
+                UserProfile userProfile = profiles.FirstOrDefault(x => x.UserID == (Guid)user.ProviderUserKey);
                 if (userProfile != null)
                 {
                     tbName.Text = userProfile.Name;
@@ -102,12 +102,12 @@ namespace EDC.Account
 
             if (!string.IsNullOrWhiteSpace(tbName.Text) && !string.IsNullOrWhiteSpace(tbLastname.Text) && !string.IsNullOrWhiteSpace(tbPhone.Text))
             {
-                ProfileRepository pr = new ProfileRepository();
+                UserProfileRepository pr = new UserProfileRepository();
 
-                Profile userProfile = pr.GetManyByFilter(x => x.UserID == (Guid)user.ProviderUserKey).FirstOrDefault();
+                UserProfile userProfile = pr.GetManyByFilter(x => x.UserID == (Guid)user.ProviderUserKey).FirstOrDefault();
                 if(userProfile == null)
                 {
-                    userProfile = new Profile();
+                    userProfile = new UserProfile();
                     userProfile.Name = tbName.Text;
                     userProfile.LastName = tbLastname.Text;
                     userProfile.Phone = tbPhone.Text;

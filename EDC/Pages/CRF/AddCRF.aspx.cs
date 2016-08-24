@@ -137,6 +137,12 @@ namespace EDC.Pages.CRF
             else
                 CRF_Errors.Add(new CRF_Error(table.TableName,2,1,"Не указано название CRF"));
 
+            newCRF.Identifier = newCRF.Name.Replace(" ","").ToUpper();
+            if(newCRF.Identifier.Length>23)
+            {
+                newCRF.Identifier = newCRF.Identifier.Substring(0, 23);
+            }
+
             newCRF.CreationDate = DateTime.Now;
             newCRF.CreatedBy = User.Identity.Name;
             newCRF.Version = CRFInfo[1];
@@ -195,9 +201,17 @@ namespace EDC.Pages.CRF
                 CRF_Group newGroup = new CRF_Group();
 
                 if (string.IsNullOrWhiteSpace(rowItems[0]))
-                    CRF_Errors.Add(new CRF_Error(table.TableName, i + 1, 1, "Не указана метка Секции"));
+                    CRF_Errors.Add(new CRF_Error(table.TableName, i + 1, 1, "Не указано название Группы"));
+                else if(CRF_Groups.Any(x=>x.Label.ToLower() == rowItems[0].ToLower()))
+                    CRF_Errors.Add(new CRF_Error(table.TableName, i + 1, 1, "Данное название группы уже используется"));
                 else
                     newGroup.Label = rowItems[0];
+
+                newGroup.Identifier = newGroup.Label.Replace(" ", "").ToUpper();
+                if (newGroup.Identifier.Length > 23)
+                {
+                    newGroup.Identifier = newGroup.Identifier.Substring(0, 23);
+                }
 
                 newGroup.Header = rowItems[1];
 
@@ -223,13 +237,19 @@ namespace EDC.Pages.CRF
                 DataRow row = CRF_ItemRows[i];
                 List<string> rowItems = row.ItemArray.Select(x=>x.ToString()).ToList();
                 CRF_Item newItem = new CRF_Item();
-
-                if(string.IsNullOrWhiteSpace(rowItems[0]))
+                string name = rowItems[0].ToUpper();
+                if(string.IsNullOrWhiteSpace(name))
                     CRF_Errors.Add(new CRF_Error(table.TableName, i + 1, 1, "Не указано название параметра"));
-                else if (CRF_Items.Any(x => x.Name == rowItems[0]))
+                else if (CRF_Items.Any(x => x.Name.ToUpper() == name))
                     CRF_Errors.Add(new CRF_Error(table.TableName, i + 1, 1, "Указанное название параметра уже используется"));
                 else
-                    newItem.Name = rowItems[0];
+                    newItem.Name = name;
+
+                newItem.Identifier = newItem.Name.Replace(" ", "").ToUpper();
+                if (newItem.Identifier.Length > 23)
+                {
+                    newItem.Identifier = newItem.Identifier.Substring(0, 23);
+                }
 
                 if (string.IsNullOrWhiteSpace(rowItems[1]))
                     CRF_Errors.Add(new CRF_Error(table.TableName, i + 1, 2, "Не указано описание параметра"));

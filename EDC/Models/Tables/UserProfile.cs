@@ -6,9 +6,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EDC.Models
 {
-    public class Profile
+    public class UserProfile
     {
-        public long ProfileID { get; set; } //ID
+        public long UserProfileID { get; set; } //ID
         public Guid UserID { get; set; }//User ID
         public string Name { get; set; } //Имя
         public string LastName { get; set; }//Фамилия

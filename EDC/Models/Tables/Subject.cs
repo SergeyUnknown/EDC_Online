@@ -18,5 +18,6 @@ namespace EDC.Models
         public long MedicalCenterID { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreationDate { get; set; }
+        public DateTime InclusionDate { get; set; }
     }
 }

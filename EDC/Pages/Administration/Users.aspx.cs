@@ -15,7 +15,7 @@ namespace EDC.Pages.Administration
         static int pageSize = 50;
         static int recordCount = 0;
 
-        Models.Repository.ProfileRepository PR = new Models.Repository.ProfileRepository();
+        Models.Repository.UserProfileRepository PR = new Models.Repository.UserProfileRepository();
 
         protected int CountUserOnline
         {
@@ -97,7 +97,7 @@ namespace EDC.Pages.Administration
             MembershipUserCollection muc = GetUsers();
             foreach (MembershipUser user in muc)
             {
-                Models.Repository.ProfileRepository pr = new Models.Repository.ProfileRepository();
+                Models.Repository.UserProfileRepository pr = new Models.Repository.UserProfileRepository();
                 var u = pr.SelectByUserID((Guid)user.ProviderUserKey);
                 DataRow dr = dt.NewRow();
 
@@ -145,7 +145,7 @@ namespace EDC.Pages.Administration
                 MembershipUser user = Membership.GetUser(userName);
                 if (Membership.DeleteUser(userName))
                 {
-                    PR.Delete(PR.GetManyByFilter(x => x.UserID == (Guid)user.ProviderUserKey).First().ProfileID);
+                    PR.Delete(PR.GetManyByFilter(x => x.UserID == (Guid)user.ProviderUserKey).First().UserProfileID);
                     PR.Save();
 
                     gvUsers.DataSource = GetDataTableUsers();
