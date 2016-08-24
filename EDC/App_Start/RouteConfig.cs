@@ -22,6 +22,7 @@ namespace EDC
             routes.MapPageRoute(null, "Events/{page}", "~/Pages/Event/Events.aspx");
             routes.MapPageRoute(null, "Events", "~/Pages/Event/Events.aspx");
 
+            routes.MapPageRoute(null, "CRFs/View/{id}", "~/Pages/CRF/ViewCRF.aspx");
             routes.MapPageRoute(null, "CRFs/Add", "~/Pages/CRF/AddCRF.aspx");
             routes.MapPageRoute(null, "CRFs/{page}", "~/Pages/CRF/CRFs.aspx");
             routes.MapPageRoute(null, "CRFs", "~/Pages/CRF/CRFs.aspx");
