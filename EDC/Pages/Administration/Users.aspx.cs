@@ -173,7 +173,7 @@ namespace EDC.Pages.Administration
                 ControlCollection cc = e.Row.Cells[7].Controls;
                 if (cc.Count > 0)
                 {
-                    (cc[2] as LinkButton).Attributes.Add("onclick", "return confirm('Вы действительно хотите удалить данного пользователя?')");
+                    (cc[2] as ImageButton).Attributes.Add("onclick", "return confirm('Вы действительно хотите удалить данного пользователя?')");
                 }
             }
         }

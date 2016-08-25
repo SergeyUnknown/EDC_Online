@@ -27,7 +27,7 @@ a {
     }
 
     a:hover {
-        background-color: #c7d1d6;
+        
     }
 
 header, footer, hgroup,
@@ -375,6 +375,18 @@ fieldset {
         box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.36) ;
         color: black;
     }
+    /*Наведение на кнопку создать аккаунт и отмена*/
+    #MainContent_btnCancel:hover, #MainContent_btnOk:hover, #MainContent_btnUpload:hover
+    {
+        -webkit-box-shadow: rgba(0, 0, 0, 0.36) 0px 4px 8px;
+        background-color:#7EA2D4;
+    }
+    
+    input[type=image]:hover
+    {
+        -webkit-box-shadow: rgba(0, 0, 0, 0.36) 0px 4px 8px;
+        background-color:#7EA2D4;
+    }
 
     td input[type="submit"],
     td input[type="button"],
@@ -441,12 +453,20 @@ input[type="checkbox"].input-validation-error {
 /* tables
 ----------------------------------------------------------*/
 table {
-    border-collapse: collapse;
-    border-spacing: 0;
+    border-collapse:collapse;
+    
+    border-spacing:0 1em;
     margin-top: 0.75em;
     border: 0 none;
-    border-radius:5px;
-    -webkit-box-shadow: rgba(0,0,0,0.8) 0px 3px 10px;
+    
+    border-radius: 5px 5px 5px 5px;
+    -moz-border-radius: 5px 5px 5px 5px;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    
+    -webkit-box-shadow: rgba(0,0,0,0.26) 0px 3px 10px;
+    box-shadow:1px 2px 10px 2px rgba(0, 0, 0, 0.26);
+    
+    width:100%;
 }
 
 th {
@@ -454,20 +474,29 @@ th {
     text-align: left;
     text-align:center;
     border-top:0;
+    border-bottom: 0;
     border-left:1px solid white;
     border-right:1px solid white;
+    overflow:hidden;
+    background-color:#507CD1;
 }
 
 th:first-child{
     border-left:0;
-   
-    border-radius:5px 0 0 0;
+
+    border-radius: 5px 0px 0px 0px;
+    -moz-border-radius: 5px 0px 0px 0px;
+    -webkit-border-radius: 5px 0px 0px 0px;
+    
 }
+
 th:last-child{
     border-right:0;
-
-    display:flexbox;
-    border-radius:0 5px 0 0;
+    
+    border-radius: 0px 5px 0px 0px;
+    -moz-border-radius: 0px 5px 0px 0px;
+    -webkit-border-radius: 0px 5px 0px 0px;
+        
 }
 
     th a {
@@ -509,19 +538,28 @@ th:last-child{
 
 
 td {
-    /*padding: 0.25em 2em 0.25em 0em;*/
+    padding-top:2px;
+    padding-bottom:2px;
     border: 0 none;
     text-align:center;
 }
 tr:last-child > td:first-child
 {
     border-left:0;
-    border-radius:0 0 0 5px;
+    
+    border-radius: 0px 0px 0px 5px;
+    -moz-border-radius: 0px 0px 0px 5px;
+    -webkit-border-radius: 0px 0px 0px 5px;
+    
 }
 tr:last-child > td:last-child 
 {
     border-right:0;
-    border-radius:0 0 5px 0;
+
+    border-radius: 0px 0px 5px 0px;
+    -moz-border-radius: 0px 0px 5px 0px;
+    -webkit-border-radius: 0px 0px 5px 0px;
+        
 }
 
 tr.pager td {
@@ -533,18 +571,19 @@ tr.pager td {
     border:double;
 }
 
-table.tableMedicalCenters
+.rolesCheck td{
+    display:inline-block;
+    text-align:left;
+    clear:both;
+}
+.rolesCheck label
 {
-    width: 100%;
-    border-collapse:collapse;
+    display:inline-block;
+    margin-left:3px;
+    
+    clear:both
 }
 
-    
-table.tableMedicalCenters > tbody > tr
-{
-    
-    background-color:#78C1E9;
-}
 /* таблица со стрелочками под основным контентом */
 .dt {
     -webkit-box-shadow: rgba(0,0,0,0.8) 0px 2px 5px;
