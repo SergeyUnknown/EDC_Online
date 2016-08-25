@@ -18,7 +18,6 @@ namespace EDC.Pages.CRF
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            //CRFR.ReCreate();
             if (!IsPostBack)
             {
                 LoadCRFs();
@@ -94,7 +93,7 @@ namespace EDC.Pages.CRF
 
         protected void gvCRFs_SelectedIndexChanging(object sender, GridViewSelectEventArgs e)
         {
-
+            Response.Redirect("~/CRFs/View/"+crfs[e.NewSelectedIndex].CRFID);
         }
 
         protected void dtInfo_SelectedIndexChanged(object sender, EventArgs e)

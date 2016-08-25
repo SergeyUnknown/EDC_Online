@@ -28,6 +28,7 @@ namespace EDC.Pages.Administration
             if(Request.Url.ToString().IndexOf("Edit")>0)
             {
                 btnOk.Text = "Изменить аккаунт";
+                Title = "Редактирование аккаунта";
 
                 MembershipUser user = Membership.GetUser(GetUserGuidFromRequest());
                 Models.Repository.UserProfileRepository pr = new Models.Repository.UserProfileRepository();
@@ -51,6 +52,7 @@ namespace EDC.Pages.Administration
             else
             {
                 btnOk.Text = "Создать аккаунт";
+                Title = "Создание аккаунта";
 
             }
 

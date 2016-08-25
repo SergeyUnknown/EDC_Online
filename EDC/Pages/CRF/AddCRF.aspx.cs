@@ -99,19 +99,34 @@ namespace EDC.Pages.CRF
                             }
                             crfSectionRepository.Save();
 
+                            /////////////////Группа UnGrouped/////////////////////
+                            CRF_Group ungrouped = new CRF_Group();
+                            ungrouped.CRFID = crf.CRFID;
+                            ungrouped.Identifier = "UNGROUPED" + crf.CRFID;
+                            ungrouped.RepeatNumber = 1;
+                            ungrouped.RepeatMax = 1;
+                            ungrouped = crfGroupRepository.Create(ungrouped);
+                            /////////////////////////////////////////////////////
+
                             for(int i =0;i<CRF_Groups.Count;i++)
                             {
                                 CRF_Groups[i].CRFID = crf.CRFID;
                                 CRF_Groups[i] = crfGroupRepository.Create(CRF_Groups[i]);
                             }
-                            crfSectionRepository.Save();
+                            crfGroupRepository.Save();
 
                             foreach(var item in CRF_Items)
                             {
                                 item.CRFID = crf.CRFID;
                                 item.SectionID = CRF_Sections.FirstOrDefault(x => x.Label == item.Section.Label).CRF_SectionID;
+                                item.Section = null;
                                 if (item.Group != null)
-                                    item.GroupID = CRF_Groups.FirstOrDefault(x=>x.Label == item.Group.Label).CRF_GroupID;
+                                    item.GroupID = CRF_Groups.FirstOrDefault(x => x.Label == item.Group.Label).CRF_GroupID;
+                                else
+                                    item.GroupID = ungrouped.CRF_GroupID;
+                                item.Group = null;
+
+                                crfItemRepository.Create(item);
                             }
                             crfItemRepository.Save();
 
@@ -325,6 +340,10 @@ namespace EDC.Pages.CRF
                 newItem.ResponseLabel = rowItems[14];
                 newItem.ResponseOptionText = rowItems[15];
                 newItem.ResponseValuesOrCalculation = rowItems[16];
+                if(newItem.ResponseOptionText.Replace("\\,"," ").Split(',').Length != newItem.ResponseValuesOrCalculation.Split(',').Length)
+                {
+                    CRF_Errors.Add(new CRF_Error(table.TableName, i + 17, 1, "Количество вариантов ответов и значений не совпадает"));
+                }
                 newItem.ResponseLayout = rowItems[17];
                 newItem.DefaultValue = rowItems[18];
 

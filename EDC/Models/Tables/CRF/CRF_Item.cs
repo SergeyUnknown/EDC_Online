@@ -20,11 +20,11 @@ namespace EDC.Models
         public string RightItemText { get; set; }
         public long SectionID { get; set; }
         [ForeignKey("SectionID")]
-        public CRF_Section Section { get; set; }
+        public virtual CRF_Section Section { get; set; }
 
         public long? GroupID { get; set; }
         [ForeignKey("GroupID")]
-        public CRF_Group Group { get; set; }
+        public virtual CRF_Group Group { get; set; }
         public string Header { get; set; }
         public string Subheader { get; set; }
         //public string ParentItem { get; set; }
