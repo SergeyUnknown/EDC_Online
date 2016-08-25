@@ -18,7 +18,7 @@
             <asp:BoundField DataField="Version" HeaderText="Версия" />
             <asp:BoundField DataField="CreationDate" HeaderText="Дата создания" />
             <asp:BoundField DataField="CreatedBy" HeaderText="Создано" />
-            <asp:CommandField HeaderText="Действия" SelectText="Просмотреть" ShowDeleteButton="True" DeleteText="Удалить" />
+            <asp:CommandField HeaderText="Действия" ButtonType="Image" SelectText="Просмотреть" ShowDeleteButton="True" DeleteText="Удалить" DeleteImageUrl="~/Images/delete (3).png" />
         </Columns>
         <EditRowStyle BackColor="#2461BF" />
         <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />

@@ -15,10 +15,19 @@ td.dtleft {
 td.dtcenter {
     width:40%;
     text-align:center;
+
 }
 
 td.dtcenter a img:hover{
-    transform:scale(1.5);
+    border-radius:10px;
+    background-color:#7EA2D4;
+    box-shadow:0 2px 2px 1px rgba(0, 0, 0, 0.26);
+}
+
+td.dtcenter a img{
+    background-color:#7ac0da;
+    border-radius:5px;
+    transition:border-radius 0.1s ease;
 }
 
 td.dtright1 {
@@ -38,10 +47,10 @@ td.dtrigth2 {
                 <asp:HyperLink ID="hlButton" CssClass="addButton" runat="server" NavigateUrl="~/">""</asp:HyperLink>
             </td>
             <td class="dtcenter">
-                <asp:LinkButton runat="server" ID="LinkButtonFirstPage"><asp:Image ID="Image1" runat="server" ImageUrl="~/Images/FirstPage.png" /></asp:LinkButton>
-                <asp:LinkButton runat="server" ID="LinkButtonPrevPage"><asp:Image ID="Image2" runat="server" ImageUrl="~/Images/PreviousPage.png"/></asp:LinkButton>
-                <asp:LinkButton runat="server" ID="LinkButtonNextPage"><asp:Image ID="Image3" runat="server" ImageUrl="~/Images/NextPage.png"/></asp:LinkButton>
-                <asp:LinkButton runat="server" ID="LinkButtonLastPage"><asp:Image ID="Image4" runat="server" ImageUrl="~/Images/LastPage.png"/></asp:LinkButton>
+                <asp:LinkButton runat="server" ID="LinkButtonFirstPage"><asp:Image ID="Image1" runat="server" ImageUrl="~/Images/skip-backward (3).png" /></asp:LinkButton>
+                <asp:LinkButton runat="server" ID="LinkButtonPrevPage"><asp:Image ID="Image2" runat="server" ImageUrl="~/Images/backward.png"/></asp:LinkButton>
+                <asp:LinkButton runat="server" ID="LinkButtonNextPage"><asp:Image ID="Image3" runat="server" ImageUrl="~/Images/forward (3).png"/></asp:LinkButton>
+                <asp:LinkButton runat="server" ID="LinkButtonLastPage"><asp:Image ID="Image4" runat="server" ImageUrl="~/Images/skip-forward (2).png"/></asp:LinkButton>
             </td>
             <td class="dtright1">
                 <asp:DropDownList CssClass="pageCount" ID="ddlItemCount" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlItemCount_SelectedIndexChanged"/>
