@@ -116,6 +116,7 @@ namespace EDC
                             {
                                 CheckBoxList cb = new CheckBoxList();
                                 cb.Items.AddRange(GetListItems(item).ToArray());
+                                cb.CssClass = item.ResponseLayout;
                                 addedControl = cb;
                                 break;
                             }
@@ -123,6 +124,7 @@ namespace EDC
                             {
                                 RadioButtonList rb = new RadioButtonList();
                                 rb.Items.AddRange(GetListItems(item).ToArray());
+                                rb.CssClass = item.ResponseLayout;
                                 addedControl = rb;
                                 break;
                             }
