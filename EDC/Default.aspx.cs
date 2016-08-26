@@ -39,82 +39,133 @@ namespace EDC
                 tp.ID = "tp" + section.Label;
 
                 int columnCount = section.Items.Max(x => x.ColumnNumber);
-                if(columnCount <=1)
+
+                Table table = new Table(); //таблица итемов
+                TableRow tr = new TableRow();
+                for(int i=0;i<section.Items.Count;i++)
                 {
-                   foreach(var item in section.Items)
-                   {
-                       if (!string.IsNullOrWhiteSpace(item.Header)) //Header
-                       {
-                           Label header = new Label();
-                           header.Text = item.Header;
-                           tp.Controls.Add(header);
-                           tp.Controls.Add(new LiteralControl("<br />"));
-                       }
-                       if(!string.IsNullOrWhiteSpace(item.LeftItemText)) //LeftItemText
-                       {
-                           Label LIT = new Label();
-                           LIT.Text = item.LeftItemText;
-                           tp.Controls.Add(LIT);
-                       }
-                       Control addedControl = new Control();
-                       switch (item.ResponseType)
-                       {
-                           case Core.ResponseType.Text:
-                               {
-                                   TextBox tb = new TextBox();
-                                   if (item.DataType == Core.DataType.INT)
-                                       tb.TextMode = TextBoxMode.Number;
-                                   addedControl = tb;
-                                   break;
-                               }
-                           case Core.ResponseType.Textarea:
-                               {
-                                   TextBox tb = new TextBox();
-                                   tb.TextMode = TextBoxMode.MultiLine;
-                                   addedControl = tb;
-                                   break;
-                               }
-                           case Core.ResponseType.Checkbox | Core.ResponseType.MultiSelect:
-                               {
-                                   CheckBoxList cb = new CheckBoxList();
-                                   cb.Items.AddRange(GetListItems(item).ToArray());
-                                   addedControl = cb;
-                                   break;
-                               }
-                           case Core.ResponseType.Radio:
-                               {
-                                   RadioButtonList rb = new RadioButtonList();
-                                   rb.Items.AddRange(GetListItems(item).ToArray());
-                                   addedControl = rb;
-                                   break;
-                               }
-                           case Core.ResponseType.SingleSelect:
-                               {
-                                   DropDownList ddl = new DropDownList();
-                                   ddl.Items.AddRange(GetListItems(item).ToArray());
-                                   addedControl = ddl;
-                                   break;
-                               }
-                       }
-                       addedControl.ID = item.Identifier;
-                       tp.Controls.Add(addedControl);
-                       if (!string.IsNullOrWhiteSpace(item.Units)) //Units
-                       {
-                           Label Units = new Label();
-                           Units.Text = item.Units;
-                           tp.Controls.Add(Units);
-                       }
-                       if (!string.IsNullOrWhiteSpace(item.RightItemText)) //RightItemText
-                       {
-                           Label RIT = new Label();
-                           RIT.Text = item.RightItemText;
-                           tp.Controls.Add(RIT);
-                       }
+                    var item = section.Items[i];
+                    if (!string.IsNullOrWhiteSpace(item.Header)) //Header
+                    {
+                        Label header = new Label();
+                        header.Text = item.Header;
+                        TableRow _tr = new TableRow();
+                        TableCell _tc = new TableCell();
+                        _tc.ColumnSpan = columnCount;
+                        _tc.Controls.Add(header);
+                        _tr.Cells.Add(_tc);
+                        table.Rows.Add(_tr);
+                    }
+                    if (!string.IsNullOrWhiteSpace(item.Subheader)) //subHeader
+                    {
+                        Label subheader = new Label();
+                        subheader.Text = item.Subheader;
+                        TableRow _tr = new TableRow();
+                        TableCell _tc = new TableCell();
+                        _tc.Controls.Add(subheader);
+                        _tr.Cells.Add(_tc);
+                        table.Rows.Add(_tr);
+                    }
+                    TableCell tc = new TableCell();
+                    if (!string.IsNullOrWhiteSpace(item.LeftItemText)) //LeftItemText
+                    {
+                        Label LIT = new Label();
+                        LIT.Text = item.LeftItemText;
+                        tc.Controls.Add(LIT);
+                    }
+                    Control addedControl = new Control();
+                    switch (item.ResponseType)
+                    {
+                        case Core.ResponseType.Text:
+                            {
+                                TextBox tb = new TextBox();
+                                if (item.DataType == Core.DataType.INT)
+                                    tb.TextMode = TextBoxMode.Number;
+                                if (item.DataType == Core.DataType.REAL)
+                                {
+                                    AjaxControlToolkit.FilteredTextBoxExtender FTBE = new AjaxControlToolkit.FilteredTextBoxExtender();
+                                    FTBE.TargetControlID = item.Identifier;
+                                    FTBE.ValidChars = ".";
+                                    FTBE.FilterType = AjaxControlToolkit.FilterTypes.Numbers | AjaxControlToolkit.FilterTypes.Custom;
+                                    tc.Controls.Add(FTBE);
+                                }
+                                if (item.DataType == Core.DataType.DATE)
+                                {
+                                    AjaxControlToolkit.CalendarExtender CE = new AjaxControlToolkit.CalendarExtender();
+                                    CE.TargetControlID = item.Identifier;
+                                    CE.Format = "dd.MM.yyyy";
+                                    tc.Controls.Add(CE);
 
-                       tp.Controls.Add(new LiteralControl("<br />"));
-                   }
+                                    AjaxControlToolkit.FilteredTextBoxExtender FTBE = new AjaxControlToolkit.FilteredTextBoxExtender();
+                                    FTBE.TargetControlID = item.Identifier;
+                                    FTBE.ValidChars = ".";
+                                    FTBE.FilterType = AjaxControlToolkit.FilterTypes.Numbers | AjaxControlToolkit.FilterTypes.Custom;
+                                    tc.Controls.Add(FTBE);
+                                }
+                                addedControl = tb;
+                                break;
+                            }
+                        case Core.ResponseType.Textarea:
+                            {
+                                TextBox tb = new TextBox();
+                                tb.TextMode = TextBoxMode.MultiLine;
+                                addedControl = tb;
+                                break;
+                            }
+                        case Core.ResponseType.Checkbox | Core.ResponseType.MultiSelect:
+                            {
+                                CheckBoxList cb = new CheckBoxList();
+                                cb.Items.AddRange(GetListItems(item).ToArray());
+                                cb.CssClass = item.ResponseLayout;
+                                addedControl = cb;
+                                break;
+                            }
+                        case Core.ResponseType.Radio:
+                            {
+                                RadioButtonList rb = new RadioButtonList();
+                                rb.Items.AddRange(GetListItems(item).ToArray());
+                                rb.CssClass = item.ResponseLayout;
+                                addedControl = rb;
+                                break;
+                            }
+                        case Core.ResponseType.SingleSelect:
+                            {
+                                DropDownList ddl = new DropDownList();
+                                ddl.Items.AddRange(GetListItems(item).ToArray());
+                                addedControl = ddl;
+                                break;
+                            }
+                    }
+                    addedControl.ID = item.Identifier; //ID параметра
+                    tc.Controls.Add(addedControl);
+
+                    if (!string.IsNullOrWhiteSpace(item.Units)) //Units
+                    {
+                        Label Units = new Label();
+                        Units.Text = item.Units;
+                        tc.Controls.Add(Units);
+                    }
+                    if (!string.IsNullOrWhiteSpace(item.RightItemText)) //RightItemText
+                    {
+                        Label RIT = new Label();
+                        RIT.Text = item.RightItemText;
+                        tc.Controls.Add(RIT);
+                    }
+                    tr.Cells.Add(tc);
+
+                    if(i<section.Items.Count-1)
+                    {
+                        if(section.Items[i+1].ColumnNumber<=section.Items[i].ColumnNumber)
+                        {
+                            table.Rows.Add(tr);
+                            tr = new TableRow();
+                        }
+                        
+                    }
+                    else
+                        table.Rows.Add(tr);
                 }
-
+                tp.Controls.Add(table);
                 tcCRF.Tabs.Add(tp);
 
             }
