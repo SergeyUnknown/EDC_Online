@@ -14,7 +14,7 @@ namespace EDC.Pages.Event
         Models.Repository.CRFRepository CRFR = new Models.Repository.CRFRepository();
 
         static Models.Event _event; //текущее событие
-        static List<Models.EventCRF> _eCRFs; //Добавленные CRF/Элементы связующей таблицы
+        static List<Models.CRFInEvent> _eCRFs; //Добавленные CRF/Элементы связующей таблицы
         static List<Models.CRF> _CRFs; //все CRF
 
         static List<Models.CRF> _addingCRFs; //CRF которые нужно добавить 
@@ -65,7 +65,7 @@ namespace EDC.Pages.Event
             long eventID = _event.EventID;
             int pos = _eCRFs[e.RowIndex].Position;
 
-            List<Models.EventCRF> _editedECRF = ECRFR.GetManyByFilter(x => x.EventID == eventID && x.Position > pos).ToList();
+            List<Models.CRFInEvent> _editedECRF = ECRFR.GetManyByFilter(x => x.EventID == eventID && x.Position > pos).ToList();
             for (int i = 0; i < _editedECRF.Count;i++ )
             {
                 _editedECRF[i].Position--;
@@ -94,11 +94,11 @@ namespace EDC.Pages.Event
             DropDownList ddl = (DropDownList)sender;
             GridViewRow row = (GridViewRow)ddl.Parent.Parent;
 
-            Models.EventCRF _eCRF = ECRFR.SelectByID(_eCRFs[row.RowIndex].CRFID, _eCRFs[row.RowIndex].EventID);
+            Models.CRFInEvent _eCRF = ECRFR.SelectByID(_eCRFs[row.RowIndex].CRFID, _eCRFs[row.RowIndex].EventID);
             int newPos = ddl.SelectedIndex + 1;
             if (newPos < _eCRF.Position)
             {
-                List<Models.EventCRF> editedEventsCRFs = ECRFR.GetManyByFilter(x => x.Position >= newPos && x.Position <= _event.Position).OrderBy(x => x.Position).ToList();
+                List<Models.CRFInEvent> editedEventsCRFs = ECRFR.GetManyByFilter(x => x.Position >= newPos && x.Position <= _event.Position).OrderBy(x => x.Position).ToList();
 
                 for (int i = 0; i < editedEventsCRFs.Count; i++)
                 {
@@ -108,7 +108,7 @@ namespace EDC.Pages.Event
             }
             else
             {
-                List<Models.EventCRF> editedEventsCRFs = ECRFR.GetManyByFilter(x => x.Position <= newPos && x.Position >= _event.Position).OrderBy(x => x.Position).ToList();
+                List<Models.CRFInEvent> editedEventsCRFs = ECRFR.GetManyByFilter(x => x.Position <= newPos && x.Position >= _event.Position).OrderBy(x => x.Position).ToList();
 
                 for (int i = 0; i < editedEventsCRFs.Count; i++)
                 {
@@ -155,7 +155,7 @@ namespace EDC.Pages.Event
             int crfCount = _eCRFs.Count;
             for (int i = 0; i < _addingCRFs.Count; i++)
             {
-                Models.EventCRF item = new Models.EventCRF();
+                Models.CRFInEvent item = new Models.CRFInEvent();
                 item.CRFID = _addingCRFs[i].CRFID;
                 item.EventID = _event.EventID;
                 item.Position = crfCount + i + 1;

@@ -18,7 +18,7 @@ namespace EDC.Models
         public virtual List<CRF_Section> Sections { get; set; }
         public virtual List<CRF_Item> Items { get; set; }
 
-        public virtual List<EventCRF> Events { get; set; }
+        public virtual List<CRFInEvent> Events { get; set; }
 
     }
 }

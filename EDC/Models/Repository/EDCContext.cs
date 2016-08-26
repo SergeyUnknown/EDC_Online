@@ -18,16 +18,21 @@ namespace EDC.Models
         public DbSet<CRF_Item> CRFItems { get; set; } //Итемы CRF
         public DbSet<Audit> Audits { get; set; } //Аудит
         public DbSet<Event> Events { get; set; } //События
-        public DbSet<EventCRF> EventsCRFs { get; set; } //Связующая таблица
+        public DbSet<CRFInEvent> CRFInEvent { get; set; } //Связующая таблица
         public DbSet<Note> Notes { get; set; } // 
         public DbSet<Subject> Subjects { get; set; } // Субъекты исследования 
-        public DbSet<EventSubject> EventSubjects { get; set; } //Связующая таблица
+        public DbSet<SubjectEvent> SubjectsEvent { get; set; } //Связующая таблица
+
+        public DbSet<SubjectsCRF> SubjectsCRFs { get; set; }
+        public DbSet<SubjectsItem> SubjectsItems { get; set; }
+
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<EventCRF>()
+            modelBuilder.Entity<CRFInEvent>()
                 .HasKey(t => new { t.CRFID, t.EventID });
 
-            modelBuilder.Entity<EventSubject>()
+            modelBuilder.Entity<SubjectEvent>()
                 .HasKey(t => new { t.EventID,t.SubjectID});
 
         }

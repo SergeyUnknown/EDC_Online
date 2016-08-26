@@ -6,8 +6,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EDC.Models
 {
-    public class EventSubject
+    public class SubjectEvent
     {
+        public long SubjectEventID { get; set; }
         public long EventID { get; set; }
         [ForeignKey("EventID")]
         public virtual Event Event { get; set; }
@@ -15,6 +16,7 @@ namespace EDC.Models
         public long SubjectID { get; set; }
         [ForeignKey("SubjectID")]
         public virtual Subject Subject { get; set; }
+
 
     }
 }

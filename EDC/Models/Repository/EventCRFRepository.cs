@@ -5,7 +5,7 @@ using System.Web;
 
 namespace EDC.Models.Repository
 {
-    public class EventCRFRepository : IRepository<EventCRF>
+    public class EventCRFRepository : IRepository<CRFInEvent>
     {
         private EDCContext db;
 
@@ -13,34 +13,34 @@ namespace EDC.Models.Repository
         {
             this.db = new EDCContext();
         }
-        public IEnumerable<EventCRF> SelectAll()
+        public IEnumerable<CRFInEvent> SelectAll()
         {
-            return db.EventsCRFs;
+            return db.CRFInEvent;
         }
-        public EventCRF SelectByID(params object[] id)
+        public CRFInEvent SelectByID(params object[] id)
         {
-            return db.EventsCRFs.Find(id);
+            return db.CRFInEvent.Find(id);
         }
-        public IEnumerable<EventCRF> GetManyByFilter(System.Linq.Expressions.Expression<Func<EventCRF, bool>> filter)
+        public IEnumerable<CRFInEvent> GetManyByFilter(System.Linq.Expressions.Expression<Func<CRFInEvent, bool>> filter)
         {
-            return db.EventsCRFs.Where(filter);
+            return db.CRFInEvent.Where(filter);
         }
-        public EventCRF Create(EventCRF obj)
+        public CRFInEvent Create(CRFInEvent obj)
         {
             obj.CRF = db.CRFs.Find(obj.CRFID);
             obj.Event = db.Events.Find(obj.EventID);
 
-            return db.EventsCRFs.Add(obj);
+            return db.CRFInEvent.Add(obj);
         }
-        public void Update(EventCRF obj)
+        public void Update(CRFInEvent obj)
         {
             db.Entry(obj).State = System.Data.Entity.EntityState.Modified;
         }
         public void Delete(params object[] id)
         {
-            EventCRF _EventCRF = db.EventsCRFs.Find(id);
+            CRFInEvent _EventCRF = db.CRFInEvent.Find(id);
             if (_EventCRF != null)
-                db.EventsCRFs.Remove(_EventCRF);
+                db.CRFInEvent.Remove(_EventCRF);
         }
         public void Save()
         {
