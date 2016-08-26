@@ -10,6 +10,7 @@ namespace EDC
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
+            routes.MapPageRoute(null, "ConfigurationTrials", "~/Pages/Administration/ConfigurationTrials.aspx");
 
             routes.MapPageRoute(null, "Subjects/Edit/{id}", "~/Pages/Subject/CreateEditSubject.aspx");
             routes.MapPageRoute(null, "Subjects/Add", "~/Pages/Subject/CreateEditSubject.aspx");
@@ -22,6 +23,7 @@ namespace EDC
             routes.MapPageRoute(null, "Events/{page}", "~/Pages/Event/Events.aspx");
             routes.MapPageRoute(null, "Events", "~/Pages/Event/Events.aspx");
 
+            routes.MapPageRoute(null, "CRFs/View/{id}/{table}", "~/Pages/CRF/ViewCRF.aspx");
             routes.MapPageRoute(null, "CRFs/View/{id}", "~/Pages/CRF/ViewCRF.aspx");
             routes.MapPageRoute(null, "CRFs/Add", "~/Pages/CRF/AddCRF.aspx");
             routes.MapPageRoute(null, "CRFs/{page}", "~/Pages/CRF/CRFs.aspx");

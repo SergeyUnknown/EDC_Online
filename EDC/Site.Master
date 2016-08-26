@@ -102,7 +102,7 @@
                         <a runat="server" href="~/Contact">Администрирование/Дизайн</a>
                         <ul class="submenu">
                             <li>
-                                <a runat="server" href="#">Настройка исследования</a>
+                                <a runat="server" href="~/ConfigurationTrials">Настройка исследования</a>
                             </li>
                             <li>
                                 <a runat="server" href="~/Events">События</a>

@@ -219,6 +219,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="packages.config" />
+    <Content Include="Pages\Administration\ConfigurationTrials.aspx" />
     <Content Include="Pages\Administration\EditCreateUser.aspx" />
     <Content Include="Pages\Administration\Web.config" />
     <None Include="Properties\PublishProfiles\ToComp.pubxml" />
@@ -342,6 +343,13 @@
     <Compile Include="Models\Tables\UserProfile.cs" />
     <Compile Include="Models\Repository\EDCContext.cs" />
     <Compile Include="Models\Repository\IRepository.cs" />
+    <Compile Include="Pages\Administration\ConfigurationTrials.aspx.cs">
+      <DependentUpon>ConfigurationTrials.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Administration\ConfigurationTrials.aspx.designer.cs">
+      <DependentUpon>ConfigurationTrials.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Administration\ErrorLog.aspx.cs">
       <DependentUpon>ErrorLog.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

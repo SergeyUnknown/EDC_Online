@@ -10,5 +10,20 @@
     </section>
 </asp:Content>
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
-    
+    <asp:UpdatePanel runat="server">
+        <Triggers>
+
+        </Triggers>
+        <ContentTemplate>
+            <asp:DropDownList runat="server" ID="ddlCRF" AutoPostBack="true" OnSelectedIndexChanged="ddlCRF_SelectedIndexChanged"></asp:DropDownList>
+            
+            <ajaxToolkit:TabContainer runat="server" ID="tcCRF">
+
+            </ajaxToolkit:TabContainer>
+
+            <asp:Panel runat="server" ID="pControls">
+
+            </asp:Panel>
+        </ContentTemplate>
+    </asp:UpdatePanel>
 </asp:Content>
