@@ -230,7 +230,7 @@ namespace EDC.Pages.CRF
                     string lowerLabel = rowItems[0].ToLower();
                     if (CRF_Groups.Any(x => x.Label.ToLower() == lowerLabel))
                         CRF_Errors.Add(new CRF_Error(table.TableName, i + 1, 1, "Группа с указанным названием уже добавлена"));
-                    else if (addedGroups.Any(x => x.Label.ToLower() == lowerLabel))
+                    else if (addedGroups.Any(x => x.Label!=null && x.Label.ToLower() == lowerLabel))
                         CRF_Errors.Add(new CRF_Error(table.TableName, i + 1, 1, "Группа с указанным названием уже добавлена"));
                     else
                         newGroup.Label = rowItems[0];
