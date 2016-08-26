@@ -376,7 +376,7 @@ fieldset {
         color: black;
     }
     /*Наведение на кнопку создать аккаунт и отмена*/
-    #MainContent_btnCancel:hover, #MainContent_btnOk:hover, #MainContent_btnUpload:hover
+    #MainContent_btnCancel:hover, #MainContent_btnOk:hover, #MainContent_btnUpload:hover, #MainContent_btnSaveChange:hover
     {
         -webkit-box-shadow: rgba(0, 0, 0, 0.36) 0px 4px 8px;
         background-color:#7EA2D4;
@@ -571,9 +571,18 @@ tr.pager td {
     border:double;
 }
 
+.rolesCheck
+{
+    width:310px;
+    box-shadow:0 0 0 0 0;
+    font-size:12px;
+    font-weight:lighter;
+}
+
 .rolesCheck td{
     display:inline-block;
     text-align:left;
+    vertical-align:central;
     clear:both;
 }
 .rolesCheck label
@@ -584,15 +593,67 @@ tr.pager td {
     clear:both
 }
 
+/*выбор на главной странице*/
+#MainContent_ddlCRF
+{
+    height:25px;
+    border-radius:3px;
+    margin-bottom:5px;
+    -webkit-box-shadow: rgba(0,0,0,0.8) 0px 2px 4px 0px;
+}
+#MainContent_tcCRF_body
+{
+    -webkit-box-shadow: rgba(0,0,0,0.8) 0px 2px 4px 0px;
+}
 /* таблица со стрелочками под основным контентом */
 .dt {
     -webkit-box-shadow: rgba(0,0,0,0.8) 0px 2px 5px;
+
 }
 .dtleft
 {
+     border-radius:5px;
+}
+.dtcenter
+{
+    border-radius:5px;
+}
+/*таблицы включения выключения*/
+/*header - во всю строчку*/
+/*subheader - под размер ячейки*/
+.ajax__tab_panel
+{
+    
+}
+.ajax__tab_panel > div
+{
 
 }
+.ajax__tab_panel > span
+{
+    margin:0px;
+    margin-right:0px;
+    display:inline-block;
+}
+.ajax__tab_panel > table
+{
+    margin:0px;
+    width:10%;
+    clear:both;
+}
 
+.ajax__tab_panel > input 
+{
+    display:inline-block;
+    width:10%;
+}
+
+.ajax__tab_panel > table > tbody > tr > td > input
+{
+    display:inline-block;
+    text-align:center;
+    width:auto;
+}
 
 /********************
 *   Mobile Styles   *
