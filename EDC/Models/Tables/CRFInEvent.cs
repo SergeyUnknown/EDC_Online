@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EDC.Models
 {
-    public class EventCRF
+    public class CRFInEvent
     {
         public long EventID { get; set; }
         [ForeignKey("EventID")]

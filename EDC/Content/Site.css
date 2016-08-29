@@ -101,7 +101,7 @@ h5, h6 {
     background-color: #efeeef;
     clear: both;
     padding-bottom: 0px;
-
+    box-shadow:0 2px 2px 0 rgba(0, 0, 0, 0.26) inset;
 }
 
     .main-content {
@@ -121,7 +121,7 @@ footer {
     background-color: #e2e2e2;
     font-size: .8em;
     height: 10px;
-    box-shadow:-2px -2px 2px 0 rgba(0, 0, 0, 0.26);
+    box-shadow:0 2px 2px 0 rgba(0, 0, 0, 0.26) inset;
 }
 
 
@@ -147,14 +147,23 @@ footer {
 /* featured */
 .featured {
     background-color: #fff;
-    box-shadow:0 3px 4px 0 rgba(0, 0, 0, 0.26);
-    padding-bottom: 5px;
+    width:60%;
+    min-width:380px;
+    float:left;
+    height:auto;
+    display:block;
+    text-align:center;
+    
+    margin-left:auto;
+    margin-right:auto;
 }
 
     .featured .content-wrapper {
         background-color: #7ac0da;
         border-radius:3px 3px 3px 3px;
         box-shadow:3px 3px 6px 0 rgba(0, 0, 0, 0.36);
+        vertical-align:central;
+        padding-top:0px;
         /*
         background-image: -ms-linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
         background-image: -o-linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
@@ -163,7 +172,6 @@ footer {
         background-image: linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
             */
         color: #3e5667;
-        
     }
 
         .featured hgroup.title h1, .featured hgroup.title h2 {
@@ -176,7 +184,8 @@ footer {
 
 /* page titles */
 hgroup.title {
-    margin-bottom: 5px;
+    margin-bottom: 0px;
+    height:30px;
 }
 
 hgroup.title h1, hgroup.title h2 {
@@ -714,6 +723,7 @@ tr.pager td {
     header .float-left,
     header .float-right {
         float: none;
+        width:20%;
     }
 
     /* logo */
@@ -789,7 +799,7 @@ tr.pager td {
     /* page content */
     article, aside {
         float: none;
-        width: 100%;
+        width: 50%;
     }
 
     /* ordered list */
