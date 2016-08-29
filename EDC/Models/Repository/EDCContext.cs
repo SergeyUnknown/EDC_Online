@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EDC.Models
 {
@@ -21,7 +22,7 @@ namespace EDC.Models
         public DbSet<CRFInEvent> CRFInEvent { get; set; } //Связующая таблица
         public DbSet<Note> Notes { get; set; } // 
         public DbSet<Subject> Subjects { get; set; } // Субъекты исследования 
-        public DbSet<SubjectEvent> SubjectsEvent { get; set; } //Связующая таблица
+        public DbSet<SubjectsEvent> SubjectsEvent { get; set; } //Связующая таблица
 
         public DbSet<SubjectsCRF> SubjectsCRFs { get; set; }
         public DbSet<SubjectsItem> SubjectsItems { get; set; }
@@ -32,8 +33,23 @@ namespace EDC.Models
             modelBuilder.Entity<CRFInEvent>()
                 .HasKey(t => new { t.CRFID, t.EventID });
 
-            modelBuilder.Entity<SubjectEvent>()
-                .HasKey(t => new { t.EventID,t.SubjectID});
+            modelBuilder.Entity<SubjectsEvent>()
+                .HasKey(t => new { t.SubjectID, t.EventID });
+
+            modelBuilder.Entity<SubjectsCRF>()
+                .HasRequired(c => c.SubjectsEvent)
+                .WithMany(d => d.CRFs)
+                .HasForeignKey(t => new { t.SubjectsEventID, t.SubjectsEventCRFID });
+
+            modelBuilder.Entity<SubjectsCRF>()
+                .HasKey(t => new { t.SubjectsEventID, t.CRFID });
+
+            modelBuilder.Entity<SubjectsItem>()
+                .HasRequired(c => c.SubjectsCRF)
+                .WithMany(d => d.Items)
+                .HasForeignKey(t => new { t.SubjectsEventID, t.CRFID });
+
+            
 
         }
     }

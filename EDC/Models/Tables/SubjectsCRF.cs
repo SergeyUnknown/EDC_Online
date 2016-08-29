@@ -8,14 +8,16 @@ namespace EDC.Models
 {
     public class SubjectsCRF
     {
-        public long CRFInSubjectEventID { get; set; }
-        public long SubjectEventID { get; set; }
-        [ForeignKey("SubjectEventID")]
-        public SubjectEvent SubjectsEvent { get; set; }
-
+        public SubjectsEvent SubjectsEvent { get; set; }
+        //ниже внешний ключ
+        public long SubjectsEventID { get; set; }
+        public long SubjectsEventCRFID { get; set; }
+        //end
         public long CRFID { get; set; }
         [ForeignKey("CRFID")]
         public CRF CRF { get; set; }
+
+        public virtual List<SubjectsItem> Items { get; set; }
 
         public bool IsClosed { get; set; }
     }
