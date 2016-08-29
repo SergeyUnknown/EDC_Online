@@ -11,7 +11,7 @@ namespace EDC.Models
         public long SubjectID { get; set; }
 
         public string Number { get; set; }
-        public virtual List<EventSubject> Events { get; set; }
+        public virtual List<SubjectsEvent> Events { get; set; }
         public virtual MedicalCenter MedicalCenter { get; set; }
 
         [ForeignKey("MedicalCenter")]
