@@ -580,9 +580,18 @@ tr.pager td {
     border:double;
 }
 
+.rolesCheck
+{
+    width:310px;
+    box-shadow:0 0 0 0 0;
+    font-size:12px;
+    font-weight:lighter;
+}
+
 .rolesCheck td{
     display:inline-block;
     text-align:left;
+    vertical-align:central;
     clear:both;
 }
 .rolesCheck label
@@ -593,15 +602,116 @@ tr.pager td {
     clear:both
 }
 
+/*выбор на главной странице*/
+#MainContent_ddlCRF
+{
+    height:25px;
+    border-radius:3px;
+    margin-bottom:5px;
+    -webkit-box-shadow: rgba(0,0,0,0.8) 0px 2px 4px 0px;
+}
+#MainContent_tcCRF_body
+{
+    -webkit-box-shadow: rgba(0,0,0,0.8) 0px 2px 4px 0px;
+}
 /* таблица со стрелочками под основным контентом */
 .dt {
     -webkit-box-shadow: rgba(0,0,0,0.8) 0px 2px 5px;
+
 }
 .dtleft
 {
+     border-radius:5px;
+}
+.dtcenter
+{
+    border-radius:5px;
+}
+/*таблицы включения выключения*/
+/*header - во всю строчку*/
+/*subheader - под размер ячейки*/
+.CRFItemHeader
+{
+    text-align:center;
+    font-size:13px;
+}
+.CRFLeftItem
+{
+    display:inline-block;
+    font-size:1em;
+    font-weight:500;
+    width:30%;
+    min-width:200px;
+}
+.radibuttonTable 
+{
+    box-shadow:0 0 0 0;
+    clear:both;
+    align-content:center;
+    width:auto;
+    margin-left: auto;
+    margin-right: auto;
 
 }
+.radibuttonTable > tbody > tr > td
+{
+    text-align:left;
+}
+.radibuttonTable > tbody > tr > td > label
+{
+    font-weight:500;
+    font-size:13px;
+    
+}
+.TableCRFLeftItem > tbody > tr > td
+{
+    text-align:left;
+}
+.ajax__tab_panel > table > tbody > tr > td > table > tbody > tr > td > label
+{
+    display:inline-block;
+}
+.ajax__tab_panel > table > tbody > tr > td > table > tbody > tr > td > input
+{
+    width:auto;
+    margin:0px;
+}
 
+.ajax__tab_panel > span
+{
+    margin:0px;
+    margin-right:0px;
+    display:inline-block;
+    background-color:rgba(152, 227, 255, 0.46);
+}
+.ajax__tab_panel > table > tbody > tr > td > table
+ {
+
+}
+.ajax__tab_panel > table
+{
+    margin:0px;
+    width:100%;
+    clear:both;
+    box-shadow:0 0 0 0;
+}
+
+.ajax__tab_panel > input 
+{
+    display:inline-block;
+    width:10%;
+}
+
+.ajax__tab_panel > table > tbody > tr > td > input
+{
+    display:inline-block;
+    text-align:center;
+    width:auto;
+}
+.CRFCellLeftItem 
+{
+    text-align:left;
+}
 
 /********************
 *   Mobile Styles   *

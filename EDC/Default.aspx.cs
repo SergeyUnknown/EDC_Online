@@ -51,6 +51,7 @@ namespace EDC
                         header.Text = item.Header;
                         TableRow _tr = new TableRow();
                         TableCell _tc = new TableCell();
+                        header.CssClass = "CRFItemHeader";
                         _tc.ColumnSpan = columnCount;
                         _tc.Controls.Add(header);
                         _tr.Cells.Add(_tc);
@@ -62,6 +63,7 @@ namespace EDC
                         subheader.Text = item.Subheader;
                         TableRow _tr = new TableRow();
                         TableCell _tc = new TableCell();
+                        subheader.CssClass = "CRFItemsubHeader";
                         _tc.Controls.Add(subheader);
                         _tr.Cells.Add(_tc);
                         table.Rows.Add(_tr);
@@ -71,6 +73,8 @@ namespace EDC
                     {
                         Label LIT = new Label();
                         LIT.Text = item.LeftItemText;
+                        LIT.CssClass = "CRFLeftItem";
+                        tc.CssClass = "CRFCellLeftItem";
                         tc.Controls.Add(LIT);
                     }
                     Control addedControl = new Control();
@@ -124,7 +128,11 @@ namespace EDC
                             {
                                 RadioButtonList rb = new RadioButtonList();
                                 rb.Items.AddRange(GetListItems(item).ToArray());
+<<<<<<< HEAD
+                                rb.CssClass = "radibuttonTable";
+=======
                                 rb.CssClass = item.ResponseLayout;
+>>>>>>> refs/remotes/origin/master
                                 addedControl = rb;
                                 break;
                             }
