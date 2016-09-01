@@ -12,6 +12,9 @@ namespace EDC.Models
         public long? ItemID { get; set; }
         [ForeignKey("ItemID")]
         public CRF_Item Item { get; set; }
+        public long? SubjectID { get; set; }
+        [ForeignKey("SubjectID")]
+        public virtual Subject Subject { get; set; }
         public SubjectsCRF SubjectsCRF { get; set; }
         //Ниже внешний ключ
         public long SubjectsEventID { get; set; }

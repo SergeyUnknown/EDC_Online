@@ -12,6 +12,10 @@ namespace EDC
         {
             routes.MapPageRoute(null, "ConfigurationTrials", "~/Pages/Administration/ConfigurationTrials.aspx");
 
+            routes.MapPageRoute(null, "SubjectsMatrix/{page}", "~/Pages/Subject/SubjectsMatrix.aspx");
+            routes.MapPageRoute(null, "SubjectsMatrix", "~/Pages/Subject/SubjectsMatrix.aspx");
+
+            routes.MapPageRoute(null, "Subjects/{subjectid}/{eventid}/{crfid}", "~/Pages/Subject/SubjectsCRFPage.aspx");
             routes.MapPageRoute(null, "Subjects/Edit/{id}", "~/Pages/Subject/CreateEditSubject.aspx");
             routes.MapPageRoute(null, "Subjects/Add", "~/Pages/Subject/CreateEditSubject.aspx");
             routes.MapPageRoute(null, "Subjects/{page}", "~/Pages/Subject/Subjects.aspx");
@@ -42,7 +46,10 @@ namespace EDC
             routes.MapPageRoute(null, "Administration/Users", "~/Pages/Administration/Users.aspx");
             routes.MapPageRoute(null, "Administration/Errors", "~/Pages/Administration/ErrorLog.aspx");
             routes.MapPageRoute(null, "Administration", "~/Pages/Administration/Users.aspx");
-            routes.MapPageRoute(null, "", "~/Default.aspx");
+
+            routes.MapPageRoute(null, "{page}", "~/Pages/Subject/SubjectsMatrix.aspx");
+            routes.MapPageRoute(null, "", "~/Pages/Subject/SubjectsMatrix.aspx");
+            //routes.MapPageRoute(null, "", "~/Default.aspx");
 
             routes.RouteExistingFiles = true;
             routes.EnableFriendlyUrls();

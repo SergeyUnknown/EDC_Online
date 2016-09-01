@@ -12,6 +12,8 @@ namespace EDC.Models
 
         public string Number { get; set; }
         public virtual List<SubjectsEvent> Events { get; set; }
+        public virtual List<SubjectsCRF> CRFs { get; set; }
+        public virtual List<SubjectsItem> Items { get; set; }
         public virtual MedicalCenter MedicalCenter { get; set; }
 
         [ForeignKey("MedicalCenter")]

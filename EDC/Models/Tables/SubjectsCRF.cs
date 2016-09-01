@@ -17,6 +17,9 @@ namespace EDC.Models
         [ForeignKey("CRFID")]
         public CRF CRF { get; set; }
 
+        public long? SubjectID { get; set; }
+        [ForeignKey("SubjectID")]
+        public Subject Subject { get; set; }
         public virtual List<SubjectsItem> Items { get; set; }
 
         public bool IsClosed { get; set; }
