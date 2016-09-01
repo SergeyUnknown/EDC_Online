@@ -10,7 +10,7 @@ namespace EDC.Pages.Event
     public partial class ConfigurationEvent : System.Web.UI.Page
     {
         Models.Repository.EventRepository ER = new Models.Repository.EventRepository();
-        Models.Repository.EventCRFRepository ECRFR = new Models.Repository.EventCRFRepository();
+        Models.Repository.CRFInEventRepository ECRFR = new Models.Repository.CRFInEventRepository();
         Models.Repository.CRFRepository CRFR = new Models.Repository.CRFRepository();
 
         static Models.Event _event; //текущее событие

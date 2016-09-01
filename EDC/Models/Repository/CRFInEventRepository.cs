@@ -5,11 +5,11 @@ using System.Web;
 
 namespace EDC.Models.Repository
 {
-    public class EventCRFRepository : IRepository<CRFInEvent>
+    public class CRFInEventRepository : IRepository<CRFInEvent>
     {
         private EDCContext db;
 
-        public EventCRFRepository()
+        public CRFInEventRepository()
         {
             this.db = new EDCContext();
         }

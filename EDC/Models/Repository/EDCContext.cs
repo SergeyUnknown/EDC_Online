@@ -22,7 +22,7 @@ namespace EDC.Models
         public DbSet<CRFInEvent> CRFInEvent { get; set; } //Связующая таблица
         public DbSet<Note> Notes { get; set; } // 
         public DbSet<Subject> Subjects { get; set; } // Субъекты исследования 
-        public DbSet<SubjectsEvent> SubjectsEvent { get; set; } //Связующая таблица
+        public DbSet<SubjectsEvent> SubjectsEvents { get; set; } //Связующая таблица
 
         public DbSet<SubjectsCRF> SubjectsCRFs { get; set; }
         public DbSet<SubjectsItem> SubjectsItems { get; set; }

@@ -5,19 +5,68 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace EDC
+namespace EDC.Pages.Subject
 {
-    public partial class _Default : Page
+    public partial class SubjectsCRFPage : System.Web.UI.Page
     {
         Models.Repository.CRFRepository CRFR = new Models.Repository.CRFRepository();
-        static List<Models.CRF> _crfs;
         static Models.CRF _crf;
+        static long _eventID;
+        static long _subjectID;
+        static long _crfID;
         protected void Page_Load(object sender, EventArgs e)
         {
-            _crfs = CRFR.SelectAll().ToList();
-            LoadForm(_crfs[0]);
+            GetInfoFromRequest();
+            _crf = CRFR.SelectByID(_crfID);
+            LoadForm(_crf);
         }
 
+        void GetInfoFromRequest()
+        {
+            GetSubjectIDFromRequest();
+            GetCrfIDFromRequest();
+            GetEventIDFromRequest();
+        }
+
+        private void GetSubjectIDFromRequest()
+        {
+            long subjectId;
+            string reqValue = (string)RouteData.Values["subjectid"] ?? Request.QueryString["subjectid"];
+            if(reqValue != null && long.TryParse(reqValue, out subjectId) && subjectId>0)
+            {
+                _subjectID = subjectId;
+            }
+            else
+            {
+                throw new ArgumentNullException("Не указан ID субъекта");
+            }
+        }
+        private void GetCrfIDFromRequest()
+        {
+            long CRFID;
+            string reqValue = (string)RouteData.Values["crfid"] ?? Request.QueryString["crfid"];
+            if (reqValue != null && long.TryParse(reqValue, out CRFID) && CRFID > 0)
+            {
+                _crfID = CRFID;
+            }
+            else
+            {
+                throw new ArgumentNullException("Не указан ID CRF");
+            }
+        }
+        private void GetEventIDFromRequest()
+        {
+            long CRFID;
+            string reqValue = (string)RouteData.Values["eventid"] ?? Request.QueryString["eventid"];
+            if (reqValue != null && long.TryParse(reqValue, out CRFID) && CRFID > 0)
+            {
+                _eventID = CRFID;
+            }
+            else
+            {
+                throw new ArgumentNullException("Не указан ID события");
+            }
+        }
         void LoadForm(Models.CRF _crf)
         {
             foreach (Models.CRF_Section section in _crf.Sections)
@@ -45,7 +94,6 @@ namespace EDC
                         header.Text = item.Header;
                         TableRow _tr = new TableRow();
                         TableCell _tc = new TableCell();
-                        header.CssClass = "CRFItemHeader";
                         _tc.ColumnSpan = columnCount;
                         _tc.Controls.Add(header);
                         _tr.Cells.Add(_tc);
@@ -57,7 +105,6 @@ namespace EDC
                         subheader.Text = item.Subheader;
                         TableRow _tr = new TableRow();
                         TableCell _tc = new TableCell();
-                        subheader.CssClass = "CRFItemsubHeader";
                         _tc.Controls.Add(subheader);
                         _tr.Cells.Add(_tc);
                         table.Rows.Add(_tr);
@@ -67,8 +114,6 @@ namespace EDC
                     {
                         Label LIT = new Label();
                         LIT.Text = item.LeftItemText;
-                        LIT.CssClass = "CRFLeftItem";
-                        tc.CssClass = "CRFCellLeftItem";
                         tc.Controls.Add(LIT);
                     }
                     Control addedControl = new Control();
@@ -122,11 +167,7 @@ namespace EDC
                             {
                                 RadioButtonList rb = new RadioButtonList();
                                 rb.Items.AddRange(GetListItems(item).ToArray());
-<<<<<<< HEAD
-                                rb.CssClass = "radibuttonTable";
-=======
                                 rb.CssClass = item.ResponseLayout;
->>>>>>> refs/remotes/origin/master
                                 addedControl = rb;
                                 break;
                             }
@@ -222,11 +263,6 @@ namespace EDC
                         }
                 }
             }
-        }
-        protected void ddlCRF_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (ddlCRF.SelectedIndex > 0)
-                LoadForm(_crfs[ddlCRF.SelectedIndex]);
         }
 
         List<ListItem> GetListItems(Models.CRF_Item item)

@@ -7,27 +7,27 @@
 // </автоматически создаваемое>
 //------------------------------------------------------------------------------
 
-namespace EDC {
+namespace EDC.Pages.Subject {
     
     
-    public partial class _Default {
+    public partial class SubjectsMatrix {
         
         /// <summary>
-        /// ddlCRF элемент управления.
+        /// tMatrix элемент управления.
         /// </summary>
         /// <remarks>
         /// Автоматически создаваемое поле.
         /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlCRF;
+        protected global::System.Web.UI.WebControls.Table tMatrix;
         
         /// <summary>
-        /// tcCRF элемент управления.
+        /// dtInfo элемент управления.
         /// </summary>
         /// <remarks>
         /// Автоматически создаваемое поле.
         /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
         /// </remarks>
-        protected global::AjaxControlToolkit.TabContainer tcCRF;
+        protected global::EDC.Controls.DownTable dtInfo;
     }
 }
