@@ -5,7 +5,7 @@
     margin-top:5px;
     display:table;
     width:100%;
-    min-width:851px;
+    min-width:768px;
     height:35px;
     font-size: 1em;
     font-weight: 600;
@@ -24,7 +24,8 @@ ul.menu{
 ul.menu > li{
     display: table-cell;
     position:relative;
-    
+        vertical-align:central;
+
     padding:5px;
     height:100%;
 }

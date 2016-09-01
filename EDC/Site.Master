@@ -44,6 +44,7 @@
                     <a runat="server" href="~/">MDP-Group</a>
                 </p>
             </div>
+            <asp:ContentPlaceHolder runat="server" ID="FeaturedContent" />
             <div class="float-right">
                 <section id="login">
                     <asp:LoginView runat="server" ViewStateMode="Disabled">
@@ -60,7 +61,7 @@
                     </asp:LoginView>
                 </section>
             </div>
-            <div class="clear-fix"></div>
+            
             <nav>
                 <ul class="menu">
                     <li>
@@ -141,7 +142,7 @@
         </div>
     </header>
     <div id="body">
-        <asp:ContentPlaceHolder runat="server" ID="FeaturedContent" />
+
         <section class="content-wrapper main-content clear-fix">
             <asp:ContentPlaceHolder runat="server" ID="MainContent" />
         </section>

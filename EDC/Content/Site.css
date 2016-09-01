@@ -101,7 +101,7 @@ h5, h6 {
     background-color: #efeeef;
     clear: both;
     padding-bottom: 0px;
-
+    box-shadow:0 2px 2px 0 rgba(0, 0, 0, 0.26) inset;
 }
 
     .main-content {
@@ -121,7 +121,7 @@ footer {
     background-color: #e2e2e2;
     font-size: .8em;
     height: 10px;
-    box-shadow:-2px -2px 2px 0 rgba(0, 0, 0, 0.26);
+    box-shadow:0 2px 2px 0 rgba(0, 0, 0, 0.26) inset;
 }
 
 
@@ -147,14 +147,23 @@ footer {
 /* featured */
 .featured {
     background-color: #fff;
-    box-shadow:0 3px 4px 0 rgba(0, 0, 0, 0.26);
-    padding-bottom: 5px;
+    width:60%;
+    min-width:380px;
+    float:left;
+    height:auto;
+    display:block;
+    text-align:center;
+    
+    margin-left:auto;
+    margin-right:auto;
 }
 
     .featured .content-wrapper {
         background-color: #7ac0da;
         border-radius:3px 3px 3px 3px;
         box-shadow:3px 3px 6px 0 rgba(0, 0, 0, 0.36);
+        vertical-align:central;
+        padding-top:0px;
         /*
         background-image: -ms-linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
         background-image: -o-linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
@@ -163,7 +172,6 @@ footer {
         background-image: linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
             */
         color: #3e5667;
-        
     }
 
         .featured hgroup.title h1, .featured hgroup.title h2 {
@@ -176,7 +184,8 @@ footer {
 
 /* page titles */
 hgroup.title {
-    margin-bottom: 5px;
+    margin-bottom: 0px;
+    height:30px;
 }
 
 hgroup.title h1, hgroup.title h2 {
@@ -376,7 +385,7 @@ fieldset {
         color: black;
     }
     /*Наведение на кнопку создать аккаунт и отмена*/
-    #MainContent_btnCancel:hover, #MainContent_btnOk:hover, #MainContent_btnUpload:hover
+    #MainContent_btnCancel:hover, #MainContent_btnOk:hover, #MainContent_btnUpload:hover, #MainContent_btnSaveChange:hover
     {
         -webkit-box-shadow: rgba(0, 0, 0, 0.36) 0px 4px 8px;
         background-color:#7EA2D4;
@@ -571,9 +580,18 @@ tr.pager td {
     border:double;
 }
 
+.rolesCheck
+{
+    width:310px;
+    box-shadow:0 0 0 0 0;
+    font-size:12px;
+    font-weight:lighter;
+}
+
 .rolesCheck td{
     display:inline-block;
     text-align:left;
+    vertical-align:central;
     clear:both;
 }
 .rolesCheck label
@@ -584,15 +602,116 @@ tr.pager td {
     clear:both
 }
 
+/*выбор на главной странице*/
+#MainContent_ddlCRF
+{
+    height:25px;
+    border-radius:3px;
+    margin-bottom:5px;
+    -webkit-box-shadow: rgba(0,0,0,0.8) 0px 2px 4px 0px;
+}
+#MainContent_tcCRF_body
+{
+    -webkit-box-shadow: rgba(0,0,0,0.8) 0px 2px 4px 0px;
+}
 /* таблица со стрелочками под основным контентом */
 .dt {
     -webkit-box-shadow: rgba(0,0,0,0.8) 0px 2px 5px;
+
 }
 .dtleft
 {
+     border-radius:5px;
+}
+.dtcenter
+{
+    border-radius:5px;
+}
+/*таблицы включения выключения*/
+/*header - во всю строчку*/
+/*subheader - под размер ячейки*/
+.CRFItemHeader
+{
+    text-align:center;
+    font-size:13px;
+}
+.CRFLeftItem
+{
+    display:inline-block;
+    font-size:1em;
+    font-weight:500;
+    width:30%;
+    min-width:200px;
+}
+.radibuttonTable 
+{
+    box-shadow:0 0 0 0;
+    clear:both;
+    align-content:center;
+    width:auto;
+    margin-left: auto;
+    margin-right: auto;
 
 }
+.radibuttonTable > tbody > tr > td
+{
+    text-align:left;
+}
+.radibuttonTable > tbody > tr > td > label
+{
+    font-weight:500;
+    font-size:13px;
+    
+}
+.TableCRFLeftItem > tbody > tr > td
+{
+    text-align:left;
+}
+.ajax__tab_panel > table > tbody > tr > td > table > tbody > tr > td > label
+{
+    display:inline-block;
+}
+.ajax__tab_panel > table > tbody > tr > td > table > tbody > tr > td > input
+{
+    width:auto;
+    margin:0px;
+}
 
+.ajax__tab_panel > span
+{
+    margin:0px;
+    margin-right:0px;
+    display:inline-block;
+    background-color:rgba(152, 227, 255, 0.46);
+}
+.ajax__tab_panel > table > tbody > tr > td > table
+ {
+
+}
+.ajax__tab_panel > table
+{
+    margin:0px;
+    width:100%;
+    clear:both;
+    box-shadow:0 0 0 0;
+}
+
+.ajax__tab_panel > input 
+{
+    display:inline-block;
+    width:10%;
+}
+
+.ajax__tab_panel > table > tbody > tr > td > input
+{
+    display:inline-block;
+    text-align:center;
+    width:auto;
+}
+.CRFCellLeftItem 
+{
+    text-align:left;
+}
 
 /********************
 *   Mobile Styles   *
@@ -604,6 +723,7 @@ tr.pager td {
     header .float-left,
     header .float-right {
         float: none;
+        width:20%;
     }
 
     /* logo */
@@ -679,7 +799,7 @@ tr.pager td {
     /* page content */
     article, aside {
         float: none;
-        width: 100%;
+        width: 50%;
     }
 
     /* ordered list */
