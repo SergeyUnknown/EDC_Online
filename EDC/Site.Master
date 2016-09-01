@@ -67,7 +67,12 @@
                     <li>
                         <a runat="server" href="~/">Главная</a>
                     <li>
-                        <a runat="server" href="~/Subjects">Субъекты</a>
+                        <a runat="server" href="~/SubjectsMatrix">Матрица субъектов</a>
+                        <ul class="submenu">
+                            <li>
+                                <a runat="server" href="~/Subjects">Субъекты</a>
+                            </li>
+                        </ul>
                     <li>
                         <a runat="server" href="#">Мониторинг данных</a>
                         <ul class="submenu">
@@ -112,7 +117,7 @@
                                 <a runat="server" href="~/CRFs">ИРК</a>
                             </li>
                             <li>
-                                <a runat="server" href="#">Валидаия данных</a>
+                                <a runat="server" href="#">Валидация данных</a>
                             </li>
                             <li>
                                 <a runat="server" href="~/MedicalCenters">Центры исследования</a>
