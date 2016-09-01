@@ -167,7 +167,7 @@ namespace EDC.Pages.Subject
                             {
                                 RadioButtonList rb = new RadioButtonList();
                                 rb.Items.AddRange(GetListItems(item).ToArray());
-                                rb.CssClass = item.ResponseLayout;
+                                rb.CssClass = "radibuttonTable " + item.ResponseLayout;
                                 addedControl = rb;
                                 break;
                             }
