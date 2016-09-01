@@ -17,7 +17,7 @@ namespace EDC.Pages.Subject
         static int recordCount = 0;
         static List<Models.Subject> _subjects;
         static List<Models.Event> _events;
-        static List<Models.CRFInEvent> _eventCRFs = new List<Models.CRFInEvent>();
+        List<Models.CRFInEvent> _eventCRFs = new List<Models.CRFInEvent>();
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)

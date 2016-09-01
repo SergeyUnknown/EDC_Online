@@ -94,6 +94,7 @@ namespace EDC.Pages.Subject
                         header.Text = item.Header;
                         TableRow _tr = new TableRow();
                         TableCell _tc = new TableCell();
+                        header.CssClass = "CRFItemHeader";
                         _tc.ColumnSpan = columnCount;
                         _tc.Controls.Add(header);
                         _tr.Cells.Add(_tc);
@@ -105,6 +106,7 @@ namespace EDC.Pages.Subject
                         subheader.Text = item.Subheader;
                         TableRow _tr = new TableRow();
                         TableCell _tc = new TableCell();
+                        subheader.CssClass = "CRFItemsubHeader";
                         _tc.Controls.Add(subheader);
                         _tr.Cells.Add(_tc);
                         table.Rows.Add(_tr);
@@ -114,6 +116,8 @@ namespace EDC.Pages.Subject
                     {
                         Label LIT = new Label();
                         LIT.Text = item.LeftItemText;
+                        LIT.CssClass = "CRFLeftItem";
+                        tc.CssClass = "CRFCellLeftItem";
                         tc.Controls.Add(LIT);
                     }
                     Control addedControl = new Control();
@@ -183,8 +187,6 @@ namespace EDC.Pages.Subject
                     addedControl.ID = item.Identifier; //ID параметра
                     tc.Controls.Add(addedControl);
 
-
-
                     if (!string.IsNullOrWhiteSpace(item.Units)) //Units
                     {
                         Label Units = new Label();
@@ -198,7 +200,7 @@ namespace EDC.Pages.Subject
                         tc.Controls.Add(RIT);
                     }
 
-                    if (item.Required) //если обзательное
+                    if (item.Required) //если обязательное
                     {
                         RequiredFieldValidator RFV = new RequiredFieldValidator();
                         RFV.ControlToValidate = item.Identifier;
