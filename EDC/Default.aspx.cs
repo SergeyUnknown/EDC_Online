@@ -122,11 +122,7 @@ namespace EDC
                             {
                                 RadioButtonList rb = new RadioButtonList();
                                 rb.Items.AddRange(GetListItems(item).ToArray());
-<<<<<<< HEAD
-                                rb.CssClass = "radibuttonTable";
-=======
-                                rb.CssClass = item.ResponseLayout;
->>>>>>> refs/remotes/origin/master
+                                rb.CssClass = "radibuttonTable " + item.ResponseLayout;
                                 addedControl = rb;
                                 break;
                             }
