@@ -630,6 +630,7 @@ tr.pager td {
 /*таблицы включения выключения*/
 /*header - во всю строчку*/
 /*subheader - под размер ячейки*/
+
 .CRFItemHeader
 {
     text-align:center;
@@ -643,9 +644,9 @@ tr.pager td {
     width:30%;
     min-width:200px;
 }
-.radibuttonTable 
+.radibuttonTable
 {
-    box-shadow:0 0 0 0;
+    box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.26);
     clear:both;
     align-content:center;
     width:auto;
@@ -663,10 +664,7 @@ tr.pager td {
     font-size:13px;
     
 }
-.TableCRFLeftItem > tbody > tr > td
-{
-    text-align:left;
-}
+
 .ajax__tab_panel > table > tbody > tr > td > table > tbody > tr > td > label
 {
     display:inline-block;
