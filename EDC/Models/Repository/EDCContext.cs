@@ -44,12 +44,13 @@ namespace EDC.Models
             modelBuilder.Entity<SubjectsCRF>()
                 .HasKey(t => new { t.SubjectsEventID, t.CRFID });
 
-            modelBuilder.Entity<SubjectsItem>()
-                .HasRequired(c => c.SubjectsCRF)
-                .WithMany(d => d.Items)
-                .HasForeignKey(t => new { t.SubjectsEventID, t.CRFID });
+            //modelBuilder.Entity<SubjectsItem>()
+            //    .HasRequired(c => c.SubjectsCRF)
+            //    .WithMany(d => d.Items)
+            //    .HasForeignKey(t => new { t.SubjectsEventID, t.CRFID });
 
-            
+            modelBuilder.Entity<SubjectsItem>()
+                .HasKey(t => new { t.SubjectID,t.EventID,t.CRFID,t.ItemID });
 
         }
     }

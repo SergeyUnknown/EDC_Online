@@ -14,8 +14,8 @@ namespace EDC
         static Models.CRF _crf;
         protected void Page_Load(object sender, EventArgs e)
         {
-            _crfs = CRFR.SelectAll().ToList();
-            LoadForm(_crfs[0]);
+            //_crfs = CRFR.SelectAll().ToList();
+            //LoadForm(_crfs[0]);
         }
 
         void LoadForm(Models.CRF _crf)

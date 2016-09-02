@@ -4,12 +4,16 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using EDC.Models;
 
 namespace EDC.Pages.Subject
 {
     public partial class SubjectsCRFPage : System.Web.UI.Page
     {
         Models.Repository.CRFRepository CRFR = new Models.Repository.CRFRepository();
+        Models.Repository.SubjectsItemRepoitory SIR = new Models.Repository.SubjectsItemRepoitory();
+        Models.Repository.SubjectsCRFRepository SCR = new Models.Repository.SubjectsCRFRepository();
+
         static Models.CRF _crf;
         static long _eventID;
         static long _subjectID;
@@ -264,6 +268,16 @@ namespace EDC.Pages.Subject
                             break;
                         }
                 }
+
+                SubjectsItem si = new SubjectsItem();
+                si.SubjectID = _subjectID;
+                si.ItemID = item.CRF_ItemID;
+                si.CRFID = _crfID;
+                SIR.Create(si);
+                SIR.Save();
+
+                List<SubjectsItem> sis = SIR.SelectAll().ToList();
+
             }
         }
 

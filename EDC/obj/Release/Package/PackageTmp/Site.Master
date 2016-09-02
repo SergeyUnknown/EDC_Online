@@ -44,6 +44,7 @@
                     <a runat="server" href="~/">MDP-Group</a>
                 </p>
             </div>
+            <asp:ContentPlaceHolder runat="server" ID="FeaturedContent" />
             <div class="float-right">
                 <section id="login">
                     <asp:LoginView runat="server" ViewStateMode="Disabled">
@@ -60,23 +61,20 @@
                     </asp:LoginView>
                 </section>
             </div>
-            <div class="clear-fix"></div>
+            
             <nav>
                 <ul class="menu">
                     <li>
-                        <a runat="server" href="~/">Домашняя</a>
+                        <a runat="server" href="~/">Главная</a>
                     <li>
-                        <a runat="server" href="#">Данные</a>
+                        <a runat="server" href="~/SubjectsMatrix">Матрица субъектов</a>
                         <ul class="submenu">
                             <li>
                                 <a runat="server" href="~/Subjects">Субъекты</a>
                             </li>
-                            <li>
-                                <a runat="server" href="#">Создать событие</a>
-                            </li>
                         </ul>
                     <li>
-                        <a runat="server" href="#">Мониторинг данных и управление данными</a>
+                        <a runat="server" href="#">Мониторинг данных</a>
                         <ul class="submenu">
                             <li>
                                 <a runat="server" href="#">Сверка с первичными данными</a>
@@ -84,24 +82,50 @@
                             <li>
                                 <a runat="server" href="#">Аудит данных исследования</a>
                             </li>
+                        </ul>
+                    <li>
+                        <a runat="server" href="#">Управление данными</a>
+                        <ul class="submenu">
                             <li>
-                                <a runat="server" href="#">Выгрузка данные</a>
+                                <a runat="server" href="#">Выгрузка данных</a>
                             </li>
                             <li>
                                 <a runat="server" href="#">Импорт данных</a>
                             </li>
                         </ul>
                     <li>
-                        <a runat="server" href="#">Query и заметки</a>
+                        <a runat="server" href="#">Заметки и замечания</a>
                         <ul class="submenu">
                             <li>
-                                <a runat="server" href="#">Query</a>
+                                <a runat="server" href="#">Замечания</a>
                             </li>
                             <li>
                                 <a runat="server" href="#">Заметки</a>
                             </li>
                         </ul>
                     
+                    <li>
+                        <a runat="server" href="~/Contact">Администрирование/Дизайн</a>
+                        <ul class="submenu">
+                            <li>
+                                <a runat="server" href="~/ConfigurationTrials">Настройка исследования</a>
+                            </li>
+                            <li>
+                                <a runat="server" href="~/Events">События</a>
+                            </li>
+                            <li>
+                                <a runat="server" href="~/CRFs">ИРК</a>
+                            </li>
+                            <li>
+                                <a runat="server" href="#">Валидация данных</a>
+                            </li>
+                            <li>
+                                <a runat="server" href="~/MedicalCenters">Центры исследования</a>
+                            </li>
+                            <li>
+                                <a runat="server" href="~/Administration/Users">Пользователи</a>
+                            </li>
+                        </ul>
                     <li>
                         <a runat="server" href="~/About">Иное</a>
                         <ul class="submenu">
@@ -118,40 +142,12 @@
                                 <a runat="server" href="#">О продукте</a>
                             </li>
                         </ul>
-                    <li>
-                        <a runat="server" href="~/Contact">Администрирование/Дизайн</a>
-                        <ul class="submenu">
-                            <li>
-                                <a runat="server" href="#">Просмотр исследования</a>
-                            </li>
-                            <li>
-                                <a runat="server" href="~/CRFs">ИРК</a>
-                            </li>
-                            <li>
-                                <a runat="server" href="~/Events">События</a>
-                            </li>
-                            <li>
-                                <a runat="server" href="~/MedicalCenters">Центры исследования</a>
-                            </li>
-                            <li>
-                                <a runat="server" href="#">Rules</a>
-                            </li>
-                            <li>
-                                <a runat="server" href="~/Administration/Users">Пользователи</a>
-                            </li>
-                            <li>
-                                <a runat="server" href="#">Задания</a>
-                            </li>
-                            <li>
-                                <a runat="server" href="#">Конфигурирование свойств системы</a>
-                            </li>
-                        </ul>
                 </ul>
             </nav>
         </div>
     </header>
     <div id="body">
-        <asp:ContentPlaceHolder runat="server" ID="FeaturedContent" />
+
         <section class="content-wrapper main-content clear-fix">
             <asp:ContentPlaceHolder runat="server" ID="MainContent" />
         </section>

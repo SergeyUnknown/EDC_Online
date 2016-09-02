@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="EditCreateUser.aspx.cs" Inherits="EDC.Pages.Administration.ViewUser" %>
+﻿<%@ Page Title="Добавление нового пользователя" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="EditCreateUser.aspx.cs" Inherits="EDC.Pages.Administration.ViewUser" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="FeaturedContent" runat="server">
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
