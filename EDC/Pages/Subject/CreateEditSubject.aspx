@@ -17,14 +17,14 @@
         <li>
             <asp:Label runat="server" AssociatedControlID="tbNumber">Номер субъекта</asp:Label>
             <asp:TextBox runat="server" ID="tbNumber" />
-            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="tbNumber"
+            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="tbNumber" Display="Dynamic"
                 CssClass="field-validation-error" ErrorMessage="Данное поле обязательно для заполнения" />
         </li>
         <li>
             <asp:Label runat="server" AssociatedControlID="tbDate">Дата включения в исследование</asp:Label>
             <asp:TextBox runat="server" ID="tbDate" />
             <ajaxToolkit:CalendarExtender runat="server" ID="ajaxCalendar" FirstDayOfWeek="Monday" TargetControlID="tbDate" Format="dd.MM.yyyy" />
-            <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="tbDate"
+            <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="tbDate" Display="Dynamic"
                 CssClass="field-validation-error" ErrorMessage="Данное поле обязательно для заполнения" />
         </li>
         <li>

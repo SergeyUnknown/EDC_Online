@@ -312,6 +312,7 @@ namespace EDC.Pages.Subject
                         tb.TextMode = TextBoxMode.MultiLine;
                         if (!isNullValue)
                             tb.Text = itemValue;
+                        tb.CssClass = "response-Item ";
                         addedControl = tb;
                         break;
                     }
@@ -342,11 +343,12 @@ namespace EDC.Pages.Subject
                         ddl.Items.AddRange(GetListItems(item).ToArray());
                         if (!isNullValue)
                             ddl.SelectedValue = itemValue;
+                        ddl.CssClass = "response-Item ";
                         addedControl = ddl;
                         break;
                     }
-            }
 
+            }
             return addedControl;
         }
 
