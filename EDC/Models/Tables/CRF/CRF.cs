@@ -20,5 +20,7 @@ namespace EDC.Models
 
         public virtual List<CRFInEvent> Events { get; set; }
 
+        public virtual List<SubjectsItem> Values { get; set; }
+
     }
 }

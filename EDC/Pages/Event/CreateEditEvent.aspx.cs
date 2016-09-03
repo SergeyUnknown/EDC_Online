@@ -69,9 +69,23 @@ namespace EDC.Pages.Event
                 _event.Position = ER.SelectAll().Count() + 1;
             }
 
-            _event.Name = tbName.Text;
-            _event.Identifier = tbIdentifier.Text;
+            string eventName = tbName.Text.Trim();
+            if(ER.GetManyByFilter(x=>x.Name == eventName).Count()>0)
+            {
+                throw new ArgumentException("Событие с указаннным названием уже существует");
+            }
+            else
+                _event.Name = eventName;
 
+            ///////////ID//////////////
+            string identifier = tbIdentifier.Text.Trim().ToUpper();
+            if(ER.GetManyByFilter(x=>x.Identifier == identifier).Count() >0)
+            {
+                throw new ArgumentException("Событие с указаннным идентификатором уже существует");
+            }
+            else
+                _event.Identifier = identifier;
+            //////////////////////////
 
             if (Editing)
             {

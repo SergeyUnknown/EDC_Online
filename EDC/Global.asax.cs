@@ -18,9 +18,10 @@ namespace EDC
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
-            //Database.SetInitializer<Models.EDCContext>(new Models.EDCInitializer());
+            Database.SetInitializer<Models.EDCContext>(new Models.EDCInitializer());
 
-            Database.SetInitializer(new DropCreateDatabaseAlways<Models.EDCContext>());
+            //Database.SetInitializer(new DropCreateDatabaseAlways<Models.EDCContext>());
+            
 
             // Код, выполняемый при запуске приложения
             foreach(string item in Enum.GetNames(typeof(Core.Roles)))

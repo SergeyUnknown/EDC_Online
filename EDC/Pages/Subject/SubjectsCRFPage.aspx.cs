@@ -125,34 +125,57 @@ namespace EDC.Pages.Subject
                         tc.Controls.Add(LIT);
                     }
                     Control addedControl = new Control();
+                    SubjectsItem si = SIR.SelectByID(_subjectID, _eventID,_crfID, item.CRF_ItemID);
+                    string itemValue = "";
+                    bool isNullValue = true;
+                    if (si != null && !string.IsNullOrWhiteSpace(si.Value))
+                    {
+                        isNullValue = false;
+                        itemValue = si.Value;
+                    }
+
+                    itemValue = (si != null && !string.IsNullOrWhiteSpace(si.Value)) ? si.Value : ""; //считываем текущее значение
+
                     switch (item.ResponseType)
                     {
                         case Core.ResponseType.Text:
                             {
                                 TextBox tb = new TextBox();
-                                if (item.DataType == Core.DataType.INT)
-                                    tb.TextMode = TextBoxMode.Number;
-                                if (item.DataType == Core.DataType.REAL)
+                                #region switch item.DateType
+                                switch (item.DataType)
                                 {
-                                    AjaxControlToolkit.FilteredTextBoxExtender FTBE = new AjaxControlToolkit.FilteredTextBoxExtender();
-                                    FTBE.TargetControlID = item.Identifier;
-                                    FTBE.ValidChars = ".";
-                                    FTBE.FilterType = AjaxControlToolkit.FilterTypes.Numbers | AjaxControlToolkit.FilterTypes.Custom;
-                                    tc.Controls.Add(FTBE);
-                                }
-                                if (item.DataType == Core.DataType.DATE)
-                                {
-                                    AjaxControlToolkit.CalendarExtender CE = new AjaxControlToolkit.CalendarExtender();
-                                    CE.TargetControlID = item.Identifier;
-                                    CE.Format = "dd.MM.yyyy";
-                                    tc.Controls.Add(CE);
+                                    case Core.DataType.INT:
+                                        {
+                                            tb.TextMode = TextBoxMode.Number;
+                                            break;
+                                        }
+                                    case Core.DataType.REAL:
+                                        {
+                                            AjaxControlToolkit.FilteredTextBoxExtender FTBE = new AjaxControlToolkit.FilteredTextBoxExtender();
+                                            FTBE.TargetControlID = item.Identifier;
+                                            FTBE.ValidChars = ".";
+                                            FTBE.FilterType = AjaxControlToolkit.FilterTypes.Numbers | AjaxControlToolkit.FilterTypes.Custom;
+                                            tc.Controls.Add(FTBE);
+                                            break;
+                                        }
+                                    case Core.DataType.DATE:
+                                        {
+                                            AjaxControlToolkit.CalendarExtender CE = new AjaxControlToolkit.CalendarExtender();
+                                            CE.TargetControlID = item.Identifier;
+                                            CE.Format = "dd.MM.yyyy";
+                                            tc.Controls.Add(CE);
 
-                                    AjaxControlToolkit.FilteredTextBoxExtender FTBE = new AjaxControlToolkit.FilteredTextBoxExtender();
-                                    FTBE.TargetControlID = item.Identifier;
-                                    FTBE.ValidChars = ".";
-                                    FTBE.FilterType = AjaxControlToolkit.FilterTypes.Numbers | AjaxControlToolkit.FilterTypes.Custom;
-                                    tc.Controls.Add(FTBE);
+                                            AjaxControlToolkit.FilteredTextBoxExtender FTBE = new AjaxControlToolkit.FilteredTextBoxExtender();
+                                            FTBE.TargetControlID = item.Identifier;
+                                            FTBE.ValidChars = ".";
+                                            FTBE.FilterType = AjaxControlToolkit.FilterTypes.Numbers | AjaxControlToolkit.FilterTypes.Custom;
+                                            tc.Controls.Add(FTBE);
+                                            break;
+                                        }
                                 }
+                                #endregion
+                                if (!isNullValue)
+                                    tb.Text = itemValue;
                                 addedControl = tb;
                                 break;
                             }
@@ -160,6 +183,8 @@ namespace EDC.Pages.Subject
                             {
                                 TextBox tb = new TextBox();
                                 tb.TextMode = TextBoxMode.MultiLine;
+                                if (!isNullValue)
+                                    tb.Text = itemValue;
                                 addedControl = tb;
                                 break;
                             }
@@ -168,6 +193,8 @@ namespace EDC.Pages.Subject
                                 CheckBoxList cb = new CheckBoxList();
                                 cb.Items.AddRange(GetListItems(item).ToArray());
                                 cb.CssClass = item.ResponseLayout;
+                                if (!isNullValue)
+                                    cb.SelectedValue = itemValue;
                                 addedControl = cb;
                                 break;
                             }
@@ -176,6 +203,8 @@ namespace EDC.Pages.Subject
                                 RadioButtonList rb = new RadioButtonList();
                                 rb.Items.AddRange(GetListItems(item).ToArray());
                                 rb.CssClass = "radibuttonTable " + item.ResponseLayout;
+                                if (!isNullValue)
+                                    rb.SelectedValue = itemValue;
                                 addedControl = rb;
                                 break;
                             }
@@ -183,6 +212,8 @@ namespace EDC.Pages.Subject
                             {
                                 DropDownList ddl = new DropDownList();
                                 ddl.Items.AddRange(GetListItems(item).ToArray());
+                                if (!isNullValue)
+                                    ddl.SelectedValue = itemValue;
                                 addedControl = ddl;
                                 break;
                             }
@@ -246,7 +277,7 @@ namespace EDC.Pages.Subject
             {
                 Control _control = form.FindControl(item.Identifier);
                 Type type = _control.GetType();
-                string value;
+                string value = "";
                 switch (type.Name)
                 {
                     case "TextBox":
@@ -268,12 +299,23 @@ namespace EDC.Pages.Subject
                             break;
                         }
                 }
+                SubjectsItem si = SIR.SelectByID(_subjectID, _eventID, _crfID, item.CRF_ItemID);
+                if (si == null)
+                {
+                    si = new SubjectsItem();
+                    si.SubjectID = _subjectID;
+                    si.EventID = _eventID;
+                    si.CRFID = _crfID;
+                    si.ItemID = item.CRF_ItemID;
+                    si.Value = value;
+                    SIR.Create(si);
+                }
+                else
+                {
+                    si.Value = value;
+                    SIR.Update(si);
+                }
 
-                SubjectsItem si = new SubjectsItem();
-                si.SubjectID = _subjectID;
-                si.ItemID = item.CRF_ItemID;
-                si.CRFID = _crfID;
-                SIR.Create(si);
                 SIR.Save();
 
                 List<SubjectsItem> sis = SIR.SelectAll().ToList();
