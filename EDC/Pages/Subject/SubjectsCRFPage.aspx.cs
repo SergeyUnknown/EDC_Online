@@ -156,14 +156,16 @@ namespace EDC.Pages.Subject
                             {
                                 TextBox tb = new TextBox();
                                 tb.TextMode = TextBoxMode.MultiLine;
+                                tb.CssClass = "response-Item ";
                                 addedControl = tb;
                                 break;
                             }
-                        case Core.ResponseType.Checkbox | Core.ResponseType.MultiSelect:
+                        case Core.ResponseType.MultiSelect:
+                        case Core.ResponseType.Checkbox:
                             {
                                 CheckBoxList cb = new CheckBoxList();
                                 cb.Items.AddRange(GetListItems(item).ToArray());
-                                cb.CssClass = item.ResponseLayout;
+                                cb.CssClass ="response-Item "+ item.ResponseLayout;
                                 addedControl = cb;
                                 break;
                             }
@@ -171,7 +173,7 @@ namespace EDC.Pages.Subject
                             {
                                 RadioButtonList rb = new RadioButtonList();
                                 rb.Items.AddRange(GetListItems(item).ToArray());
-                                rb.CssClass = "radibuttonTable " + item.ResponseLayout;
+                                rb.CssClass = "response-Item " + item.ResponseLayout;
                                 addedControl = rb;
                                 break;
                             }
@@ -179,6 +181,7 @@ namespace EDC.Pages.Subject
                             {
                                 DropDownList ddl = new DropDownList();
                                 ddl.Items.AddRange(GetListItems(item).ToArray());
+                                ddl.CssClass = "response-Item ";
                                 addedControl = ddl;
                                 break;
                             }
@@ -204,8 +207,9 @@ namespace EDC.Pages.Subject
                     {
                         RequiredFieldValidator RFV = new RequiredFieldValidator();
                         RFV.ControlToValidate = item.Identifier;
-                        RFV.ErrorMessage = "Данное поле обязательно для заполнения";
+                        RFV.ErrorMessage = " Данное поле обязательно для заполнения";
                         RFV.CssClass = "field-validation-error";
+                        RFV.Display = ValidatorDisplay.Dynamic;
                         tc.Controls.Add(RFV);
                     }
 
@@ -223,6 +227,7 @@ namespace EDC.Pages.Subject
                     else
                     {
                         table.Rows.Add(tr);
+                        tr = new TableRow();
                         tc = new TableCell();
                         tc.Controls.Add(btnSave);
                         tr.Cells.Add(tc);
