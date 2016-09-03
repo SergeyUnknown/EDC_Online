@@ -24,7 +24,7 @@
             <asp:BoundField DataField="Phone" HeaderText="Телефон" />
             <asp:BoundField DataField="Role" HeaderText="Роли" />
             <asp:BoundField DataField="Locked" HeaderText="Заблокирован" />
-            <asp:CommandField HeaderText="Действия" SelectText="Просмотреть" ShowDeleteButton="True" DeleteText="Удалить" ShowEditButton="True" UpdateText="Обновить" CancelText="Отмена" EditText="Редактировать"/>
+            <asp:CommandField HeaderText="Действия" ButtonType="Image"  SelectText="Просмотреть" ShowDeleteButton="True" DeleteText="Удалить" DeleteImageUrl="~/Images/delete (3).png" ShowEditButton="True" UpdateText="Обновить" CancelText="Отмена" EditText="Редактировать" EditImageUrl="~/Images/pencil-box (1).png"/>
         </Columns>
         <EditRowStyle BackColor="#2461BF" />
         <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />

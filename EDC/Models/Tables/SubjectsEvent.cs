@@ -15,7 +15,7 @@ namespace EDC.Models
         public long SubjectID { get; set; }
         [ForeignKey("SubjectID")]
         public virtual Subject Subject { get; set; }
-        public virtual List<SubjectsCRF> CRFs { get; set; }
+        //public virtual List<SubjectsCRF> CRFs { get; set; }
 
 
     }

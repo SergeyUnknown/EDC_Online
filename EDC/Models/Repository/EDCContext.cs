@@ -27,9 +27,25 @@ namespace EDC.Models
         public DbSet<SubjectsCRF> SubjectsCRFs { get; set; }
         public DbSet<SubjectsItem> SubjectsItems { get; set; }
 
-
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Subject>()
+                .HasMany(x => x.Items)
+                .WithRequired(x => x.Subject)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Event>()
+                .HasMany(x => x.Items)
+                .WithRequired(x => x.Event)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CRF>()
+                .HasMany(x => x.Values)
+                .WithRequired(x => x.CRF)
+                .WillCascadeOnDelete(false);
+
+
+
             modelBuilder.Entity<CRFInEvent>()
                 .HasKey(t => new { t.CRFID, t.EventID });
 
@@ -37,17 +53,10 @@ namespace EDC.Models
                 .HasKey(t => new { t.SubjectID, t.EventID });
 
             modelBuilder.Entity<SubjectsCRF>()
-                .HasRequired(c => c.SubjectsEvent)
-                .WithMany(d => d.CRFs)
-                .HasForeignKey(t => new { t.SubjectsEventID, t.SubjectsEventCRFID });
-
-            modelBuilder.Entity<SubjectsCRF>()
-                .HasKey(t => new { t.SubjectsEventID, t.CRFID });
+                .HasKey(t => new { t.SubjectID, t.EventID, t.CRFID });
 
             modelBuilder.Entity<SubjectsItem>()
-                .HasRequired(c => c.SubjectsCRF)
-                .WithMany(d => d.Items)
-                .HasForeignKey(t => new { t.SubjectsEventID, t.CRFID });
+                .HasKey(t => new { t.SubjectID,t.EventID,t.CRFID,t.ItemID });
 
             
 

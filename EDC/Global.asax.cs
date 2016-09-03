@@ -21,6 +21,7 @@ namespace EDC
             Database.SetInitializer<Models.EDCContext>(new Models.EDCInitializer());
 
             //Database.SetInitializer(new DropCreateDatabaseAlways<Models.EDCContext>());
+            
 
             // Код, выполняемый при запуске приложения
             foreach(string item in Enum.GetNames(typeof(Core.Roles)))

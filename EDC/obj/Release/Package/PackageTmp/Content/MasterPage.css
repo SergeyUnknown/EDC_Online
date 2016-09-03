@@ -5,7 +5,7 @@
     margin-top:5px;
     display:table;
     width:100%;
-    min-width:851px;
+    min-width:768px;
     height:35px;
     font-size: 1em;
     font-weight: 600;
@@ -24,7 +24,8 @@ ul.menu{
 ul.menu > li{
     display: table-cell;
     position:relative;
-    
+        vertical-align:central;
+
     padding:5px;
     height:100%;
 }
@@ -33,9 +34,13 @@ ul.menu > li:first-child{
     padding-left:0px;
 }
 
-ul.menu > li:last-child{
-    
+ul.menu > li:last-child
+{
     padding-right:0px;
+}
+ul.menu > li:last-child:hover > ul.submenu {
+    left:-155px;
+
 }
 ul.menu > li > a{
     background:none;
@@ -53,6 +58,7 @@ ul.menu > li > a{
     box-shadow:2px 2px 5px 0 rgba(0, 0, 0, 0.26);
     border-color:#739EB4;
     border-radius:3px;
+    transition:background-color 0.1s ease;
 }
 
 
@@ -74,6 +80,7 @@ ul.menu > li:hover > ul.submenu{
     float:none;
 }
 
+
 ul.submenu{   /*подменю*/
     display: none;
     position: absolute;
@@ -81,6 +88,7 @@ ul.submenu{   /*подменю*/
     top: 32px;
     padding:0px;
     margin-top:2px;
+
     box-shadow:4px 4px 5px 0 rgba(0, 0, 0, 0.26);
     background-color:#97d7f8;
     background-color:rgba(255, 255, 255, 1);
@@ -93,7 +101,7 @@ ul.submenu li {
     background-color:#6EB2C4;
     
     margin:1px 0px 0px 0px;
-    
+	transition:background-color 0.1s ease;
     border-color:#739EB4;
 }
 
