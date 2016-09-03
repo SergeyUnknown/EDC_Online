@@ -219,11 +219,6 @@ namespace EDC
                 }
             }
         }
-        protected void ddlCRF_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (ddlCRF.SelectedIndex > 0)
-                LoadForm(_crfs[ddlCRF.SelectedIndex]);
-        }
 
         List<ListItem> GetListItems(Models.CRF_Item item)
         {

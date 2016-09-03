@@ -14,8 +14,6 @@
         <Triggers>
         </Triggers>
         <ContentTemplate>
-            <asp:DropDownList runat="server" ID="ddlCRF" AutoPostBack="true" OnSelectedIndexChanged="ddlCRF_SelectedIndexChanged"></asp:DropDownList>
-            
             <ajaxToolkit:TabContainer runat="server" ID="tcCRF">
 
             </ajaxToolkit:TabContainer>

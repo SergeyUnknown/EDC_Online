@@ -144,6 +144,7 @@
   <ItemGroup>
     <Content Include="About.aspx" />
     <Content Include="Controls\DownTable\DownTable.ascx" />
+    <Content Include="Images\backward.png" />
     <Content Include="Images\border-color %281%29.png" />
     <Content Include="Images\border-color %282%29.png" />
     <Content Include="Images\border-color.png" />
@@ -151,11 +152,17 @@
     <Content Include="Images\delete.png" />
     <Content Include="Images\emoticon-poop.png" />
     <Content Include="Images\FirstPage.png" />
+    <Content Include="Images\forward %283%29.png" />
+    <Content Include="Images\import.png" />
     <Content Include="Images\LastPage.png" />
+    <Content Include="Images\login-variant %281%29.png" />
     <Content Include="Images\logo.png" />
     <Content Include="Images\NextPage.png" />
     <Content Include="Images\pencil-box %281%29.png" />
     <Content Include="Images\PreviousPage.png" />
+    <Content Include="Images\skip-backward %283%29.png" />
+    <Content Include="Images\skip-forward %282%29.png" />
+    <Content Include="Images\wrench %281%29.png" />
     <Content Include="Pages\Account\Login.aspx" />
     <Content Include="Pages\Account\Manage.aspx" />
     <Content Include="Content\MasterPage.css" />
