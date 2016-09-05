@@ -98,18 +98,17 @@ namespace EDC.Pages.Subject
                 Table tableUngrouped = new Table(); //таблица итемов без группы
                 TableRow trUngrouped = new TableRow(); //строка итемов
 
-                Table tableGrouped = new Table();
-                tableGrouped.EnableViewState = true;
-                TableRow trGroupedHeaders = new TableRow();
-                TableRow trsGroupedValues = new TableRow();
+                Table tableGrouped = new Table();           //широкая таблица
+                TableRow trGroupedHeaders = new TableRow(); //заголовки
+                TableRow trsGroupedValues = new TableRow(); //значения
 
 
-                Button btnSave = new Button(); //Кнопка сохранить
+                Button btnSave = new Button();  //Кнопка сохранить
                 btnSave.ID = "btnSave";
                 btnSave.Click += btnSave_Click;
                 btnSave.Text = "Сохранить";
 
-                Button btnAdd = new Button();
+                Button btnAdd = new Button();   //кнопка добавить
                 btnAdd.ID = "btnAdd";
                 btnAdd.Click +=btnAdd_Click;
                 btnAdd.Text = "Добавить";
@@ -176,6 +175,16 @@ namespace EDC.Pages.Subject
                         tc.Controls.Add(RIT);
                     }
 
+                    if (item.Required) //если обязательное
+                    {
+                        RequiredFieldValidator RFV = new RequiredFieldValidator();
+                        RFV.ControlToValidate = item.Identifier;
+                        RFV.Display = ValidatorDisplay.Dynamic;
+                        RFV.ErrorMessage = "Данное поле обязательно для заполнения";
+                        RFV.CssClass = "field-validation-error";
+                        tc.Controls.Add(RFV);
+                    }
+
                     trUngrouped.Cells.Add(tc);
 
                     if (i < section.Items.Count - 1) //если элемент не последний
@@ -190,12 +199,6 @@ namespace EDC.Pages.Subject
                     else //иначе
                     {
                         tableUngrouped.Rows.Add(trUngrouped);
-                        
-                        //trUngrouped = new TableRow();
-                        //tc = new TableCell();
-                        //tc.Controls.Add(btnSave);
-                        //trUngrouped.Cells.Add(tc);
-                        //tableUngrouped.Rows.Add(trUngrouped);
                     }
                 }
 
@@ -244,14 +247,11 @@ namespace EDC.Pages.Subject
 
                         if (SIs.Count > 0)
                         {
-
                             for (int k = 0; k < SIs.Count; k++)
                             {
                                 tc = new TableCell();
-                                Control control = GetAddedGroupedControl(item, ref tc, SIs[i].IndexID, SIs[i].Value);
-                                control.ID = item.Identifier + "_" + SIs[i].IndexID;
-                                tc.Controls.Add(control);
-                                addedRows[i].Cells.Add(tc);
+                                GetAddedGroupedControl(item, ref tc, SIs[k].IndexID, SIs[k].Value);
+                                addedRows[k].Cells.Add(tc);
                             }
                         }
 
@@ -259,10 +259,7 @@ namespace EDC.Pages.Subject
 
                         ////////////////////Поле ввода данных/////////////////
                         tc = new TableCell();
-                        Control addedControl = GetAddedGroupedControl(item, ref tc, groupedIndex, null);
-                        addedControl.ID = item.Identifier + "_" + groupedIndex;
-                        tc.Controls.Add(addedControl);
-
+                        GetAddedGroupedControl(item, ref tc, groupedIndex, null);
                         trsGroupedValues.Cells.Add(tc);
                         //////////////////////////////////////////////////
                     }
@@ -279,10 +276,18 @@ namespace EDC.Pages.Subject
                         for (int i = 0; i < groupedItems.Count; i++)
                         {
                             TableCell tc = new TableCell();
-                            Control addedControl = GetAddedGroupedControl(groupedItems[i], ref tc, j+2, null);
-                            addedControl.ID = groupedItems[i].Identifier + "_" + (j + 2).ToString();
-                            tc.Controls.Add(addedControl);
+                            GetAddedGroupedControl(groupedItems[i], ref tc, j+2, null);
                             addingTR.Cells.Add(tc);
+
+                            if (groupedItems[i].Required) //если обязательное
+                            {
+                                RequiredFieldValidator RFV = new RequiredFieldValidator();
+                                RFV.ControlToValidate = groupedItems[i].Identifier + "_" + (j + 2).ToString();
+                                RFV.Display = ValidatorDisplay.Dynamic;
+                                RFV.ErrorMessage = "Данное поле обязательно для заполнения";
+                                RFV.CssClass = "field-validation-error";
+                                tc.Controls.Add(RFV);
+                            }
                         }
                         addingRows.Add(addingTR);
                         tableGrouped.Rows.AddAt(j + 2, addingTR);
@@ -304,7 +309,7 @@ namespace EDC.Pages.Subject
 
                 tp.ScrollBars = ScrollBars.Auto; //скролбар
                 tcCRF.ScrollBars = ScrollBars.Auto; //скролбар
-                tp.Controls.Add(tableGrouped); //табилцу в tabPanel
+                tp.Controls.Add(tableGrouped); //таблицу в tabPanel
                 tp.Controls.Add(btnSave);
                 tcCRF.Tabs.Add(tp); //панель в tabConteiner
 
@@ -416,19 +421,19 @@ namespace EDC.Pages.Subject
             }
             addedControl.ID = item.Identifier; //ID параметра
             tc.Controls.Add(addedControl);
+
             if (item.Required) //если обязательное
             {
-                RequiredFieldValidator RFV = new RequiredFieldValidator();
-                RFV.ControlToValidate = item.Identifier;
-                RFV.Display = ValidatorDisplay.Dynamic;
-                RFV.ErrorMessage = "Данное поле обязательно для заполнения";
-                RFV.CssClass = "field-validation-error";
-                tc.Controls.Add(RFV);
+                Label lbl = new Label();
+                lbl.Text = "*";
+                tc.Controls.Add(lbl);
             }
+
+
 
         }
 
-        Control GetAddedGroupedControl(CRF_Item item, ref TableCell tc, int index, string value)
+        void GetAddedGroupedControl(CRF_Item item, ref TableCell tc, int index, string value)
         {
             Control addedControl = new Control();
 
@@ -518,14 +523,13 @@ namespace EDC.Pages.Subject
 
             if (item.Required) //если обязательное
             {
-                RequiredFieldValidator RFV = new RequiredFieldValidator();
-                RFV.ControlToValidate = item.Identifier + "_" + index;
-                RFV.Display = ValidatorDisplay.Dynamic;
-                RFV.ErrorMessage = "Данное поле обязательно для заполнения";
-                RFV.CssClass = "field-validation-error";
-                tc.Controls.Add(RFV);
+                Label lbl = new Label();
+                lbl.Text = "*";
+                tc.Controls.Add(lbl);
             }
-            return addedControl;
+
+            addedControl.ID = item.Identifier + "_" + index;
+            tc.Controls.Add(addedControl);
         }
         List<ListItem> GetListItems(Models.CRF_Item item)
         {
@@ -577,13 +581,15 @@ namespace EDC.Pages.Subject
                 SIR.Save();
             }
 
+
+
             foreach(var item in groupedItems)
             {
                 Control _control;
                 _control = form.FindControl(item.Identifier + "_1");
                 Table groupedTable = _control.Parent.Parent.Parent as Table;
                 int valuesRowCount = groupedTable.Rows.Count - 2;
-                for(int i =0;i<valuesRowCount;i++)
+                for(int i =0;i<valuesRowCount-1;i++)
                 {
                     _control = form.FindControl(item.Identifier +"_" + (i+1).ToString());
                     string value = GetValueFromControl(_control);
@@ -653,9 +659,7 @@ namespace EDC.Pages.Subject
             for (int i = 0; i < tInfo.Rows[rIndex].Cells.Count; i++)
             {
                 TableCell tc = new TableCell();
-                Control addedControl = GetAddedGroupedControl(groupedItems[i], ref tc, rIndex + 1, null);
-                addedControl.ID = groupedItems[i].Identifier + "_" + (rIndex + 1).ToString();
-                tc.Controls.Add(addedControl);
+                GetAddedGroupedControl(groupedItems[i], ref tc, rIndex + 1, null);
                 addingTR.Cells.Add(tc);
             }
 
