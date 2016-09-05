@@ -333,7 +333,7 @@ fieldset {
         font-size: 1.2em;
         margin: 5px 0 6px 0;
         padding: 5px;
-        width: 300px;
+        /*width: 300px;*/
     }
 
     textarea {
@@ -674,7 +674,7 @@ tr.pager td {
 
 .CRFLeftItem
 {
-    display:inline-block;
+    display:flex;
     font-size:1em;
     font-weight:500;
     width:40%;
@@ -682,7 +682,6 @@ tr.pager td {
     /*vertical-align:middle;*/
     margin-top:auto;
     margin-bottom:auto;
-    clear:both;
 }
 .response-Item
 {
@@ -724,9 +723,17 @@ tr.pager td {
     display:inline-block;
     background-color:rgba(152, 227, 255, 0.46);
 }
-.ajax__tab_panel > table > tbody > tr > td > table
+.ajax__tab_panel > table > tbody > tr
 {
-
+    display:flex;
+    flex-wrap:nowrap;
+    justify-content:space-between;
+}
+.ajax__tab_panel > table > tbody > tr > td
+{
+    flex:inherit;
+    display:flex;
+    flex-grow:10;
 }
 .ajax__tab_panel > table
 {
@@ -754,6 +761,18 @@ tr.pager td {
     margin-left:auto;
     float:right;
     width:30%;
+}
+
+/*главная матрица*/
+#MainContent_tMatrix > tbody > tr > td
+{
+    border:1px solid #c8c8c8;
+}
+#MainContent_tMatrix > tbody > tr:first-child
+{
+    color:White;
+    background-color:#507CD1;
+    font-weight:bold;
 }
 /********************
 *   Mobile Styles   *

@@ -25,6 +25,7 @@ namespace EDC.Models
         public long? GroupID { get; set; }
         [ForeignKey("GroupID")]
         public virtual CRF_Group Group { get; set; }
+        public bool Ungrouped { get; set; } //без группы
         public string Header { get; set; }
         public string Subheader { get; set; }
         //public string ParentItem { get; set; }

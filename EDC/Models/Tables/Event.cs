@@ -18,5 +18,6 @@ namespace EDC.Models
         public bool Required { get; set; } //Обязательно ли данное событие
         public List<CRFInEvent> CRFs { get; set; } //ИРК внутри данного события
         public List<SubjectsEvent> Subjects { get; set; } //Субъекты задействованные в данном событии
+        public List<SubjectsItem> Items { get; set; } //Итемы в данном визите
     }
 }

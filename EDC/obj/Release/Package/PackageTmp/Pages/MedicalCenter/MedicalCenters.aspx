@@ -43,7 +43,7 @@
             <asp:BoundField HeaderText="Главный исследователь" DataField="PrincipalInvestigator" />
             <asp:BoundField HeaderText="Телефон" DataField="Phone" />
 
-            <asp:CommandField ShowEditButton="true" ShowDeleteButton="true" EditText="Редактировать" DeleteText="Удалить" />
+            <asp:CommandField ShowEditButton="true" ButtonType="Image" ShowDeleteButton="true" EditText="Редактировать" DeleteText="Удалить" DeleteImageUrl="~/Images/delete (3).png" EditImageUrl="~/Images/pencil-box (1).png"/>
 
         </Columns>
         <EditRowStyle BackColor="#2461BF" />

@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using System.Data;
 using EDC.Models;
 using EDC.Models.Repository;
+using System.IO;
 
 namespace EDC.Pages.CRF
 {
@@ -25,7 +26,18 @@ namespace EDC.Pages.CRF
         {
             if(fuAddCRF.HasFile)
             {
-                string folderPath = Request.PhysicalApplicationPath+"App_Data/CRFs/";
+                string folderPath = Request.PhysicalApplicationPath+"Data/CRFs/";
+                if(!Directory.Exists(folderPath))
+                {
+                    try
+                    {
+                        Directory.CreateDirectory(folderPath);
+                    }
+                    catch(Exception error)
+                    {
+                        Response.Write(error.Message);
+                    }
+                }
                 String fileExtension = System.IO.Path.GetExtension(fuAddCRF.FileName).ToLower();
                 String[] allowedExtensions = { ".xls", ".xlsx" };
                 string filePath = "";
@@ -42,12 +54,11 @@ namespace EDC.Pages.CRF
                         }
 
                         fuAddCRF.PostedFile.SaveAs(filePath);
-                        //Response.Write("File uploaded.");
                         uploaded = true;
                     }
                     catch (Exception ex)
                     {
-                        Response.Write("File could not be uploaded.");
+                        Response.Write("File could not be uploaded. <br/>" + ex.Message);
                     }
 
                     if(uploaded)
@@ -301,14 +312,20 @@ namespace EDC.Pages.CRF
                     newItem.Section = tempSection;
 
                 if (string.IsNullOrWhiteSpace(rowItems[6]))
+                {
                     newItem.Group = null;
+                    newItem.Ungrouped = true;
+                }
                 else
                 {
                     CRF_Group tempGroup = CRFGroups.FirstOrDefault(x => x.Label == rowItems[6]);
                     if (tempGroup == null)
                         CRF_Errors.Add(new CRF_Error(table.TableName, i + 1, 7, "Отсутствует Группа с указанной меткой"));
                     else
+                    {
                         newItem.Group = tempGroup;
+                        newItem.Ungrouped = false;
+                    }
                 }
 
                 newItem.Header = rowItems[7];
