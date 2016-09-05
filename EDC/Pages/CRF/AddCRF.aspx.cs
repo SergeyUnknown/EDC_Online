@@ -312,14 +312,20 @@ namespace EDC.Pages.CRF
                     newItem.Section = tempSection;
 
                 if (string.IsNullOrWhiteSpace(rowItems[6]))
+                {
                     newItem.Group = null;
+                    newItem.Ungrouped = true;
+                }
                 else
                 {
                     CRF_Group tempGroup = CRFGroups.FirstOrDefault(x => x.Label == rowItems[6]);
                     if (tempGroup == null)
                         CRF_Errors.Add(new CRF_Error(table.TableName, i + 1, 7, "Отсутствует Группа с указанной меткой"));
                     else
+                    {
                         newItem.Group = tempGroup;
+                        newItem.Ungrouped = false;
+                    }
                 }
 
                 newItem.Header = rowItems[7];

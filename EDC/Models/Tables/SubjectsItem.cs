@@ -21,6 +21,12 @@ namespace EDC.Models
         public long ItemID { get; set; }
         [ForeignKey("ItemID")]
         public CRF_Item Item { get; set; }
-        public string Value { get; set; }   
+
+        public int IndexID { get; set; } //если без группы индекс -1, если в группе >=1; показывает номер строки
+        
+        public bool IsGrouped { get; set; } //В группе
+        public int RowIndex { get; set; }   // индекс строки
+        public int ColumnIndex { get; set; }// индекс столбца
+        public string Value { get; set; }   //значение
     }
 }
