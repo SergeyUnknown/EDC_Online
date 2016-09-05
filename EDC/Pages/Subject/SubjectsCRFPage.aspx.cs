@@ -11,6 +11,7 @@ namespace EDC.Pages.Subject
     public partial class SubjectsCRFPage : System.Web.UI.Page
     {
         Models.Repository.CRFRepository CRFR = new Models.Repository.CRFRepository();
+        Models.Repository.CRFItemRepository CIR = new Models.Repository.CRFItemRepository();
         Models.Repository.SubjectsItemRepoitory SIR = new Models.Repository.SubjectsItemRepoitory();
         Models.Repository.SubjectsCRFRepository SCR = new Models.Repository.SubjectsCRFRepository();
 
@@ -209,12 +210,11 @@ namespace EDC.Pages.Subject
                 if (groupedItems.Count > 0)
                 {
                     List<SubjectsItem> _items = SIR
-                        .GetManyByFilter(x => x.SubjectID == _subjectID && x.EventID == _eventID && x.CRFID == _crfID).ToList();
+                        .GetManyByFilter(x => x.SubjectID == _subjectID && x.EventID == _eventID && x.CRFID == _crfID && x.IsGrouped).ToList();
 
-                    int rowCount = _items.Count > 0 ? _items.Max(x => x.RowIndex) : 0;
+                    int rowCount = _items.Count > 0 ? _items.Max(x => x.IndexID) : 0;
 
                     int groupedIndex = rowCount+1; //индекс строки в группе
-
                     TableRow[] addedRows = new TableRow[rowCount]; //добавленные строки
                     for (int i = 0; i < rowCount; i++)
                     {
@@ -240,7 +240,7 @@ namespace EDC.Pages.Subject
 
                         List<SubjectsItem> SIs = SIR
                             .GetManyByFilter(x => x.SubjectID == _subjectID && x.EventID == _eventID && x.CRFID == _crfID && x.ItemID == item.CRF_ItemID)
-                            .OrderBy(x => x.RowIndex).ToList(); //значения в этом столбце
+                            .OrderBy(x => x.IndexID).ToList(); //значения в этом столбце
 
                         if (SIs.Count > 0)
                         {
@@ -248,8 +248,8 @@ namespace EDC.Pages.Subject
                             for (int k = 0; k < SIs.Count; k++)
                             {
                                 tc = new TableCell();
-                                Control control = GetAddedGroupedControl(item, ref tc, SIs[i].RowIndex, SIs[i].Value);
-                                control.ID = item.Identifier + "_" + SIs[i].RowIndex;
+                                Control control = GetAddedGroupedControl(item, ref tc, SIs[i].IndexID, SIs[i].Value);
+                                control.ID = item.Identifier + "_" + SIs[i].IndexID;
                                 tc.Controls.Add(control);
                                 addedRows[i].Cells.Add(tc);
                             }
@@ -317,6 +317,8 @@ namespace EDC.Pages.Subject
 
             #region readCurrentValue
             SubjectsItem si = SIR.SelectByID(_subjectID, _eventID, _crfID, item.CRF_ItemID,-1);
+            List<SubjectsItem> temp = SIR.SelectAll().ToList();
+            //CRF_Item temp1 = temp[0].Item;
             string itemValue = "";
             bool isNullValue = true;
             if (si != null && !string.IsNullOrWhiteSpace(si.Value))
@@ -562,7 +564,8 @@ namespace EDC.Pages.Subject
                     si.EventID = _eventID;
                     si.CRFID = _crfID;
                     si.ItemID = item.CRF_ItemID;
-                    si.RowIndex = -1;
+                    si.IsGrouped = false;
+                    si.IndexID = -1;
                     si.Value = value;
                     SIR.Create(si);
                 }
@@ -582,7 +585,7 @@ namespace EDC.Pages.Subject
                 int valuesRowCount = groupedTable.Rows.Count - 2;
                 for(int i =0;i<valuesRowCount;i++)
                 {
-                    _control = form.FindControl(item.Identifier + (i+1).ToString());
+                    _control = form.FindControl(item.Identifier +"_" + (i+1).ToString());
                     string value = GetValueFromControl(_control);
                     SubjectsItem si = SIR.SelectByID(_subjectID, _eventID, _crfID, item.CRF_ItemID, i+1);
                     if (si == null)
@@ -592,8 +595,9 @@ namespace EDC.Pages.Subject
                         si.EventID = _eventID;
                         si.CRFID = _crfID;
                         si.ItemID = item.CRF_ItemID;
-                        si.RowIndex = -1;
                         si.Value = value;
+                        si.IndexID = i + 1;
+                        si.IsGrouped = true;
                         SIR.Create(si);
                     }
                     else
