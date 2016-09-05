@@ -56,7 +56,7 @@ namespace EDC.Models
                 .HasKey(t => new { t.SubjectID, t.EventID, t.CRFID });
 
             modelBuilder.Entity<SubjectsItem>()
-                .HasKey(t => new { t.SubjectID,t.EventID,t.CRFID,t.ItemID });
+                .HasKey(t => new { t.SubjectID,t.EventID,t.CRFID,t.ItemID,t.IndexID });
 
             
 

@@ -18,13 +18,24 @@ namespace EDC.Pages.Subject
         static long _eventID;
         static long _subjectID;
         static long _crfID;
+        static int RowCount = 0;
+
+        static List<TableRow> addingRows = new List<TableRow>();
         protected void Page_Load(object sender, EventArgs e)
         {
-            GetInfoFromRequest();
-            _crf = CRFR.SelectByID(_crfID);
-            LoadForm(_crf);
+            if (!IsPostBack)
+            {
+                GetInfoFromRequest();
+                _crf = CRFR.SelectByID(_crfID);
+            }
+            else
+            {
+                RegisterViewStateHandler();
+            }
+                LoadForm(_crf);
         }
 
+        #region GetInfoFromRequest
         void GetInfoFromRequest()
         {
             GetSubjectIDFromRequest();
@@ -71,6 +82,8 @@ namespace EDC.Pages.Subject
                 throw new ArgumentNullException("Не указан ID события");
             }
         }
+        #endregion
+
         void LoadForm(Models.CRF _crf)
         {
             foreach (Models.CRF_Section section in _crf.Sections)
@@ -85,8 +98,9 @@ namespace EDC.Pages.Subject
                 TableRow trUngrouped = new TableRow(); //строка итемов
 
                 Table tableGrouped = new Table();
-                TableRow trGrouped = new TableRow();
-                TableRow trGroupedValues = new TableRow();
+                tableGrouped.EnableViewState = true;
+                TableRow trGroupedHeaders = new TableRow();
+                TableRow trsGroupedValues = new TableRow();
 
 
                 Button btnSave = new Button(); //Кнопка сохранить
@@ -98,160 +112,211 @@ namespace EDC.Pages.Subject
                 btnAdd.ID = "btnAdd";
                 btnAdd.Click +=btnAdd_Click;
                 btnAdd.Text = "Добавить";
-                int groupedIndex=0; //индекс строки в группе
-                for (int i = 0; i < section.Items.Count; i++)
+                
+                List<CRF_Item> ungroupedItems = section.Items
+                    .Where(x => x.Ungrouped)
+                    .OrderBy(x=>x.CRF_ItemID).ToList(); //итемы без группы
+
+                List<CRF_Item> groupedItems = section.Items
+                    .Where(x => !x.Ungrouped)
+                    .OrderBy(x=>x.CRF_ItemID).ToList(); //итемы в группе
+
+                #region NoGroup
+                
+                for (int i = 0; i < ungroupedItems.Count;i++ )
                 {
-                    var item = section.Items[i];
+                    var item = ungroupedItems[i];
 
-                    if (item.Group.Identifier.IndexOf("UNGROUPED") == 0)
+                    if (!string.IsNullOrWhiteSpace(item.Header)) //Header
                     {
-                        #region NoGroup
+                        Label header = new Label();
+                        header.Text = item.Header;
+                        TableRow _tr = new TableRow();
+                        TableCell _tc = new TableCell();
+                        header.CssClass = "CRFItemHeader";
+                        _tc.ColumnSpan = columnCount;
+                        _tc.Controls.Add(header);
+                        _tr.Cells.Add(_tc);
+                        tableUngrouped.Rows.Add(_tr);
+                    }
+                    if (!string.IsNullOrWhiteSpace(item.Subheader)) //subHeader
+                    {
+                        Label subheader = new Label();
+                        subheader.Text = item.Subheader;
+                        TableRow _tr = new TableRow();
+                        TableCell _tc = new TableCell();
+                        subheader.CssClass = "CRFItemsubHeader";
+                        _tc.Controls.Add(subheader);
+                        _tr.Cells.Add(_tc);
+                        tableUngrouped.Rows.Add(_tr);
+                    }
+                    TableCell tc = new TableCell();
+                    if (!string.IsNullOrWhiteSpace(item.LeftItemText)) //LeftItemText
+                    {
+                        Label LIT = new Label();
+                        LIT.Text = item.LeftItemText;
+                        LIT.CssClass = "CRFLeftItem";
+                        tc.CssClass = "CRFCellLeftItem";
+                        tc.Controls.Add(LIT);
+                    }
 
-                        if (!string.IsNullOrWhiteSpace(item.Header)) //Header
-                        {
-                            Label header = new Label();
-                            header.Text = item.Header;
-                            TableRow _tr = new TableRow();
-                            TableCell _tc = new TableCell();
-                            header.CssClass = "CRFItemHeader";
-                            _tc.ColumnSpan = columnCount;
-                            _tc.Controls.Add(header);
-                            _tr.Cells.Add(_tc);
-                            tableUngrouped.Rows.Add(_tr);
-                        }
-                        if (!string.IsNullOrWhiteSpace(item.Subheader)) //subHeader
-                        {
-                            Label subheader = new Label();
-                            subheader.Text = item.Subheader;
-                            TableRow _tr = new TableRow();
-                            TableCell _tc = new TableCell();
-                            subheader.CssClass = "CRFItemsubHeader";
-                            _tc.Controls.Add(subheader);
-                            _tr.Cells.Add(_tc);
-                            tableUngrouped.Rows.Add(_tr);
-                        }
-                        TableCell tc = new TableCell();
-                        if (!string.IsNullOrWhiteSpace(item.LeftItemText)) //LeftItemText
-                        {
-                            Label LIT = new Label();
-                            LIT.Text = item.LeftItemText;
-                            LIT.CssClass = "CRFLeftItem";
-                            tc.CssClass = "CRFCellLeftItem";
-                            tc.Controls.Add(LIT);
-                        }
-                        Control addedControl = new Control(); //добавлемый контрол
+                    GetAddedUngroupedControl(item, ref tc); //запись в tc нужных контролов
 
-                        addedControl = GetAddedControl(item, ref tc);
-                        addedControl.ID = item.Identifier; //ID параметра
-                        tc.Controls.Add(addedControl);
+                    if (!string.IsNullOrWhiteSpace(item.Units)) //Units
+                    {
+                        Label Units = new Label();
+                        Units.Text = item.Units;
+                        tc.Controls.Add(Units);
+                    }
+                    if (!string.IsNullOrWhiteSpace(item.RightItemText)) //RightItemText
+                    {
+                        Label RIT = new Label();
+                        RIT.Text = item.RightItemText;
+                        tc.Controls.Add(RIT);
+                    }
 
-                        if (!string.IsNullOrWhiteSpace(item.Units)) //Units
-                        {
-                            Label Units = new Label();
-                            Units.Text = item.Units;
-                            tc.Controls.Add(Units);
-                        }
-                        if (!string.IsNullOrWhiteSpace(item.RightItemText)) //RightItemText
-                        {
-                            Label RIT = new Label();
-                            RIT.Text = item.RightItemText;
-                            tc.Controls.Add(RIT);
-                        }
+                    trUngrouped.Cells.Add(tc);
 
-                        if (item.Required) //если обязательное
-                        {
-                            RequiredFieldValidator RFV = new RequiredFieldValidator();
-                            RFV.ControlToValidate = item.Identifier;
-                            RFV.Display = ValidatorDisplay.Dynamic;
-                            RFV.ErrorMessage = "Данное поле обязательно для заполнения";
-                            RFV.CssClass = "field-validation-error";
-                            tc.Controls.Add(RFV);
-                        }
-
-                        trUngrouped.Cells.Add(tc);
-
-                        if (i < section.Items.Count - 1) //если элемент не последний
-                        {
-                            if (section.Items[i + 1].ColumnNumber <= section.Items[i].ColumnNumber)
-                            {
-                                tableUngrouped.Rows.Add(trUngrouped);
-                                trUngrouped = new TableRow();
-                            }
-
-                        }
-                        else //иначе
+                    if (i < section.Items.Count - 1) //если элемент не последний
+                    {
+                        if (section.Items[i + 1].ColumnNumber <= section.Items[i].ColumnNumber)
                         {
                             tableUngrouped.Rows.Add(trUngrouped);
                             trUngrouped = new TableRow();
-                            tc = new TableCell();
-
-                            tc.Controls.Add(btnSave);
-                            trUngrouped.Cells.Add(tc);
-                            tableUngrouped.Rows.Add(trUngrouped);
                         }
-                        #endregion
+
                     }
-                    else
+                    else //иначе
                     {
-                        TableCell tc = new TableCell();
-                        if (!string.IsNullOrWhiteSpace(item.LeftItemText)) //LeftItemText
-                        {
-                            Label LIT = new Label();
-                            LIT.Text = item.LeftItemText;
-                            LIT.CssClass = "CRFLeftItem";
-                            tc.CssClass = "CRFCellLeftItem";
-                            tc.Controls.Add(LIT);
-                        }
-                        trGrouped.Cells.Add(tc);
-                        tc = new TableCell();
-                        Control addedControl = GetAddedControl(item, ref tc,groupedIndex);
-                        addedControl.ID = item.Identifier + "_" + groupedIndex;
-                        tc.Controls.Add(addedControl);
-
-                        if (item.Required) //если обязательное
-                        {
-                            RequiredFieldValidator RFV = new RequiredFieldValidator();
-                            RFV.ControlToValidate = item.Identifier+"_"+groupedIndex;
-                            RFV.Display = ValidatorDisplay.Dynamic;
-                            RFV.ErrorMessage = "Данное поле обязательно для заполнения";
-                            RFV.CssClass = "field-validation-error";
-                            tc.Controls.Add(RFV);
-                        }
-
-                        trGroupedValues.Cells.Add(tc);
+                        tableUngrouped.Rows.Add(trUngrouped);
+                        
+                        //trUngrouped = new TableRow();
+                        //tc = new TableCell();
+                        //tc.Controls.Add(btnSave);
+                        //trUngrouped.Cells.Add(tc);
+                        //tableUngrouped.Rows.Add(trUngrouped);
                     }
                 }
 
                 if (tableUngrouped.Rows.Count > 0)
                 {
                     tp.Controls.Add(tableUngrouped);
-                    //tcCRF.Tabs.Add(tp);
                     ScriptManager.GetCurrent(this).RegisterPostBackControl(btnSave);
                 }
-                
+                #endregion
+
+                #region Group
+                if (groupedItems.Count > 0)
                 {
-                    tableGrouped.Rows.Add(trGrouped);
-                    tableGrouped.Rows.Add(trGroupedValues);
-                    TableCell tc = new TableCell();
-                    trGrouped = new TableRow();
-                    tc.Controls.Add(btnAdd);
-                    trGrouped.Cells.Add(tc);
-                    tableGrouped.Rows.Add(trGrouped);
-                    tp.ScrollBars = ScrollBars.Auto; //скролбар
-                    tp.Controls.Add(tableGrouped);
-                    tcCRF.ScrollBars = ScrollBars.Auto; //скролбар
-                    tcCRF.Tabs.Add(tp);
-                    ScriptManager.GetCurrent(this).RegisterPostBackControl(btnAdd);
+                    List<SubjectsItem> _items = SIR
+                        .GetManyByFilter(x => x.SubjectID == _subjectID && x.EventID == _eventID && x.CRFID == _crfID).ToList();
+
+                    int rowCount = _items.Count > 0 ? _items.Max(x => x.RowIndex) : 0;
+
+                    int groupedIndex = rowCount+1; //индекс строки в группе
+
+                    TableRow[] addedRows = new TableRow[rowCount]; //добавленные строки
+                    for (int i = 0; i < rowCount; i++)
+                    {
+                        addedRows[i] = new TableRow();
+                    }
+
+                    for (int i = 0; i < groupedItems.Count; i++)
+                    {
+                        var item = groupedItems[i];
+
+                        TableCell tc = new TableCell();
+                        if (!string.IsNullOrWhiteSpace(item.LeftItemText)) //LeftItemText
+                        {
+                            Label LIT = new Label();
+                            LIT.Text = item.LeftItemText;
+                            LIT.CssClass = "CRFLeftItem";
+                            tc.CssClass = "CRFCellLeftItem";
+                            tc.Controls.Add(LIT);
+                        }
+                        trGroupedHeaders.Cells.Add(tc);
+
+                        #region readCurrentValues
+
+                        List<SubjectsItem> SIs = SIR
+                            .GetManyByFilter(x => x.SubjectID == _subjectID && x.EventID == _eventID && x.CRFID == _crfID && x.ItemID == item.CRF_ItemID)
+                            .OrderBy(x => x.RowIndex).ToList(); //значения в этом столбце
+
+                        if (SIs.Count > 0)
+                        {
+
+                            for (int k = 0; k < SIs.Count; k++)
+                            {
+                                tc = new TableCell();
+                                Control control = GetAddedGroupedControl(item, ref tc, SIs[i].RowIndex, SIs[i].Value);
+                                control.ID = item.Identifier + "_" + SIs[i].RowIndex;
+                                tc.Controls.Add(control);
+                                addedRows[i].Cells.Add(tc);
+                            }
+                        }
+
+                        #endregion
+
+                        ////////////////////Поле ввода данных/////////////////
+                        tc = new TableCell();
+                        Control addedControl = GetAddedGroupedControl(item, ref tc, groupedIndex, null);
+                        addedControl.ID = item.Identifier + "_" + groupedIndex;
+                        tc.Controls.Add(addedControl);
+
+                        trsGroupedValues.Cells.Add(tc);
+                        //////////////////////////////////////////////////
+                    }
+
+                    tableGrouped.Rows.Add(trGroupedHeaders); //добавление шапки
+                    if(addedRows.Length>0)
+                        tableGrouped.Rows.AddRange(addedRows); //введенные данные
+                    tableGrouped.Rows.Add(trsGroupedValues); //добавление пустых полей
+
+                    //////////////////////отриовка добавленных строк/////////////////////////
+                    TableRow addingTR = new TableRow();
+                    for (int j = 0; j < RowCount; j++)
+                    {
+                        for (int i = 0; i < groupedItems.Count; i++)
+                        {
+                            TableCell tc = new TableCell();
+                            Control addedControl = GetAddedGroupedControl(groupedItems[i], ref tc, j+2, null);
+                            addedControl.ID = groupedItems[i].Identifier + "_" + (j + 2).ToString();
+                            tc.Controls.Add(addedControl);
+                            addingTR.Cells.Add(tc);
+                        }
+                        addingRows.Add(addingTR);
+                        tableGrouped.Rows.AddAt(j + 2, addingTR);
+                        addingTR = new TableRow();
+                    }
+
+                    ////////////////////////////////////////////////////
+
+                    ////////////////кнопка Добавить/////////////////////
+                    TableCell tcg = new TableCell();
+                    trGroupedHeaders = new TableRow();
+                    tcg.Controls.Add(btnAdd);
+                    trGroupedHeaders.Cells.Add(tcg);
+                    tableGrouped.Rows.Add(trGroupedHeaders);
+                    ScriptManager.GetCurrent(this).RegisterAsyncPostBackControl(btnAdd);
+                    ///////////////////////////////////////////////////
                 }
+                #endregion
+
+                tp.ScrollBars = ScrollBars.Auto; //скролбар
+                tcCRF.ScrollBars = ScrollBars.Auto; //скролбар
+                tp.Controls.Add(tableGrouped); //табилцу в tabPanel
+                tp.Controls.Add(btnSave);
+                tcCRF.Tabs.Add(tp); //панель в tabConteiner
+
             }
         }
 
-        Control GetAddedControl(CRF_Item item, ref TableCell tc)
+        void GetAddedUngroupedControl(CRF_Item item, ref TableCell tc)
         {
             Control addedControl = new Control();
 
             #region readCurrentValue
-            SubjectsItem si = SIR.SelectByID(_subjectID, _eventID, _crfID, item.CRF_ItemID);
+            SubjectsItem si = SIR.SelectByID(_subjectID, _eventID, _crfID, item.CRF_ItemID,-1);
             string itemValue = "";
             bool isNullValue = true;
             if (si != null && !string.IsNullOrWhiteSpace(si.Value))
@@ -259,8 +324,6 @@ namespace EDC.Pages.Subject
                 isNullValue = false;
                 itemValue = si.Value;
             }
-
-            itemValue = (si != null && !string.IsNullOrWhiteSpace(si.Value)) ? si.Value : ""; //считываем текущее значение
             #endregion
 
             switch (item.ResponseType)
@@ -349,25 +412,23 @@ namespace EDC.Pages.Subject
                     }
 
             }
-            return addedControl;
-        }
-
-        Control GetAddedControl(CRF_Item item, ref TableCell tc, int index)
-        {
-            Control addedControl = new Control();
-
-            #region readCurrentValue
-            SubjectsItem si = SIR.SelectByID(_subjectID, _eventID, _crfID, item.CRF_ItemID);
-            string itemValue = "";
-            bool isNullValue = true;
-            if (si != null && !string.IsNullOrWhiteSpace(si.Value))
+            addedControl.ID = item.Identifier; //ID параметра
+            tc.Controls.Add(addedControl);
+            if (item.Required) //если обязательное
             {
-                isNullValue = false;
-                itemValue = si.Value;
+                RequiredFieldValidator RFV = new RequiredFieldValidator();
+                RFV.ControlToValidate = item.Identifier;
+                RFV.Display = ValidatorDisplay.Dynamic;
+                RFV.ErrorMessage = "Данное поле обязательно для заполнения";
+                RFV.CssClass = "field-validation-error";
+                tc.Controls.Add(RFV);
             }
 
-            itemValue = (si != null && !string.IsNullOrWhiteSpace(si.Value)) ? si.Value : ""; //считываем текущее значение
-            #endregion
+        }
+
+        Control GetAddedGroupedControl(CRF_Item item, ref TableCell tc, int index, string value)
+        {
+            Control addedControl = new Control();
 
             switch (item.ResponseType)
             {
@@ -407,8 +468,8 @@ namespace EDC.Pages.Subject
                                 }
                         }
                         #endregion
-                        if (!isNullValue)
-                            tb.Text = itemValue;
+                        if (value != null)
+                            tb.Text = value;
                         addedControl = tb;
                         break;
                     }
@@ -416,8 +477,8 @@ namespace EDC.Pages.Subject
                     {
                         TextBox tb = new TextBox();
                         tb.TextMode = TextBoxMode.MultiLine;
-                        if (!isNullValue)
-                            tb.Text = itemValue;
+                        if (value != null)
+                            tb.Text = value;
                         addedControl = tb;
                         break;
                     }
@@ -427,8 +488,8 @@ namespace EDC.Pages.Subject
                         CheckBoxList cb = new CheckBoxList();
                         cb.Items.AddRange(GetListItems(item).ToArray());
                         cb.CssClass = "response-Item " + item.ResponseLayout;
-                        if (!isNullValue)
-                            cb.SelectedValue = itemValue;
+                        if (value != null)
+                            cb.SelectedValue = value;
                         addedControl = cb;
                         break;
                     }
@@ -437,8 +498,8 @@ namespace EDC.Pages.Subject
                         RadioButtonList rb = new RadioButtonList();
                         rb.Items.AddRange(GetListItems(item).ToArray());
                         rb.CssClass = "response-Item " + item.ResponseLayout;
-                        if (!isNullValue)
-                            rb.SelectedValue = itemValue;
+                        if (value != null)
+                            rb.SelectedValue = value;
                         addedControl = rb;
                         break;
                     }
@@ -446,73 +507,28 @@ namespace EDC.Pages.Subject
                     {
                         DropDownList ddl = new DropDownList();
                         ddl.Items.AddRange(GetListItems(item).ToArray());
-                        if (!isNullValue)
-                            ddl.SelectedValue = itemValue;
+                        if (value != null)
+                            ddl.SelectedValue = value;
                         addedControl = ddl;
                         break;
                     }
             }
 
+            if (item.Required) //если обязательное
+            {
+                RequiredFieldValidator RFV = new RequiredFieldValidator();
+                RFV.ControlToValidate = item.Identifier + "_" + index;
+                RFV.Display = ValidatorDisplay.Dynamic;
+                RFV.ErrorMessage = "Данное поле обязательно для заполнения";
+                RFV.CssClass = "field-validation-error";
+                tc.Controls.Add(RFV);
+            }
             return addedControl;
         }
-
-        void GetInfo(Control form, Models.CRF crf)
-        {
-            List<Models.CRF_Item> items = crf.Items;
-            foreach (var item in items)
-            {
-                Control _control = form.FindControl(item.Identifier);
-                Type type = _control.GetType();
-                string value = "";
-                switch (type.Name)
-                {
-                    case "TextBox":
-                        {
-                            TextBox tb = _control as TextBox;
-                            value = tb.Text;
-                            break;
-                        }
-                    case "RadioButtonList":
-                        {
-                            RadioButtonList rbl = _control as RadioButtonList;
-                            value = rbl.SelectedValue;
-                            break;
-                        }
-                    case "CheckBoxList":
-                        {
-                            CheckBoxList cbl = _control as CheckBoxList;
-                            value = cbl.SelectedValue;
-                            break;
-                        }
-                }
-                SubjectsItem si = SIR.SelectByID(_subjectID, _eventID, _crfID, item.CRF_ItemID);
-                if (si == null)
-                {
-                    si = new SubjectsItem();
-                    si.SubjectID = _subjectID;
-                    si.EventID = _eventID;
-                    si.CRFID = _crfID;
-                    si.ItemID = item.CRF_ItemID;
-                    si.Value = value;
-                    SIR.Create(si);
-                }
-                else
-                {
-                    si.Value = value;
-                    SIR.Update(si);
-                }
-
-                SIR.Save();
-
-                List<SubjectsItem> sis = SIR.SelectAll().ToList();
-
-            }
-        }
-
         List<ListItem> GetListItems(Models.CRF_Item item)
         {
             List<ListItem> listItems = new List<ListItem>();
-            string[] responseOptionText = item.ResponseOptionText.Replace("\\,", "^^").Split(',');
+            string[] responseOptionText = item.ResponseOptionText.Replace("\\,", "^^").Replace("\\","").Split(',');
             string[] responseValues = item.ResponseValuesOrCalculation.Split(',');
             for (int i = 0; i < responseOptionText.Length; i++)
             {
@@ -522,14 +538,140 @@ namespace EDC.Pages.Subject
             return listItems;
         }
 
+        void GetInfo(Control form, Models.CRF_Section section)
+        {
+
+            List<CRF_Item> groupedItems = section.Items
+                .Where(x => !x.Ungrouped)
+                .OrderBy(x => x.CRF_ItemID).ToList(); //итемы в группе
+
+            List<CRF_Item> ungroupedItems = section.Items
+                .Where(x => x.Ungrouped)
+                .OrderBy(x => x.CRF_ItemID).ToList(); //итемы без группы
+
+            foreach (var item in ungroupedItems)
+            {
+                Control _control;
+                _control = form.FindControl(item.Identifier);
+                string value = GetValueFromControl(_control);
+                SubjectsItem si = SIR.SelectByID(_subjectID, _eventID, _crfID, item.CRF_ItemID,-1);
+                if (si == null)
+                {
+                    si = new SubjectsItem();
+                    si.SubjectID = _subjectID;
+                    si.EventID = _eventID;
+                    si.CRFID = _crfID;
+                    si.ItemID = item.CRF_ItemID;
+                    si.RowIndex = -1;
+                    si.Value = value;
+                    SIR.Create(si);
+                }
+                else
+                {
+                    si.Value = value;
+                    SIR.Update(si);
+                }
+                SIR.Save();
+            }
+
+            foreach(var item in groupedItems)
+            {
+                Control _control;
+                _control = form.FindControl(item.Identifier + "_1");
+                Table groupedTable = _control.Parent.Parent.Parent as Table;
+                int valuesRowCount = groupedTable.Rows.Count - 2;
+                for(int i =0;i<valuesRowCount;i++)
+                {
+                    _control = form.FindControl(item.Identifier + (i+1).ToString());
+                    string value = GetValueFromControl(_control);
+                    SubjectsItem si = SIR.SelectByID(_subjectID, _eventID, _crfID, item.CRF_ItemID, i+1);
+                    if (si == null)
+                    {
+                        si = new SubjectsItem();
+                        si.SubjectID = _subjectID;
+                        si.EventID = _eventID;
+                        si.CRFID = _crfID;
+                        si.ItemID = item.CRF_ItemID;
+                        si.RowIndex = -1;
+                        si.Value = value;
+                        SIR.Create(si);
+                    }
+                    else
+                    {
+                        si.Value = value;
+                        SIR.Update(si);
+                    }
+                    SIR.Save();
+                }
+            }
+        }
+
+        string GetValueFromControl(Control control)
+        {
+            Type type = control.GetType();
+            string value = "";
+            switch (type.Name)
+            {
+                case "TextBox":
+                    {
+                        TextBox tb = control as TextBox;
+                        value = tb.Text;
+                        break;
+                    }
+                case "RadioButtonList":
+                    {
+                        RadioButtonList rbl = control as RadioButtonList;
+                        value = rbl.SelectedValue;
+                        break;
+                    }
+                case "CheckBoxList":
+                    {
+                        CheckBoxList cbl = control as CheckBoxList;
+                        value = cbl.SelectedValue;
+                        break;
+                    }
+            }
+            return value;
+        }
+
+        void AddGroupedRow(Control form, Models.CRF_Section section)
+        {
+            Table tInfo = form as Table;
+            int rIndex = tInfo.Rows.Count-2;
+            if(rIndex<1)
+                return;
+            TableRow addingTR = new TableRow();
+
+            List<CRF_Item> groupedItems = section.Items
+                    .Where(x => !x.Ungrouped)
+                    .OrderBy(x => x.CRF_ItemID).ToList(); //итемы в группе
+
+            for (int i = 0; i < tInfo.Rows[rIndex].Cells.Count; i++)
+            {
+                TableCell tc = new TableCell();
+                Control addedControl = GetAddedGroupedControl(groupedItems[i], ref tc, rIndex + 1, null);
+                addedControl.ID = groupedItems[i].Identifier + "_" + (rIndex + 1).ToString();
+                tc.Controls.Add(addedControl);
+                addingTR.Cells.Add(tc);
+            }
+
+            RowCount++;
+        }
+
         protected void btnSave_Click(object sender, EventArgs e)
         {
-            GetInfo(((Button)sender).Parent.Parent, _crf);
+            Control tempControl = ((Button)sender).Parent;
+            string panelName = (tempControl as AjaxControlToolkit.TabPanel).HeaderText;
+            CRF_Section section = _crf.Sections.First(x => x.Title == panelName);
+            GetInfo(tempControl, section);
         }
 
         protected void btnAdd_Click(object sender, EventArgs e)
         {
-
+            Control tempControl = ((Button)sender).Parent.Parent.Parent;
+            string panelName = (tempControl.Parent as AjaxControlToolkit.TabPanel).HeaderText;
+            CRF_Section section = _crf.Sections.First(x => x.Title == panelName);
+            AddGroupedRow(tempControl, section);
         }
     }
 }

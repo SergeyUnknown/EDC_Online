@@ -11,11 +11,11 @@
 </asp:Content>
 
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
-    <asp:UpdatePanel runat="server">
+    <asp:UpdatePanel runat="server"> 
         <Triggers>
         </Triggers>
         <ContentTemplate>
-            <ajaxToolkit:TabContainer runat="server" ID="tcCRF">
+            <ajaxToolkit:TabContainer runat="server" ID="tcCRF" AutoPostBack="true">
 
             </ajaxToolkit:TabContainer>
 
