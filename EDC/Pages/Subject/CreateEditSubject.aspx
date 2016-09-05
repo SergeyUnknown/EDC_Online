@@ -13,7 +13,7 @@
 
 <asp:Content ID="Content3" ContentPlaceHolderID="MainContent" runat="server">
     <asp:Label ID="labelStatus" runat="server" Visible="false" Text="" />
-    <ol>
+    <ol class="addSubjectList">
         <li>
             <asp:Label runat="server" AssociatedControlID="tbNumber">Номер субъекта</asp:Label>
             <asp:TextBox runat="server" ID="tbNumber" />
@@ -26,6 +26,7 @@
             <ajaxToolkit:CalendarExtender runat="server" ID="ajaxCalendar" FirstDayOfWeek="Monday" TargetControlID="tbDate" Format="dd.MM.yyyy" />
             <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="tbDate" Display="Dynamic"
                 CssClass="field-validation-error" ErrorMessage="Данное поле обязательно для заполнения" />
+            <img src="../../Images/calendar-plus%20(2).png" class="calendarImg"/>
         </li>
         <li>
             <asp:Label runat="server" AssociatedControlID="ddlCenters">Мед. центр</asp:Label>

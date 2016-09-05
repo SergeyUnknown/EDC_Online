@@ -28,7 +28,7 @@
                                 <%#Eval("CRF.Name") %>
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:CommandField HeaderText="Действия" ShowSelectButton="true" ShowDeleteButton="True" DeleteText="Удалить" SelectText="Просмотреть" />
+                        <asp:CommandField HeaderText="Действия" ButtonType="Image" ShowSelectButton="true" ShowDeleteButton="True" DeleteText="Удалить" SelectText="Просмотреть" DeleteImageUrl="~/Images/delete (3).png" SelectImageUrl="~/Images/lead-pencil.png"/>
                     </Columns>
                     <EditRowStyle BackColor="#2461BF" />
                     <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />

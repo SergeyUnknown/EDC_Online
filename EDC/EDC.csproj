@@ -148,6 +148,9 @@
     <Content Include="Images\border-color %281%29.png" />
     <Content Include="Images\border-color %282%29.png" />
     <Content Include="Images\border-color.png" />
+    <Content Include="Images\calendar-check.png" />
+    <Content Include="Images\calendar-plus %282%29.png" />
+    <Content Include="Images\calendar-plus.png" />
     <Content Include="Images\delete %283%29.png" />
     <Content Include="Images\delete.png" />
     <Content Include="Images\emoticon-poop.png" />
@@ -155,6 +158,7 @@
     <Content Include="Images\forward %283%29.png" />
     <Content Include="Images\import.png" />
     <Content Include="Images\LastPage.png" />
+    <Content Include="Images\lead-pencil.png" />
     <Content Include="Images\login-variant %281%29.png" />
     <Content Include="Images\logo.png" />
     <Content Include="Images\NextPage.png" />
