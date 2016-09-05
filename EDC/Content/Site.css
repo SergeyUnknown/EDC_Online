@@ -479,6 +479,26 @@ input[type="checkbox"].input-validation-error {
 .validation-summary-valid {
     display: none;
 }
+.addSubjectList
+{
+    list-style-type:none;
+    padding:0;
+}
+/*календарь на добавлении субъекта
+*/
+.calendarImg
+{
+    display:inline-block;
+    vertical-align:central;
+    background-color: #7ac0da;
+    border-radius:5px;
+    width:31px;
+    height:31px;
+}
+#MainContent_tbDate
+{
+
+}
 
 /* tables
 ----------------------------------------------------------*/
@@ -518,6 +538,15 @@ th:first-child{
     -moz-border-radius: 5px 0px 0px 0px;
     -webkit-border-radius: 5px 0px 0px 0px;
     
+}
+
+tbody:first-child
+{
+    border-left:0;
+
+    border-radius: 5px 0px 0px 0px;
+    -moz-border-radius: 5px 0px 0px 0px;
+    -webkit-border-radius: 5px 0px 0px 0px;
 }
 
 th:last-child{
@@ -636,6 +665,7 @@ tr.pager td {
     -webkit-box-shadow: rgba(0,0,0,0.8) 0px 2px 4px 0px;
 }
 /* таблица со стрелочками под основным контентом */
+
 .dt {
     -webkit-box-shadow: rgba(0,0,0,0.8) 0px 2px 5px;
 
@@ -654,8 +684,17 @@ tr.pager td {
 
 .CRFItemHeader
 {
+    display:flex;
+    margin:auto;
     text-align:center;
-    font-size:13px;
+    font-size:16px;
+    font-weight:normal;
+    
+}
+.CRFItemsubHeader
+{
+    font-size:14px;
+    font-weight:500;
     
 }
 .CRFCellLeftItem 
@@ -671,13 +710,18 @@ tr.pager td {
     vertical-align:middle;    
     text-wrap:avoid;
 }
+/*Текст правее input*/
+.CRFCellLeftItem > span
+{
+    display:inline-flex;
+    margin:auto 0 auto 2px;
+}
 
 .CRFLeftItem
 {
-    display:flex;
+    display:inline-block;
     font-size:1em;
     font-weight:500;
-    width:40%;
     min-width:40%;
     /*vertical-align:middle;*/
     margin-top:auto;
@@ -689,7 +733,7 @@ tr.pager td {
     box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.26);
     align-content:center;
     width:auto;
-    margin-left: auto;
+    /*margin-left: auto;*/
     margin-right: auto;
 }
 .response-Item > tbody > tr > td
@@ -715,7 +759,10 @@ tr.pager td {
     vertical-align:bottom;
     
 }
-
+.ajax__tab_panel 
+{
+    
+}
 .ajax__tab_panel > span
 {
     margin:0px;
@@ -725,30 +772,43 @@ tr.pager td {
 }
 .ajax__tab_panel > table > tbody > tr
 {
+    /*
     display:flex;
     flex-wrap:nowrap;
     justify-content:space-between;
+    border:solid 1px #c8c8c8;*/
+     
+}
+.ajax__tab_panel > table > tbody > tr:nth-child(2n) {
+    /*background: #e8edff;
+    background: rgba(232, 237, 255, 0.7);
+    /*background-image: linear-gradient(to top, rgba(255, 255, 255, 0.00), #c8c8c8);*/
+  
 }
 .ajax__tab_panel > table > tbody > tr > td
 {
+    /*
     flex:inherit;
     display:flex;
     flex-grow:10;
+        */
 }
 .ajax__tab_panel > table
 {
+    border-collapse:collapse;
     margin:0px;
     width:100%;
     clear:both;
     box-shadow:0 0 0 0;
 }
-
+/*
 .ajax__tab_panel > input 
 {
     display:inline-block;
     width:10%;
 }
-
+    */
+/*кнопки сохранить*/
 .ajax__tab_panel > table > tbody > tr > td > input
 {
     display:inline-block;
@@ -759,8 +819,14 @@ tr.pager td {
 .field-validation-error 
 {
     margin-left:auto;
-    float:right;
+    /*float:right;*/
     width:30%;
+}
+
+#MainContent_tcCRF_tpPage 
+{
+    text-align:left;
+    margin-left:0px;
 }
 
 /*главная матрица*/
@@ -773,6 +839,36 @@ tr.pager td {
     color:White;
     background-color:#507CD1;
     font-weight:bold;
+}
+.horizontal > tbody
+{
+    display:inline-flex;
+    flex-direction:row;
+    white-space:nowrap;
+}
+.horizontal > tbody > tr
+{
+    display:inline-flex;
+}
+
+.vertical > tbody
+{
+    display:inline-flex;
+    flex-direction:column;
+    white-space:nowrap;
+}
+.horizontal > tbody > tr
+{
+    display:inline-flex;
+}
+
+/*Широкие таблицы*/
+.bigTable > tbody > tr > td
+{
+    display:table-cell;
+    padding:2px;
+    white-space:normal;
+    border-bottom:solid 1px #e2e2e2;
 }
 /********************
 *   Mobile Styles   *
