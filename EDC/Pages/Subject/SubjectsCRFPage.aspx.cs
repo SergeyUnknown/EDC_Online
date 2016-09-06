@@ -617,11 +617,13 @@ namespace EDC.Pages.Subject
                     si.IsGrouped = false;
                     si.IndexID = -1;
                     si.Value = value;
+                    si.CreatedBy = User.Identity.Name;
                     SIR.Create(si);
                 }
                 else
                 {
                     si.Value = value;
+                    si.CreatedBy = User.Identity.Name;
                     SIR.Update(si);
                 }
                 SIR.Save();
@@ -650,11 +652,13 @@ namespace EDC.Pages.Subject
                         si.Value = value;
                         si.IndexID = i + 1;
                         si.IsGrouped = true;
+                        si.CreatedBy = User.Identity.Name;
                         SIR.Create(si);
                     }
                     else
                     {
                         si.Value = value;
+                        si.CreatedBy = User.Identity.Name;
                         SIR.Update(si);
                     }
                     SIR.Save();

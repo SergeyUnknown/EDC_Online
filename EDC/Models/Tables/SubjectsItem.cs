@@ -28,5 +28,7 @@ namespace EDC.Models
         public string Value { get; set; }   //значение
 
         public string CreatedBy { get; set; } //UserName
+
+        public virtual List<Note> Notes { get; set; }
     }
 }
