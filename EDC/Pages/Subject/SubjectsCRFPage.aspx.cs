@@ -14,26 +14,73 @@ namespace EDC.Pages.Subject
         Models.Repository.CRFItemRepository CIR = new Models.Repository.CRFItemRepository();
         Models.Repository.SubjectsItemRepoitory SIR = new Models.Repository.SubjectsItemRepoitory();
         Models.Repository.SubjectsCRFRepository SCR = new Models.Repository.SubjectsCRFRepository();
+        Models.Repository.SubjectRepository SR = new Models.Repository.SubjectRepository();
+        Models.Repository.CRFInEventRepository CIER = new Models.Repository.CRFInEventRepository();
 
         static Models.CRF _crf;
-        static long _eventID;
         static long _subjectID;
+        static long _eventID;
         static long _crfID;
         static int RowCount = 0;
 
-        static List<TableRow> addingRows = new List<TableRow>();
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
                 GetInfoFromRequest();
                 _crf = CRFR.SelectByID(_crfID);
+                ConfigButtonVisible();
+                RowCount = 0;
+            }
+                LoadForm(_crf);
+            
+        }
+
+        void ConfigButtonVisible()
+        {
+            Models.Subject currentSubject = SR.SelectByID(_subjectID);
+            List<Models.Subject> subjectsInCenter = SR.GetManyByFilter(x=>x.MedicalCenterID == currentSubject.MedicalCenterID).OrderBy(x => x.SubjectID).ToList();
+            if (subjectsInCenter.Count > 0)
+            {
+                int currentSubjectIndex = subjectsInCenter.FindIndex(x => x.SubjectID == _subjectID);
+                if (currentSubjectIndex == 0)
+                    btnPrevSubject.Visible = false;
+                else
+                    btnPrevSubject.PostBackUrl = string.Format("~/Subjects/{0}/{1}/{2}", subjectsInCenter[currentSubjectIndex-1].SubjectID, _eventID, _crfID);
+                
+                if (currentSubjectIndex == subjectsInCenter.Count - 1)
+                    btnNextSubject.Visible = false;
+                else
+                    btnPrevSubject.PostBackUrl = string.Format("~/Subjects/{0}/{1}/{2}", subjectsInCenter[currentSubjectIndex +1].SubjectID, _eventID, _crfID);
             }
             else
             {
-                RegisterViewStateHandler();
+                btnNextSubject.Visible = false;
+                btnPrevSubject.Visible = false;
             }
-                LoadForm(_crf);
+
+
+            Models.CRFInEvent CIE = CIER.SelectByID(_crfID, _eventID);
+            List<Models.CRFInEvent> CIEs = CIER.GetManyByFilter(x => x.EventID == _eventID).OrderBy(x => x.Position).ToList();
+            if (CIEs.Count > 0)
+            {
+                int currentCRFIndex = CIEs.FindIndex(x => x.EventID == _eventID && x.CRFID == _crfID);
+                if (currentCRFIndex == 0)
+                    btnPrevCRFInEvent.Visible = false;
+                else
+                    btnPrevCRFInEvent.PostBackUrl = string.Format("~/Subjects/{0}/{1}/{2}", _subjectID, _eventID, CIEs[currentCRFIndex - 1].CRFID);
+
+                if (currentCRFIndex == CIEs.Count - 1)
+                    btnNextCRFInEvent.Visible = false;
+                else
+                    btnNextCRFInEvent.PostBackUrl = string.Format("~/Subjects/{0}/{1}/{2}", _subjectID, _eventID, CIEs[currentCRFIndex + 1].CRFID);
+
+            }
+            else
+            {
+                btnPrevCRFInEvent.Visible = false;
+                btnNextCRFInEvent.Visible = false;
+            }
         }
 
         #region GetInfoFromRequest
@@ -289,7 +336,6 @@ namespace EDC.Pages.Subject
                                 tc.Controls.Add(RFV);
                             }
                         }
-                        addingRows.Add(addingTR);
                         tableGrouped.Rows.AddAt(j + 2, addingTR);
                         addingTR = new TableRow();
                     }
@@ -571,11 +617,13 @@ namespace EDC.Pages.Subject
                     si.IsGrouped = false;
                     si.IndexID = -1;
                     si.Value = value;
+                    si.CreatedBy = User.Identity.Name;
                     SIR.Create(si);
                 }
                 else
                 {
                     si.Value = value;
+                    si.CreatedBy = User.Identity.Name;
                     SIR.Update(si);
                 }
                 SIR.Save();
@@ -604,11 +652,13 @@ namespace EDC.Pages.Subject
                         si.Value = value;
                         si.IndexID = i + 1;
                         si.IsGrouped = true;
+                        si.CreatedBy = User.Identity.Name;
                         SIR.Create(si);
                     }
                     else
                     {
                         si.Value = value;
+                        si.CreatedBy = User.Identity.Name;
                         SIR.Update(si);
                     }
                     SIR.Save();
@@ -681,5 +731,23 @@ namespace EDC.Pages.Subject
             CRF_Section section = _crf.Sections.First(x => x.Title == panelName);
             AddGroupedRow(tempControl, section);
         }
+
+        protected void prevCRFInEvent_Click(object sender, EventArgs e)
+        {
+
+            Models.CRFInEvent CIE = CIER.SelectByID(_crfID, _eventID);
+            List<Models.CRFInEvent> CIEs = CIER.GetManyByFilter(x => x.EventID == _eventID && x.Position < CIE.Position).OrderBy(x => x.Position).ToList();
+            if (CIEs.Count > 0)
+                Response.Redirect(string.Format("~/Subjects/{0}/{1}/{2}", _subjectID, _eventID, CIEs.Last().CRFID));
+        }
+
+        protected void nextCRFInEvent_Click(object sender, EventArgs e)
+        {
+            Models.CRFInEvent CIE = CIER.SelectByID(_crfID, _eventID);
+            List<Models.CRFInEvent> CIEs = CIER.GetManyByFilter(x => x.EventID == _eventID && x.Position > CIE.Position).OrderBy(x => x.Position).ToList();
+            if (CIEs.Count > 0)
+                Response.Redirect(string.Format("~/Subjects/{0}/{1}/{2}", _subjectID, _eventID, CIEs[0].CRFID));
+        }
+
     }
 }
