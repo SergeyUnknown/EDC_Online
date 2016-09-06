@@ -427,6 +427,7 @@ namespace EDC.Pages.Subject
             {
                 Label lbl = new Label();
                 lbl.Text = "*";
+                lbl.CssClass = "requiredValue";
                 tc.Controls.Add(lbl);
             }
 
