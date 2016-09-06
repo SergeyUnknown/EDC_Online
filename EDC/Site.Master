@@ -105,7 +105,7 @@
                         </ul>
                     
                     <li>
-                        <a runat="server" href="~/Contact">Администрирование/Дизайн</a>
+                        <a runat="server" href="#">Администрирование/Дизайн</a>
                         <ul class="submenu">
                             <li>
                                 <a runat="server" href="~/ConfigurationTrials">Настройка исследования</a>
@@ -127,7 +127,7 @@
                             </li>
                         </ul>
                     <li>
-                        <a runat="server" href="~/About">Иное</a>
+                        <a runat="server" href="#">Иное</a>
                         <ul class="submenu">
                             <li>
                                 <a runat="server" href="~/Account/Manage">Профиль</a>

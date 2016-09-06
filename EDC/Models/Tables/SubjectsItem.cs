@@ -22,9 +22,11 @@ namespace EDC.Models
         [ForeignKey("ItemID")]
         public virtual CRF_Item Item { get; set; }
 
-        public int IndexID { get; set; } //если без группы индекс -1, если в группе >=1; показывает номер строки
+        public int IndexID { get; set; }    //если без группы индекс -1, если в группе >=1; показывает номер строки
         
         public bool IsGrouped { get; set; } //В группе
         public string Value { get; set; }   //значение
+
+        public string CreatedBy { get; set; } //UserName
     }
 }
