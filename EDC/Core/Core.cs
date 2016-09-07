@@ -97,5 +97,19 @@ namespace EDC
             }
         }
 
+        public enum QueryStatus
+        {
+            New,
+            Updated,
+            Closed,
+            Note
+        }
+
+        public enum NoteType
+        {
+            Query,
+            Note
+        }
+
     }
 }

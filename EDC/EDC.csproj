@@ -245,6 +245,7 @@
     <Content Include="Pages\Event\Events.aspx" />
     <Content Include="Pages\MedicalCenter\CreateEditMC.aspx" />
     <Content Include="Pages\MedicalCenter\MedicalCenters.aspx" />
+    <Content Include="Pages\Note\NotesAndQuery.aspx" />
     <Content Include="Pages\Subject\CreateEditSubject.aspx" />
     <Content Include="Pages\Subject\Subjects.aspx" />
     <Content Include="Pages\Subject\SubjectsCRFPage.aspx" />
@@ -314,6 +315,7 @@
     <Compile Include="Models\Repository\CRFInEventRepository.cs" />
     <Compile Include="Models\Repository\EventRepository.cs" />
     <Compile Include="Models\Repository\MedicalCenterRepository.cs" />
+    <Compile Include="Models\Repository\NoteRepository.cs" />
     <Compile Include="Models\Repository\SubjectRepository.cs" />
     <Compile Include="Models\Repository\SubjectsCRFRepository.cs" />
     <Compile Include="Models\Repository\SubjectsEventRepoitory.cs" />
@@ -446,6 +448,13 @@
     <Compile Include="Pages\MedicalCenter\MedicalCenters.aspx.designer.cs">
       <DependentUpon>MedicalCenters.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Note\NotesAndQuery.aspx.cs">
+      <DependentUpon>NotesAndQuery.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Note\NotesAndQuery.aspx.designer.cs">
+      <DependentUpon>NotesAndQuery.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Subject\CreateEditSubject.aspx.cs">
       <DependentUpon>CreateEditSubject.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -498,7 +507,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\CRFs\" />
+    <Folder Include="App_Data\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
   <ItemGroup>

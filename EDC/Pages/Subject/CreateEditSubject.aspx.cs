@@ -102,7 +102,7 @@ namespace EDC.Pages.Subject
                 SR.Create(_subject);
             }
             SR.Save();
-            Response.Redirect("~/MedicalCenters");
+            Response.Redirect("~/Subjects");
         }
     }
 }
