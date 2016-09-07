@@ -78,7 +78,7 @@ namespace EDC.Pages.Event
                 _event.Name = eventName;
 
             ///////////ID//////////////
-            string identifier = tbIdentifier.Text.Trim().ToUpper();
+            string identifier = tbIdentifier.Text.Trim().Replace(" ", "_").ToUpper();
             if(ER.GetManyByFilter(x=>x.Identifier == identifier).Count() >0)
             {
                 throw new ArgumentException("Событие с указаннным идентификатором уже существует");

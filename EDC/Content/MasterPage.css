@@ -109,10 +109,17 @@ ul.submenu > li:first-child {
     border-width:1px 1px 1px 1px;
     border-radius:3px 3px 0px 0px;
     margin-top:0px;
+    
 }
 
 ul.submenu > li:last-child {
     border-radius:0px 0px 3px 3px;
+}
+ul.submenu > li:only-child 
+{
+    border-width:1px 1px 1px 1px;
+    border-radius:3px 3px 3px 3px !important;
+    margin-top:0px;
 }
 ul.submenu > li > a{
     display:block;

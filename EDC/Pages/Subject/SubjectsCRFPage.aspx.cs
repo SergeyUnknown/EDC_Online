@@ -285,7 +285,7 @@ namespace EDC.Pages.Subject
                             tc.Controls.Add(LIT);
                         }
                         trGroupedHeaders.Cells.Add(tc);
-
+                        trGroupedHeaders.CssClass = "bigHeight";
                         #region readCurrentValues
 
                         List<SubjectsItem> SIs = SIR
@@ -348,6 +348,7 @@ namespace EDC.Pages.Subject
                     tcg.Controls.Add(btnAdd);
                     trGroupedHeaders.Cells.Add(tcg);
                     tableGrouped.Rows.Add(trGroupedHeaders);
+                    tableGrouped.CssClass = "bigTable";
                     ScriptManager.GetCurrent(this).RegisterAsyncPostBackControl(btnAdd);
                     ///////////////////////////////////////////////////
                 }
@@ -472,6 +473,7 @@ namespace EDC.Pages.Subject
             {
                 Label lbl = new Label();
                 lbl.Text = "*";
+                lbl.CssClass = "requiredValue";
                 tc.Controls.Add(lbl);
             }
 
