@@ -36,6 +36,7 @@ namespace EDC.Pages.CRF
                     catch(Exception error)
                     {
                         Response.Write(error.Message);
+                        return;
                     }
                 }
                 String fileExtension = System.IO.Path.GetExtension(fuAddCRF.FileName).ToLower();
@@ -59,6 +60,7 @@ namespace EDC.Pages.CRF
                     catch (Exception ex)
                     {
                         Response.Write("File could not be uploaded. <br/>" + ex.Message);
+                        return;
                     }
 
                     if(uploaded)

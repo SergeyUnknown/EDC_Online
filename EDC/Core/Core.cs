@@ -97,6 +97,18 @@ namespace EDC
             }
         }
 
+        public static List<string> DropDownListItemsYesNo
+        {
+            get
+            {
+                List<string> items = new List<string>();
+                items.Add("Выберите значение...");
+                items.Add("Да");
+                items.Add("Нет");
+                return items;
+            }
+        }
+
         public enum QueryStatus
         {
             New,

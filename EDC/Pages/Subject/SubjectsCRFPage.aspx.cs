@@ -16,12 +16,18 @@ namespace EDC.Pages.Subject
         Models.Repository.SubjectsCRFRepository SCR = new Models.Repository.SubjectsCRFRepository();
         Models.Repository.SubjectRepository SR = new Models.Repository.SubjectRepository();
         Models.Repository.CRFInEventRepository CIER = new Models.Repository.CRFInEventRepository();
+        Models.Repository.NoteRepository NR = new Models.Repository.NoteRepository();
 
         static Models.CRF _crf;
         static long _subjectID;
         static long _eventID;
         static long _crfID;
-        static int RowCount = 0;
+        static Dictionary<string, int> RowCountInSection = new Dictionary<string, int>();
+
+        AjaxControlToolkit.ModalPopupExtender _mpe = new AjaxControlToolkit.ModalPopupExtender();
+
+        static long _itemID;
+        static int _indexID;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -31,7 +37,7 @@ namespace EDC.Pages.Subject
                 GetInfoFromRequest();
                 _crf = CRFR.SelectByID(_crfID);
                 ConfigButtonVisible();
-                RowCount = 0;
+                RowCountInSection = new Dictionary<string, int>();
             }
                 LoadForm(_crf);
             
@@ -137,6 +143,10 @@ namespace EDC.Pages.Subject
         {
             foreach (Models.CRF_Section section in _crf.Sections)
             {
+                if(!RowCountInSection.ContainsKey(section.Label))
+                {
+                    RowCountInSection.Add(section.Label, 0);
+                }
                 AjaxControlToolkit.TabPanel tp = new AjaxControlToolkit.TabPanel();
                 tp.HeaderText = section.Title;
                 tp.ID = "tp" + section.Label;
@@ -299,6 +309,21 @@ namespace EDC.Pages.Subject
                             {
                                 tc = new TableCell();
                                 GetAddedGroupedControl(item, ref tc, SIs[k].IndexID, SIs[k].Value);
+
+                                /////////////////Должен быть флажок или блокнот//////////////////
+                                Button btnNotes = new Button();
+                                btnNotes.ID = "btnNotes_" + item.Identifier + "_" + SIs[k].IndexID;
+                                btnNotes.Click += btnNotes_Click;
+
+                                AjaxControlToolkit.ModalPopupExtender mpe = new AjaxControlToolkit.ModalPopupExtender();
+                                mpe.TargetControlID = btnNotes.ID;
+                                mpe.PopupControlID = "pnlModalPopup";
+                                mpe.OkControlID = "btnSaveWindow";
+                                mpe.CancelControlID = "btnCloseWindow";
+
+                                tc.Controls.Add(btnNotes);
+                                tc.Controls.Add(mpe);
+                                /////////////////////////////////////////////////////////////////
                                 addedRows[k].Cells.Add(tc);
                             }
                         }
@@ -317,9 +342,9 @@ namespace EDC.Pages.Subject
                         tableGrouped.Rows.AddRange(addedRows); //введенные данные
                     tableGrouped.Rows.Add(trsGroupedValues); //добавление пустых полей
 
-                    //////////////////////отриовка добавленных строк/////////////////////////
+                    //////////////////////отрисовка добавленных строк/////////////////////////
                     TableRow addingTR = new TableRow();
-                    for (int j = 0; j < RowCount; j++)
+                    for (int j = 0; j < RowCountInSection[section.Label]; j++)
                     {
                         for (int i = 0; i < groupedItems.Count; i++)
                         {
@@ -478,8 +503,24 @@ namespace EDC.Pages.Subject
                 tc.Controls.Add(lbl);
             }
 
+            /////////////////Должен быть флажок или блокнот//////////////////
+            if (!isNullValue)
+            {
+                Button btnNotes = new Button();
+                btnNotes.ID = "btnNotes_" + item.Identifier;
+                btnNotes.Click += btnNotes_Click;
 
+                AjaxControlToolkit.ModalPopupExtender mpe = new AjaxControlToolkit.ModalPopupExtender();
+                mpe.ID="mpe_"+ item.Identifier;
+                mpe.TargetControlID = item.Identifier;
+                mpe.PopupControlID = "pnlModalPopup";
+                mpe.CancelControlID = "btnCloseWindow";
+                
 
+                tc.Controls.Add(btnNotes);
+                tc.Controls.Add(mpe);
+            }
+            /////////////////////////////////////////////////////////////////
         }
 
         void GetAddedGroupedControl(CRF_Item item, ref TableCell tc, int index, string value)
@@ -570,15 +611,15 @@ namespace EDC.Pages.Subject
                     }
             }
 
+            addedControl.ID = item.Identifier + "_" + index;
+            tc.Controls.Add(addedControl);
+
             if (item.Required) //если обязательное
             {
                 Label lbl = new Label();
                 lbl.Text = "*";
                 tc.Controls.Add(lbl);
             }
-
-            addedControl.ID = item.Identifier + "_" + index;
-            tc.Controls.Add(addedControl);
         }
         List<ListItem> GetListItems(Models.CRF_Item item)
         {
@@ -700,23 +741,30 @@ namespace EDC.Pages.Subject
         void AddGroupedRow(Control form, Models.CRF_Section section)
         {
             Table tInfo = form as Table;
-            int rIndex = tInfo.Rows.Count-2;
-            if(rIndex<1)
-                return;
-            //TableRow addingTR = new TableRow();
+            int rIndex = tInfo.Rows.Count-1;
 
-            //List<CRF_Item> groupedItems = section.Items
-            //        .Where(x => !x.Ungrouped)
-            //        .OrderBy(x => x.CRF_ItemID).ToList(); //итемы в группе
+            List<CRF_Item> groupedItems = section.Items
+                .Where(x => !x.Ungrouped)
+                .OrderBy(x => x.CRF_ItemID).ToList(); //итемы в группе
+            TableRow addingTR = new TableRow();
+            for (int i = 0; i < groupedItems.Count; i++)
+            {
+                TableCell tc = new TableCell();
+                GetAddedGroupedControl(groupedItems[i], ref tc, rIndex, null);
+                addingTR.Cells.Add(tc);
 
-            //for (int i = 0; i < tInfo.Rows[rIndex].Cells.Count; i++)
-            //{
-            //    TableCell tc = new TableCell();
-            //    GetAddedGroupedControl(groupedItems[i], ref tc, rIndex + 1, null);
-            //    addingTR.Cells.Add(tc);
-            //}
-
-            RowCount++;
+                if (groupedItems[i].Required) //если обязательное
+                {
+                    RequiredFieldValidator RFV = new RequiredFieldValidator();
+                    RFV.ControlToValidate = groupedItems[i].Identifier + "_" + (rIndex).ToString();
+                    RFV.Display = ValidatorDisplay.Dynamic;
+                    RFV.ErrorMessage = "Данное поле обязательно для заполнения";
+                    RFV.CssClass = "field-validation-error";
+                    tc.Controls.Add(RFV);
+                }
+            }
+            tInfo.Rows.AddAt(rIndex, addingTR);
+            RowCountInSection[section.Label] = RowCountInSection[section.Label] + 1;
         }
 
         protected void btnSave_Click(object sender, EventArgs e)
@@ -725,6 +773,7 @@ namespace EDC.Pages.Subject
             string panelName = (tempControl as AjaxControlToolkit.TabPanel).HeaderText;
             CRF_Section section = _crf.Sections.First(x => x.Title == panelName);
             GetInfo(tempControl, section);
+            LoadForm(_crf);
         }
 
         protected void btnAdd_Click(object sender, EventArgs e)
@@ -735,22 +784,65 @@ namespace EDC.Pages.Subject
             AddGroupedRow(tempControl, section);
         }
 
-        protected void prevCRFInEvent_Click(object sender, EventArgs e)
+        protected void btnNotes_Click(object sender, EventArgs e)
         {
+            Button btn = sender as Button;
+            string mpeName ="mpe" + btn.ID.Replace("btnNotes", "");
+            AjaxControlToolkit.ModalPopupExtender mpe = btn.Parent.FindControl(mpeName) as AjaxControlToolkit.ModalPopupExtender;
+            _mpe = mpe;
+            tbHeader.Text = "";
+            tbNoteText.Text = "";
+            string strIndex = mpeName.Substring(mpeName.LastIndexOf('_')+1);
+            int rowIndex;
+            if (!int.TryParse(strIndex, out rowIndex))
+                rowIndex = -1;
+            _indexID = rowIndex;
 
-            Models.CRFInEvent CIE = CIER.SelectByID(_crfID, _eventID);
-            List<Models.CRFInEvent> CIEs = CIER.GetManyByFilter(x => x.EventID == _eventID && x.Position < CIE.Position).OrderBy(x => x.Position).ToList();
-            if (CIEs.Count > 0)
-                Response.Redirect(string.Format("~/Subjects/{0}/{1}/{2}", _subjectID, _eventID, CIEs.Last().CRFID));
+            string itemIdentifier = btn.ID.Replace("btnNotes_", "");
+            if(itemIdentifier.IndexOf('_')>0)
+            {
+                itemIdentifier = itemIdentifier.Substring(itemIdentifier.IndexOf('_'));
+            }
+            Models.CRF_Item si = CIR.GetManyByFilter(x => x.Identifier == itemIdentifier).FirstOrDefault();
+
+            _itemID = si.CRF_ItemID;
+
+            List<Models.Note> Notes = NR
+                .GetManyByFilter(x=>x.SubjectID == _subjectID && x.EventID == _eventID && x.CRFID == _crfID && x.ItemID == _itemID && x.IndexID == _indexID).ToList();
+            gvNotes.DataSource = Notes;
+            gvNotes.DataBind();
+            _mpe.Show();
         }
 
-        protected void nextCRFInEvent_Click(object sender, EventArgs e)
+        protected void btnSaveWindow_Click(object sender, EventArgs e)
         {
-            Models.CRFInEvent CIE = CIER.SelectByID(_crfID, _eventID);
-            List<Models.CRFInEvent> CIEs = CIER.GetManyByFilter(x => x.EventID == _eventID && x.Position > CIE.Position).OrderBy(x => x.Position).ToList();
-            if (CIEs.Count > 0)
-                Response.Redirect(string.Format("~/Subjects/{0}/{1}/{2}", _subjectID, _eventID, CIEs[0].CRFID));
+            Models.Note note = new Models.Note();
+            note.Status = Core.QueryStatus.New;
+            note.Type = Core.NoteType.Note;
+            note.ForUser = "";
+            note.FromUser = User.Identity.Name;
+            note.Header = tbHeader.Text;
+            note.Text = tbNoteText.Text;
+            note.CreationDate = DateTime.Now;
+
+            note.SubjectID = _subjectID;
+            note.EventID = _eventID;
+            note.CRFID = _crfID;
+            note.ItemID = _itemID;
+            note.IndexID = _indexID;
+
+            NR.Create(note);
+            NR.Save();
+
+            //note.PreviousNoteID
+
+            //note.MedicalCenterID
+            
+            _mpe.Hide();
         }
+
+
+
 
     }
 }
