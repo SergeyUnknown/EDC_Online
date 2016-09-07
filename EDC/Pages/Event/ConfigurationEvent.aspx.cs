@@ -23,6 +23,7 @@ namespace EDC.Pages.Event
         {
             if (!IsPostBack)
             {
+                _addingCRFs = new List<Models.CRF>();
                 divAddCRF.Visible = false;
                 _event = ER.SelectByID(GetIDFromRequest());
                 if (_event == null)

@@ -333,7 +333,7 @@ fieldset {
         font-size: 1.2em;
         margin: 5px 0 6px 0;
         padding: 5px;
-        width: 300px;
+        /*width: 300px;*/
     }
 
     textarea {
@@ -479,6 +479,26 @@ input[type="checkbox"].input-validation-error {
 .validation-summary-valid {
     display: none;
 }
+.addSubjectList
+{
+    list-style-type:none;
+    padding:0;
+}
+/*календарь на добавлении субъекта
+*/
+.calendarImg
+{
+    display:inline-block;
+    vertical-align:central;
+    background-color: #7ac0da;
+    border-radius:5px;
+    width:31px;
+    height:31px;
+}
+#MainContent_tbDate
+{
+
+}
 
 /* tables
 ----------------------------------------------------------*/
@@ -514,16 +534,25 @@ th {
 th:first-child{
     border-left:0;
 
-    border-radius: 5px 0px 0px 0px;
+    border-radius: 5px 0px 0px 0px !important;
     -moz-border-radius: 5px 0px 0px 0px;
     -webkit-border-radius: 5px 0px 0px 0px;
     
 }
 
+tbody:first-child
+{
+    border-left:0;
+
+    border-radius: 5px 0px 0px 0px;
+    -moz-border-radius: 5px 0px 0px 0px;
+    -webkit-border-radius: 5px 0px 0px 0px;
+}
+
 th:last-child{
     border-right:0;
     
-    border-radius: 0px 5px 0px 0px;
+    border-radius: 0px 5px 0px 0px !important;
     -moz-border-radius: 0px 5px 0px 0px;
     -webkit-border-radius: 0px 5px 0px 0px;
         
@@ -577,7 +606,7 @@ tr:last-child > td:first-child
 {
     border-left:0;
     
-    border-radius: 0px 0px 0px 5px;
+    border-radius: 0px 0px 0px 5px !important;
     -moz-border-radius: 0px 0px 0px 5px;
     -webkit-border-radius: 0px 0px 0px 5px;
     
@@ -586,7 +615,7 @@ tr:last-child > td:last-child
 {
     border-right:0;
 
-    border-radius: 0px 0px 5px 0px;
+    border-radius: 0px 0px 5px 0px !important;
     -moz-border-radius: 0px 0px 5px 0px;
     -webkit-border-radius: 0px 0px 5px 0px;
         
@@ -622,7 +651,19 @@ tr.pager td {
     
     clear:both
 }
-
+/*звездочка напротив необходимого поля*/
+.requiredValue
+{
+    color:red;
+    vertical-align:super;
+    
+}
+    .requiredValue:hover::after {
+        position: absolute;
+        content: "Данное поле необходимо заполнить";
+        background-color:rgba(255, 255, 255, 0.70);
+        vertical-align:super;
+    }
 /*выбор на главной странице*/
 #MainContent_ddlCRF
 {
@@ -636,6 +677,7 @@ tr.pager td {
     -webkit-box-shadow: rgba(0,0,0,0.8) 0px 2px 4px 0px;
 }
 /* таблица со стрелочками под основным контентом */
+
 .dt {
     -webkit-box-shadow: rgba(0,0,0,0.8) 0px 2px 5px;
 
@@ -654,14 +696,23 @@ tr.pager td {
 
 .CRFItemHeader
 {
+    display:flex;
+    margin:auto;
     text-align:center;
-    font-size:13px;
+    font-size:16px;
+    font-weight:normal;
+    
+}
+.CRFItemsubHeader
+{
+    font-size:14px;
+    font-weight:500;
     
 }
 .CRFCellLeftItem 
 {
-    display:inline-flex;
-    /*
+    /*display:inline-flex;
+    
     text-align:justify;
     justify-content:space-between;
         */
@@ -671,18 +722,22 @@ tr.pager td {
     vertical-align:middle;    
     text-wrap:avoid;
 }
+/*Текст правее input*/
+.CRFCellLeftItem > span
+{
+    display:inline-flex;
+    margin:auto 0 auto 2px;
+}
 
 .CRFLeftItem
 {
     display:inline-block;
     font-size:1em;
     font-weight:500;
-    width:40%;
     min-width:40%;
     /*vertical-align:middle;*/
     margin-top:auto;
     margin-bottom:auto;
-    clear:both;
 }
 .response-Item
 {
@@ -690,7 +745,9 @@ tr.pager td {
     box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.26);
     align-content:center;
     width:auto;
-    margin-left: auto;
+    
+    /*margin-left: auto;*/
+    max-height:200px;
     margin-right: auto;
 }
 .response-Item > tbody > tr > td
@@ -706,17 +763,20 @@ tr.pager td {
 {
     font-weight:500;
     font-size:13px;
-    display:inline;
+    display:inline-flex;
 }
 
 .response-Item > tbody > tr > td > input
 {
     width:auto;
     margin:0px;
-    vertical-align:bottom;
+    /*vertical-align:bottom;*/
+    vertical-align: text-bottom;
+}
+.ajax__tab_panel 
+{
     
 }
-
 .ajax__tab_panel > span
 {
     margin:0px;
@@ -724,37 +784,172 @@ tr.pager td {
     display:inline-block;
     background-color:rgba(152, 227, 255, 0.46);
 }
-.ajax__tab_panel > table > tbody > tr > td > table
+.ajax__tab_panel > table > tbody > tr
 {
-
+    /*
+    display:flex;
+        */
+    flex-wrap:nowrap;
+    /*
+    justify-content:space-between;
+    border:solid 1px #c8c8c8;*/
+     
+}
+.ajax__tab_panel > table > tbody > tr:nth-child(2n) {
+    /*background: #e8edff;
+    background: rgba(232, 237, 255, 0.7);*/
+    /*background-image: linear-gradient(to top, rgba(255, 255, 255, 0.00), #c8c8c8);*/
+    
+  
+}
+.ajax__tab_panel > table > tbody > tr > td
+{
+    /*
+    flex:inherit;
+    display:flex;
+    flex-grow:10;
+        */
 }
 .ajax__tab_panel > table
 {
+    border-collapse:collapse;
     margin:0px;
     width:100%;
     clear:both;
     box-shadow:0 0 0 0;
 }
-
+/*
 .ajax__tab_panel > input 
 {
     display:inline-block;
     width:10%;
 }
-
+    */
+/*кнопки сохранить*/
 .ajax__tab_panel > table > tbody > tr > td > input
 {
     display:inline-block;
     text-align:center;
-    width:auto;
+    max-width:100px;
+    
 }
 
 .field-validation-error 
 {
     margin-left:auto;
-    float:right;
+    /*float:right;*/
     width:30%;
 }
+
+#MainContent_tcCRF_tpPage input
+{
+    text-align:left;
+    margin-left:0px;
+    width:50px;
+}
+
+/*главная матрица*/
+#MainContent_tMatrix > tbody > tr > td
+{
+    border:1px solid #c8c8c8;
+}
+    #MainContent_tMatrix > tbody > tr > td:first-child {
+        border-left: none;
+    }
+    #MainContent_tMatrix > tbody > tr > td:last-child {
+        border-right:none;
+    }
+    #MainContent_tMatrix > tbody > tr:last-child
+    {
+        border-bottom:none;
+    }
+
+
+#MainContent_tMatrix > tbody > tr:first-child
+{
+    color:White;
+    background-color:#507CD1;
+    font-weight:bold;
+    border-top:none;
+}
+    #MainContent_tMatrix > tbody > tr:first-child > td > span::selection {
+        background:#a6dbed;
+    }
+#MainContent_tMatrix > tbody > tr:nth-child(2)
+{
+    background-color:rgba(80, 124, 209, 0.52);
+    color:white;
+}
+
+#MainContent_tMatrix > tbody > tr > td > input
+{
+    width:20px;
+    height:20px;
+    margin:2px;
+}
+#MainContent_tMatrix > tbody > tr > td > input:hover
+{
+    width:22px;
+    height:22px;
+    margin:1px;
+}
+.horizontal > tbody
+{
+    display:inline-flex;
+    flex-direction:row;
+    white-space:nowrap;
+    min-width:100px;
+}
+.horizontal > tbody > tr
+{
+    display:inline-flex;
+    
+}
+
+.vertical > tbody
+{
+    display:inline-flex;
+    flex-direction:column;
+    min-width:160px;
+    white-space:nowrap;
+}
+.horizontal > tbody > tr
+{
+    display:inline-flex;
+}
+
+/*Широкие таблицы*/
+.bigTable > tbody > tr
+{
+    
+    display:table-row;
+    padding:2px;
+    white-space:normal;
+    /*
+    min-width:50px;
+    width:auto;
+    max-width:none;
+        */
+    overflow:hidden;
+    border-right:solid 1px #e2e2e2;
+}
+.bigTable > tbody > tr:nth-child(2n+1) {
+    background: rgba(232, 237, 255, 0.7);
+}
+.bigTable > tbody > tr:first-child {
+    border-top:solid 1px #c8c8c8;
+}
+.bigTable > tbody > tr > td
+{
+    border-right:solid 1px #c8c8c8;
+}
+/*header big table*/
+.bigHeight > td
+{
+    width:auto;
+    height:auto !important;
+}
+
 /********************
 *   Mobile Styles   *
 ********************/

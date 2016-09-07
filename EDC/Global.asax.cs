@@ -18,9 +18,9 @@ namespace EDC
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
-            //Database.SetInitializer<Models.EDCContext>(new Models.EDCInitializer()); //всё норм
+            Database.SetInitializer<Models.EDCContext>(new Models.EDCInitializer()); //всё норм
 
-            Database.SetInitializer(new DropCreateDatabaseAlways<Models.EDCContext>()); //дроп БД при запуске
+            //Database.SetInitializer(new DropCreateDatabaseAlways<Models.EDCContext>()); //дроп БД при запуске
             
 
             // Код, выполняемый при запуске приложения
