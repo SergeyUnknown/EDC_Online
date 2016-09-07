@@ -25,6 +25,7 @@ namespace EDC.Pages.Subject
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            
             if (!IsPostBack)
             {
                 GetInfoFromRequest();
@@ -702,18 +703,18 @@ namespace EDC.Pages.Subject
             int rIndex = tInfo.Rows.Count-2;
             if(rIndex<1)
                 return;
-            TableRow addingTR = new TableRow();
+            //TableRow addingTR = new TableRow();
 
-            List<CRF_Item> groupedItems = section.Items
-                    .Where(x => !x.Ungrouped)
-                    .OrderBy(x => x.CRF_ItemID).ToList(); //итемы в группе
+            //List<CRF_Item> groupedItems = section.Items
+            //        .Where(x => !x.Ungrouped)
+            //        .OrderBy(x => x.CRF_ItemID).ToList(); //итемы в группе
 
-            for (int i = 0; i < tInfo.Rows[rIndex].Cells.Count; i++)
-            {
-                TableCell tc = new TableCell();
-                GetAddedGroupedControl(groupedItems[i], ref tc, rIndex + 1, null);
-                addingTR.Cells.Add(tc);
-            }
+            //for (int i = 0; i < tInfo.Rows[rIndex].Cells.Count; i++)
+            //{
+            //    TableCell tc = new TableCell();
+            //    GetAddedGroupedControl(groupedItems[i], ref tc, rIndex + 1, null);
+            //    addingTR.Cells.Add(tc);
+            //}
 
             RowCount++;
         }
