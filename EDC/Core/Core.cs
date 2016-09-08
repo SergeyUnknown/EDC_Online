@@ -75,11 +75,11 @@ namespace EDC
             switch (role)
             {
                 case "Administrator": return "Администратор";
-                case "Data_Manager": return "Data Manager";
+                case "Data_Manager": return "Дата менеджер";
                 case "Monitor": return "Монитор";
                 case "Principal_Investigator": return "Главный исследователь";
-                case "Investigator": return "Исследователь";
-                default: return "";
+                case "Investigator": return "Координатор/Исследователь";
+                default: return role;
             }
         }
 

@@ -19,6 +19,7 @@ namespace EDC.Pages.Subject
         Models.Repository.NoteRepository NR = new Models.Repository.NoteRepository();
 
         static Models.CRF _crf;
+        static Models.Subject _subject;
         static long _subjectID;
         static long _eventID;
         static long _crfID;
@@ -35,7 +36,9 @@ namespace EDC.Pages.Subject
             {
                 GetInfoFromRequest();
                 _crf = CRFR.SelectByID(_crfID);
+                _subject = SR.SelectByID(_subjectID);
                 ConfigButtonVisible();
+                Title = string.Format("Настройка ИРК \"{0}\" субъекта {1}", string.IsNullOrWhiteSpace(_crf.RussianName) ? _crf.Name : _crf.RussianName, _subject.Number);
                 RowCountInSection = new Dictionary<string, int>();
             }
                 LoadForm(_crf);
@@ -44,8 +47,7 @@ namespace EDC.Pages.Subject
 
         void ConfigButtonVisible()
         {
-            Models.Subject currentSubject = SR.SelectByID(_subjectID);
-            List<Models.Subject> subjectsInCenter = SR.GetManyByFilter(x=>x.MedicalCenterID == currentSubject.MedicalCenterID).OrderBy(x => x.SubjectID).ToList();
+            List<Models.Subject> subjectsInCenter = SR.GetManyByFilter(x=>x.MedicalCenterID == _subject.MedicalCenterID).OrderBy(x => x.SubjectID).ToList();
             if (subjectsInCenter.Count > 0)
             {
                 int currentSubjectIndex = subjectsInCenter.FindIndex(x => x.SubjectID == _subjectID);
@@ -308,21 +310,7 @@ namespace EDC.Pages.Subject
                             {
                                 tc = new TableCell();
                                 GetAddedGroupedControl(item, ref tc, SIs[k].IndexID, SIs[k].Value);
-
-                                /////////////////Должен быть флажок или блокнот//////////////////
-                                Button btnNotes = new Button();
-                                btnNotes.ID = "btnNotes_" + item.Identifier + "_" + SIs[k].IndexID;
-                                btnNotes.Click += btnNotes_Click;
-
-                                AjaxControlToolkit.ModalPopupExtender mpe = new AjaxControlToolkit.ModalPopupExtender();
-                                mpe.TargetControlID = btnNotes.ID;
-                                mpe.PopupControlID = "pnlModalPopup";
-                                mpe.OkControlID = "btnSaveWindow";
-                                mpe.CancelControlID = "btnCloseWindow";
-
-                                tc.Controls.Add(btnNotes);
-                                tc.Controls.Add(mpe);
-                                /////////////////////////////////////////////////////////////////
+                                GetModalPopup(ref tc,(item.Identifier + "_" + SIs[k].IndexID).ToString());
                                 addedRows[k].Cells.Add(tc);
                             }
                         }
@@ -388,6 +376,27 @@ namespace EDC.Pages.Subject
             }
         }
 
+        void GetModalPopup(ref TableCell tc, string id)
+        {
+            Button btnNotes = new Button();
+            btnNotes.ID = "btnNotes_" + id;
+            btnNotes.Click += btnNotes_Click;
+            tc.Controls.Add(btnNotes);
+
+            LinkButton btnUnvisible = new LinkButton();
+            btnUnvisible.ID = "btnUnvisible_" + id;
+            btnUnvisible.CssClass = "buttonHide";
+            tc.Controls.Add(btnUnvisible);
+
+            AjaxControlToolkit.ModalPopupExtender mpe = new AjaxControlToolkit.ModalPopupExtender();
+            mpe.TargetControlID = btnUnvisible.ID;
+            mpe.PopupControlID = "pnlModalPopup";
+            mpe.OkControlID = "btnSaveWindow";
+            mpe.CancelControlID = "btnCloseWindow";
+            mpe.ID = "mpe_" + id;
+            tc.Controls.Add(mpe);
+        }
+
         void GetAddedUngroupedControl(CRF_Item item, ref TableCell tc)
         {
             Control addedControl = new Control();
@@ -395,7 +404,6 @@ namespace EDC.Pages.Subject
             #region readCurrentValue
             SubjectsItem si = SIR.SelectByID(_subjectID, _eventID, _crfID, item.CRF_ItemID,-1);
             List<SubjectsItem> temp = SIR.SelectAll().ToList();
-            //CRF_Item temp1 = temp[0].Item;
             string itemValue = "";
             bool isNullValue = true;
             if (si != null && !string.IsNullOrWhiteSpace(si.Value))
@@ -501,26 +509,11 @@ namespace EDC.Pages.Subject
                 lbl.CssClass = "requiredValue";
                 tc.Controls.Add(lbl);
             }
-
-            /////////////////Должен быть флажок или блокнот//////////////////
             if (!isNullValue)
             {
-                Button btnNotes = new Button();
-                btnNotes.ID = "btnNotes_" + item.Identifier;
-                btnNotes.CssClass = "nodes";
-                btnNotes.Click += btnNotes_Click;
-
-                AjaxControlToolkit.ModalPopupExtender mpe = new AjaxControlToolkit.ModalPopupExtender();
-                mpe.ID="mpe_"+ item.Identifier;
-                mpe.TargetControlID = item.Identifier;
-                mpe.PopupControlID = "pnlModalPopup";
-                mpe.CancelControlID = "btnCloseWindow";
-                
-
-                tc.Controls.Add(btnNotes);
-                tc.Controls.Add(mpe);
+                GetModalPopup(ref tc, item.Identifier);
             }
-            /////////////////////////////////////////////////////////////////
+
         }
 
         void GetAddedGroupedControl(CRF_Item item, ref TableCell tc, int index, string value)
