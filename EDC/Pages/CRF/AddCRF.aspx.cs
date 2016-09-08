@@ -175,10 +175,12 @@ namespace EDC.Pages.CRF
             newCRF.CreationDate = DateTime.Now;
             newCRF.CreatedBy = User.Identity.Name;
             newCRF.Version = CRFInfo[1];
-            if(addedCRF.Any(x=>x.Version.ToLower() == newCRF.Version.ToLower()))
+            if (addedCRF.Any(x => x.Version.ToLower() == newCRF.Version.ToLower()))
             {
                 CRF_Errors.Add(new CRF_Error(table.TableName, 2, 1, "CRF с указанным именем и версий уже существует"));
             }
+            else
+                newCRF.Identifier += newCRF.Version.Replace(".","_").Replace(","," ");
             newCRF.FilePath = filePath;
 
             return newCRF;

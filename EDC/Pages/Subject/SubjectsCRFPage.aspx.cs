@@ -26,8 +26,7 @@ namespace EDC.Pages.Subject
 
         AjaxControlToolkit.ModalPopupExtender _mpe = new AjaxControlToolkit.ModalPopupExtender();
 
-        static long _itemID;
-        static int _indexID;
+        static Models.SubjectsItem _si;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -796,19 +795,21 @@ namespace EDC.Pages.Subject
             int rowIndex;
             if (!int.TryParse(strIndex, out rowIndex))
                 rowIndex = -1;
-            _indexID = rowIndex;
 
             string itemIdentifier = btn.ID.Replace("btnNotes_", "");
             if(itemIdentifier.IndexOf('_')>0)
             {
                 itemIdentifier = itemIdentifier.Substring(itemIdentifier.IndexOf('_'));
             }
-            Models.CRF_Item si = CIR.GetManyByFilter(x => x.Identifier == itemIdentifier).FirstOrDefault();
+            Models.CRF_Item ci = CIR.GetManyByFilter(x => x.Identifier == itemIdentifier).FirstOrDefault();
 
-            _itemID = si.CRF_ItemID;
-
+            Models.SubjectsItem si = SIR.SelectByID(_subjectID, _eventID, _crfID, ci.CRF_ItemID, rowIndex);
+            if (si == null)
+                return;
+            else
+                _si = si;
             List<Models.Note> Notes = NR
-                .GetManyByFilter(x=>x.SubjectID == _subjectID && x.EventID == _eventID && x.CRFID == _crfID && x.ItemID == _itemID && x.IndexID == _indexID).ToList();
+                .GetManyByFilter(x=>x.SubjectID == _subjectID && x.EventID == _eventID && x.CRFID == _crfID && x.ItemID == si.ItemID && x.IndexID == si.IndexID).ToList();
             gvNotes.DataSource = Notes;
             gvNotes.DataBind();
             _mpe.Show();
@@ -819,7 +820,7 @@ namespace EDC.Pages.Subject
             Models.Note note = new Models.Note();
             note.Status = Core.QueryStatus.New;
             note.Type = Core.NoteType.Note;
-            note.ForUser = "";
+            note.ForUser = _si.CreatedBy;
             note.FromUser = User.Identity.Name;
             note.Header = tbHeader.Text;
             note.Text = tbNoteText.Text;
@@ -828,15 +829,15 @@ namespace EDC.Pages.Subject
             note.SubjectID = _subjectID;
             note.EventID = _eventID;
             note.CRFID = _crfID;
-            note.ItemID = _itemID;
-            note.IndexID = _indexID;
+            note.ItemID = _si.ItemID;
+            note.IndexID = _si.IndexID;
 
             NR.Create(note);
             NR.Save();
 
             //note.PreviousNoteID
 
-            //note.MedicalCenterID
+            note.MedicalCenterID = SR.SelectByID(_subjectID).MedicalCenterID;
             
             _mpe.Hide();
         }
