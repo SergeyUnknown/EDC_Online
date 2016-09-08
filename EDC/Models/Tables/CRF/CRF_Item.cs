@@ -32,7 +32,7 @@ namespace EDC.Models
         public int ColumnNumber { get; set; }
         public int PageNumber { get; set; } //??????????????????????
         public int QuestionNumber { get; set; }
-        public Core.ResponseType ResponseType { get; set; } //??????????????????/
+        public Core.ResponseType ResponseType { get; set; }
         public string ResponseLabel { get; set; }
         public string ResponseOptionText { get; set; }
         public string ResponseValuesOrCalculation { get; set; }
@@ -44,5 +44,8 @@ namespace EDC.Models
         public string ValidationErrorMessage { get; set; }
         public bool PHI { get; set; }
         public bool Required { get; set; }
+
+        public virtual List<Note> Notes { get; set; }
+        public virtual List<SubjectsItem> SubjectItems { get; set; }
     }
 }

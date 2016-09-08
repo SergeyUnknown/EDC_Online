@@ -17,6 +17,8 @@ namespace EDC.Pages.Event
         {
             if (!IsPostBack)
             {
+                ddlRequired.DataSource = Core.DropDownListItemsYesNo;
+                ddlRequired.DataBind();
                 if (Request.Url.ToString().IndexOf("Edit") == -1)
                 {
                     btnOk.Text = "Добавить";
@@ -34,6 +36,7 @@ namespace EDC.Pages.Event
 
                     tbName.Text = _event.Name;
                     tbIdentifier.Text = _event.Identifier;
+                    ddlRequired.SelectedIndex = _event.Required ? 1 : 2;
                 }
             }
         }
@@ -78,13 +81,21 @@ namespace EDC.Pages.Event
                 _event.Name = eventName;
 
             ///////////ID//////////////
-            string identifier = tbIdentifier.Text.Trim().ToUpper();
+            string identifier = tbIdentifier.Text.Trim().Replace(" ", "_").ToUpper();
             if(ER.GetManyByFilter(x=>x.Identifier == identifier).Count() >0)
             {
                 throw new ArgumentException("Событие с указаннным идентификатором уже существует");
             }
             else
                 _event.Identifier = identifier;
+            //////////////////////////
+
+            ///////required///////////
+            if (ddlRequired.SelectedIndex == 0)
+                throw new ArgumentException("Необходимо указать обязательно ли событие");
+            else
+                _event.Required = ddlRequired.SelectedIndex == 1;
+
             //////////////////////////
 
             if (Editing)

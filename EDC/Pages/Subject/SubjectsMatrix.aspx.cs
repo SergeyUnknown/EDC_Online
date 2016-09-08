@@ -27,7 +27,6 @@ namespace EDC.Pages.Subject
                 LoadMatrix();
                 LoadDTDataItem();
             }
-
         }
 
         private int GetPageFromRequest()
@@ -78,7 +77,6 @@ namespace EDC.Pages.Subject
             pageSize = dtInfo.DropDownSelectedValue;
             int maxRecordsOnPage = (CurrentPage * pageSize) > recordCount ? recordCount : (CurrentPage * pageSize);
 
-            //EntryesInfo.Text = string.Format(Localization.Records, ((CurrentPage - 1) * pageSize + 1), maxRecordsOnPage, recordCount);
             LoadDTDataItem();
         }
 

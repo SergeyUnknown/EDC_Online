@@ -18,9 +18,13 @@ namespace EDC
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 
-            Database.SetInitializer<Models.EDCContext>(new Models.EDCInitializer());
+            bool drop = false;
 
-            //Database.SetInitializer(new DropCreateDatabaseAlways<Models.EDCContext>());
+            if(drop)
+                Database.SetInitializer(new DropCreateDatabaseAlways<Models.EDCContext>()); //дроп БД при запуске
+            else
+                Database.SetInitializer<Models.EDCContext>(new Models.EDCInitializer()); //всё норм
+
             
 
             // Код, выполняемый при запуске приложения
@@ -35,9 +39,26 @@ namespace EDC
 
             if (Membership.GetAllUsers().Count == 0)
             {
-                string adminName = "Administrator";
-                Membership.CreateUser(adminName, "!23qweAsd");    //создание учетой записи администратор
-                Roles.AddUserToRole(adminName, Core.Roles.Administrator.ToString());  //назначение ей прав администратора
+                string user1 = Core.Roles.Administrator.ToString();
+                Membership.CreateUser(user1, "!23qweAsd");    //создание учетой записи администратор
+                Roles.AddUserToRole(user1, Core.Roles.Administrator.ToString());  //назначение ей прав администратора
+
+                string user2 = Core.Roles.Investigator.ToString(); //исследователь
+                Membership.CreateUser(user2, "!23qweAsd");
+                Roles.AddUserToRole(user2, Core.Roles.Investigator.ToString());
+
+                string user3 = Core.Roles.Monitor.ToString(); //монитор
+                Membership.CreateUser(user3, "!23qweAsd");
+                Roles.AddUserToRole(user3, Core.Roles.Monitor.ToString());
+
+                string user4 = Core.Roles.Data_Manager.ToString(); //дата манагер
+                Membership.CreateUser(user4, "!23qweAsd");
+                Roles.AddUserToRole(user4, Core.Roles.Data_Manager.ToString());
+
+                string user5 = Core.Roles.Principal_Investigator.ToString(); //главный исследователь
+                Membership.CreateUser(user5, "!23qweAsd");
+                Roles.AddUserToRole(user5, Core.Roles.Principal_Investigator.ToString());
+
             }
         }
 

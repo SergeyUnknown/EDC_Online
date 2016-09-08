@@ -47,9 +47,9 @@ Temporary Items
 .apdisk
 
 # Excel files
-.xls
-.xlsx
-.xlsm
-.xltx
 *.xls
+*.xlsx
+*.xlsm
+*.xltx
 EDC/obj/Debug/EDC.pdb
+EDC/obj/Debug/Release/

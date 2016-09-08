@@ -22,11 +22,16 @@
                         <asp:TextBox runat="server" ID="tbName" />
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="tbName"
                             CssClass="field-validation-error" ErrorMessage="Данное поле обязательно для заполнения" />
-
+                    </li>
+                    <li>
                         <asp:Label runat="server" AssociatedControlID="tbIdentifier">Идентификатор</asp:Label>
                         <asp:TextBox runat="server" ID="tbIdentifier" />
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="tbIdentifier"
                             CssClass="field-validation-error" ErrorMessage="Данное поле обязательно для заполнения" />
+                    </li>
+                    <li>
+                        <asp:Label runat="server" AssociatedControlID="tbIdentifier">Обязательное событие?</asp:Label>
+                        <asp:DropDownList runat="server" ID="ddlRequired" />
                     </li>
                 </ol>
             </ContentTemplate>

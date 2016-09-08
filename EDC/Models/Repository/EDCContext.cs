@@ -44,7 +44,20 @@ namespace EDC.Models
                 .WithRequired(x => x.CRF)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<CRF>()
+                .HasMany(x => x.Sections)
+                .WithRequired(x => x.CRF)
+                .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<CRF_Item>()
+                .HasMany(x => x.Notes)
+                .WithRequired(x => x.CRFItem)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<MedicalCenter>()
+                .HasMany(x => x.Subjects)
+                .WithRequired(x => x.MedicalCenter)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<CRFInEvent>()
                 .HasKey(t => new { t.CRFID, t.EventID });
@@ -58,7 +71,11 @@ namespace EDC.Models
             modelBuilder.Entity<SubjectsItem>()
                 .HasKey(t => new { t.SubjectID,t.EventID,t.CRFID,t.ItemID,t.IndexID });
 
-            
+            modelBuilder.Entity<Note>()
+                .HasRequired(x => x.SubjectItem)
+                .WithMany(x => x.Notes)
+                .HasForeignKey(t => new { t.SubjectID, t.EventID, t.CRFID, t.ItemID, t.IndexID })
+                .WillCascadeOnDelete(false);
 
         }
     }
