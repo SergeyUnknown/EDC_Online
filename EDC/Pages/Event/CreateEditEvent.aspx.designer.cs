@@ -58,6 +58,15 @@ namespace EDC.Pages.Event {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator2;
         
         /// <summary>
+        /// ddlRequired элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlRequired;
+        
+        /// <summary>
         /// btnOk элемент управления.
         /// </summary>
         /// <remarks>

@@ -44,6 +44,11 @@ namespace EDC.Models
                 .WithRequired(x => x.CRF)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<CRF>()
+                .HasMany(x => x.Sections)
+                .WithRequired(x => x.CRF)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<CRF_Item>()
                 .HasMany(x => x.Notes)
                 .WithRequired(x => x.CRFItem)

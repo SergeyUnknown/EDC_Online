@@ -40,11 +40,11 @@ namespace EDC.Models
         /////////////////////////////////////////////
 
 
-        public long PreviousNoteID { get; set; }
+        public long? PreviousNoteID { get; set; }
         [ForeignKey("PreviousNoteID")]
         public Note PreviousNote { get; set; }
 
-        public long MedicalCenterID { get; set; }
+        public long? MedicalCenterID { get; set; }
         [ForeignKey("MedicalCenterID")]
         public virtual MedicalCenter MedicalCenter { get; set; }
     }

@@ -13,12 +13,30 @@ namespace EDC {
     public partial class _Default {
         
         /// <summary>
-        /// tcCRF элемент управления.
+        /// pnlModal элемент управления.
         /// </summary>
         /// <remarks>
         /// Автоматически создаваемое поле.
         /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
         /// </remarks>
-        protected global::AjaxControlToolkit.TabContainer tcCRF;
+        protected global::System.Web.UI.WebControls.Panel pnlModal;
+        
+        /// <summary>
+        /// modalPopup элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::AjaxControlToolkit.ModalPopupExtender modalPopup;
+        
+        /// <summary>
+        /// btnShow элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnShow;
     }
 }

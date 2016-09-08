@@ -85,7 +85,7 @@ namespace EDC.Pages.CRF
             }
             catch(Exception error)
             {
-                Response.Write("Error!");
+                Response.Write(error.Message);
             }
 
             LoadCRFs();
@@ -101,7 +101,6 @@ namespace EDC.Pages.CRF
             pageSize = dtInfo.DropDownSelectedValue;
             int maxRecordsOnPage = (CurrentPage * pageSize) > recordCount ? recordCount : (CurrentPage * pageSize);
 
-            //EntryesInfo.Text = string.Format(Localization.Records, ((CurrentPage - 1) * pageSize + 1), maxRecordsOnPage, recordCount);
             LoadDTDataItem();
         }
     }
