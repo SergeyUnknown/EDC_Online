@@ -13,13 +13,22 @@ namespace EDC.Controls {
     public partial class DownTable {
         
         /// <summary>
-        /// hlButton элемент управления.
+        /// LinkButtonAddNew элемент управления.
         /// </summary>
         /// <remarks>
         /// Автоматически создаваемое поле.
         /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink hlButton;
+        protected global::System.Web.UI.WebControls.LinkButton LinkButtonAddNew;
+        
+        /// <summary>
+        /// Image5 элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image Image5;
         
         /// <summary>
         /// LinkButtonFirstPage элемент управления.
@@ -101,15 +110,6 @@ namespace EDC.Controls {
         /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlItemCount;
-        
-        /// <summary>
-        /// Label1 элемент управления.
-        /// </summary>
-        /// <remarks>
-        /// Автоматически создаваемое поле.
-        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label1;
         
         /// <summary>
         /// pageInfo элемент управления.

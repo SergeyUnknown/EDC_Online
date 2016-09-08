@@ -25,7 +25,7 @@
                     <asp:BoundField DataField="Required" HeaderText="Обязательно" />
                     <asp:BoundField DataField="DateCreation" HeaderText="Дата создания" />
                     <asp:BoundField DataField="CreatedBy" HeaderText="Создал" />
-                    <asp:CommandField HeaderText="Действия" ButtonType="Image" DeleteImageUrl="~/Images/delete (3).png" EditImageUrl="~/Images/pencil-box (1).png" SelectImageUrl="~/Images/wrench (1).png"  ShowSelectButton="true" ShowDeleteButton="True" ShowEditButton="true" DeleteText="Удалить" EditText="Редактировать" SelectText="Настроить"/>
+                    <asp:CommandField HeaderText="Действия" ButtonType="Image" DeleteImageUrl="~/Images/delete.png" EditImageUrl="~/Images/lead-pencil.png" SelectImageUrl="~/Images/settings.png" ShowSelectButton="true" ShowDeleteButton="True" ShowEditButton="true" DeleteText="Удалить" EditText="Редактировать" SelectText="Настроить"/>
                 </Columns>
                 <EditRowStyle BackColor="#2461BF" />
                 <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
