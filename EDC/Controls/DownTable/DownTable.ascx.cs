@@ -11,8 +11,8 @@ namespace EDC.Controls
     {
         public bool ViewButton
         {
-            get { return hlButton.Visible; }
-            set { hlButton.Visible = value; }
+            get { return LinkButtonAddNew.Visible; }
+            set { LinkButtonAddNew.Visible = value; }
         }
 
         static int _pageSize;
@@ -40,8 +40,9 @@ namespace EDC.Controls
             LinkButtonPrevPage.PostBackUrl = DataItem.PrevPageURL;
             LinkButtonNextPage.PostBackUrl = DataItem.NextPageURL;
             LinkButtonLastPage.PostBackUrl = DataItem.LastPageURL;
-            hlButton.Text = DataItem.ButtonText;
-            hlButton.NavigateUrl = DataItem.ButtonURL;
+            //hlButton.Text = DataItem.ButtonText;
+            //hlButton.NavigateUrl = DataItem.ButtonURL;
+            LinkButtonAddNew.PostBackUrl = DataItem.ButtonURL;
             pageInfo.Text = DataItem.PageInfo;
             ddlItemCount.DataSource = DataItem.DropDownItems;
             ddlItemCount.DataBind();
@@ -61,8 +62,9 @@ namespace EDC.Controls
                 LinkButtonPrevPage.PostBackUrl = DataItem.PrevPageURL;
                 LinkButtonNextPage.PostBackUrl = DataItem.NextPageURL;
                 LinkButtonLastPage.PostBackUrl = DataItem.LastPageURL;
-                hlButton.Text = DataItem.ButtonText;
-                hlButton.NavigateUrl = DataItem.ButtonURL;
+                //LinkButtonAddNew.Text = DataItem.ButtonText;
+                //hlButton.NavigateUrl = DataItem.ButtonURL;
+                LinkButtonAddNew.PostBackUrl = DataItem.ButtonURL;
                 pageInfo.Text = DataItem.PageInfo;
                 ddlItemCount.DataSource = DataItem.DropDownItems;
                 ddlItemCount.DataBind();

@@ -210,15 +210,13 @@ section.feature {
 /*----сворачивание табличных столбцов------*/
 #MainContent_gvCRFs
 {
-    table-layout:fixed;
+    /*table-layout:fixed;*/
     
 }
 #MainContent_gvCRFs > tbody > tr > td, th
 {
     width:auto;
-    /*word-wrap:normal;*/
-    
-    overflow-wrap:normal;
+    word-wrap:break-word;
 }
 #MainContent_gvCRFs > tbody > tr > th:target
 {
@@ -295,6 +293,14 @@ fieldset.open-auth-providers {
     margin: 5px 0 0 10px;
 }
 
+
+.buttonHide
+{
+    display:none;
+}
+
+
+
 /* forms */
 fieldset {
     border: none;
@@ -331,9 +337,9 @@ fieldset {
         background: #fff;
         color: #333;
         font-size: 1.2em;
-        margin: 5px 0 6px 0;
+        margin: 2px 0 2px 0;
         padding: 5px;
-        /*width: 300px;*/
+        width: auto;
     }
 
     textarea {
@@ -358,7 +364,7 @@ fieldset {
         border: 0;
         border-radius:5px;
         cursor: pointer;
-        font-size: 1.2em;
+        font-size: 13px;
         font-weight: 600;
         color: white;
         box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.36) ;
@@ -384,6 +390,11 @@ fieldset {
         margin:0px 2px 0px 2px;
         
     }
+
+    input[type=text]
+    {
+        font-size:14px;
+    }
     .inputbutton
     {
         background-color:#7ac0da;
@@ -406,7 +417,8 @@ fieldset {
         color: black;
     }
     /*Наведение на кнопку создать аккаунт и отмена*/
-    #MainContent_btnCancel:hover, #MainContent_btnOk:hover, #MainContent_btnUpload:hover, #MainContent_btnSaveChange:hover
+    #MainContent_btnCancel:hover, #MainContent_btnOk:hover, #MainContent_btnUpload:hover, #MainContent_btnSaveChange:hover, 
+    input[type=submit]:hover, .addButton > img:hover
     {
         -webkit-box-shadow: rgba(0, 0, 0, 0.36) 0px 4px 8px;
         background-color:#7EA2D4;
@@ -484,6 +496,10 @@ input[type="checkbox"].input-validation-error {
     list-style-type:none;
     padding:0;
 }
+.addButton > img{
+    background-color:#7ac0da;
+    border-radius:5px;
+}
 /*календарь на добавлении субъекта
 */
 .calendarImg
@@ -499,7 +515,12 @@ input[type="checkbox"].input-validation-error {
 {
 
 }
-
+input[title="Следующая CRF"], input[title="Предыдущая CRF"]
+{
+    display:block;
+    margin:6px auto 2px auto;
+    right:50%;
+}
 /* tables
 ----------------------------------------------------------*/
 table {
@@ -530,7 +551,10 @@ th {
     overflow:hidden;
     background-color:#507CD1;
 }
-
+th::selection
+{
+    background-color:#a6dbed;
+}
 th:first-child{
     border-left:0;
 
@@ -735,10 +759,12 @@ tr.pager td {
     font-size:1em;
     font-weight:500;
     min-width:40%;
+    max-width:40%;
     /*vertical-align:middle;*/
     margin-top:auto;
     margin-bottom:auto;
 }
+
 .response-Item
 {
     display: inline-block;
@@ -786,30 +812,14 @@ tr.pager td {
 }
 .ajax__tab_panel > table > tbody > tr
 {
-    /*
-    display:flex;
-        */
     flex-wrap:nowrap;
     /*
+    display:flex;
     justify-content:space-between;
     border:solid 1px #c8c8c8;*/
      
 }
-.ajax__tab_panel > table > tbody > tr:nth-child(2n) {
-    /*background: #e8edff;
-    background: rgba(232, 237, 255, 0.7);*/
-    /*background-image: linear-gradient(to top, rgba(255, 255, 255, 0.00), #c8c8c8);*/
-    
-  
-}
-.ajax__tab_panel > table > tbody > tr > td
-{
-    /*
-    flex:inherit;
-    display:flex;
-    flex-grow:10;
-        */
-}
+
 .ajax__tab_panel > table
 {
     border-collapse:collapse;
@@ -818,13 +828,7 @@ tr.pager td {
     clear:both;
     box-shadow:0 0 0 0;
 }
-/*
-.ajax__tab_panel > input 
-{
-    display:inline-block;
-    width:10%;
-}
-    */
+
 /*кнопки сохранить*/
 .ajax__tab_panel > table > tbody > tr > td > input
 {
@@ -837,7 +841,7 @@ tr.pager td {
 .field-validation-error 
 {
     margin-left:auto;
-    /*float:right;*/
+    float:right;
     width:30%;
 }
 
@@ -925,11 +929,6 @@ tr.pager td {
     display:table-row;
     padding:2px;
     white-space:normal;
-    /*
-    min-width:50px;
-    width:auto;
-    max-width:none;
-        */
     overflow:hidden;
     border-right:solid 1px #e2e2e2;
 }
@@ -949,12 +948,69 @@ tr.pager td {
     width:auto;
     height:auto !important;
 }
+.bigHeight > .CRFCellLeftItem > .CRFLeftItem
+{
+    max-width:initial;
+}
 
+<<<<<<< HEAD
 .buttonHide
 {
     display:none;
 }
 
+=======
+#MainContent_pnlModalPopup
+{
+    background-color:#efefef;
+    overflow:hidden;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow:0px 8px 15px 3px #333;
+    animation-name:showpopup;
+    animation-duration:0.5s;
+    transition:all ease-in 0.5s;
+    transition-property:width;
+}
+@keyframes showpopup {
+    from {
+        transform:scale(0.1);
+    }
+    to {
+    }
+}
+@keyframes closepopup {
+    from {
+    }
+    to {
+        transform:scale(0.1);
+    }
+}
+#MainContent_pnlModalPopup > #MainContent_btnCloseWindow
+{
+
+}
+
+.nodes {
+    display: inline-flex;
+    padding: 10px !important;
+    width: 20px !important;
+    height: 20px;
+    vertical-align: middle;
+    background-image: url('../Images/tag-text-outline (1).png');
+    background-size: 20px;
+}
+
+#MainContent_rbStatus 
+{
+    width:50%;
+}
+
+.pageCount
+{
+    vertical-align: super
+}
+>>>>>>> refs/remotes/origin/master
 /********************
 *   Mobile Styles   *
 ********************/

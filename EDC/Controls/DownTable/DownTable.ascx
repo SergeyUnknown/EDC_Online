@@ -5,10 +5,15 @@
     width:100%;
 }
 td a img {
-    width:25px;
-    height:25px;
+    width:24px;
+    height:24px;
+    padding:1px;
 }
-
+img {
+        width: 24px;
+        height: 24px;
+        padding: 1px;
+}
 td.dtleft {
     width:20%;
 }
@@ -39,22 +44,23 @@ td.dtrigth2 {
     width:15%;
     text-align:right;
 }
+/**/
 </style>
 
 <table class="dt">
         <tr>
             <td class="dtleft">
-                <asp:HyperLink ID="hlButton" CssClass="addButton" runat="server" NavigateUrl="~/">""</asp:HyperLink>
+                <asp:LinkButton runat="server" ID="LinkButtonAddNew" CssClass="addButton" ><asp:Image ID="Image5" runat="server" ImageUrl="~/Images/note-plus-outline.png" /></asp:LinkButton>
             </td>
             <td class="dtcenter">
-                <asp:LinkButton runat="server" ID="LinkButtonFirstPage"><asp:Image ID="Image1" runat="server" ImageUrl="~/Images/skip-backward (3).png" /></asp:LinkButton>
-                <asp:LinkButton runat="server" ID="LinkButtonPrevPage"><asp:Image ID="Image2" runat="server" ImageUrl="~/Images/backward.png"/></asp:LinkButton>
-                <asp:LinkButton runat="server" ID="LinkButtonNextPage"><asp:Image ID="Image3" runat="server" ImageUrl="~/Images/forward (3).png"/></asp:LinkButton>
-                <asp:LinkButton runat="server" ID="LinkButtonLastPage"><asp:Image ID="Image4" runat="server" ImageUrl="~/Images/skip-forward (2).png"/></asp:LinkButton>
+                <asp:LinkButton runat="server" ID="LinkButtonFirstPage"><asp:Image ID="Image1" runat="server" ImageUrl="~/Images/step-backward-2.png" /></asp:LinkButton>
+                <asp:LinkButton runat="server" ID="LinkButtonPrevPage"><asp:Image ID="Image2" runat="server" ImageUrl="~/Images/step-backward.png"/></asp:LinkButton>
+                <asp:LinkButton runat="server" ID="LinkButtonNextPage"><asp:Image ID="Image3" runat="server" ImageUrl="~/Images/step-forward.png"/></asp:LinkButton>
+                <asp:LinkButton runat="server" ID="LinkButtonLastPage"><asp:Image ID="Image4" runat="server" ImageUrl="~/Images/step-forward-2.png"/></asp:LinkButton>
             </td>
             <td class="dtright1">
                 <asp:DropDownList CssClass="pageCount" ID="ddlItemCount" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlItemCount_SelectedIndexChanged"/>
-                <asp:label ID="Label1" runat="server">Записей на страницу</asp:label>
+                <asp:Image runat="server" ImageUrl="~/Images/note-multiple (1).png"/>
             </td>
             <td class="dtrigth2">
                 <asp:Label runat="server" ID="pageInfo"></asp:Label>
