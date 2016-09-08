@@ -19,6 +19,7 @@ namespace EDC.Pages.Subject
         Models.Repository.NoteRepository NR = new Models.Repository.NoteRepository();
 
         static Models.CRF _crf;
+        static Models.Subject _subject;
         static long _subjectID;
         static long _eventID;
         static long _crfID;
@@ -35,7 +36,9 @@ namespace EDC.Pages.Subject
             {
                 GetInfoFromRequest();
                 _crf = CRFR.SelectByID(_crfID);
+                _subject = SR.SelectByID(_subjectID);
                 ConfigButtonVisible();
+                Title = string.Format("Настройка ИРК \"{0}\" субъекта {1}", _crf.RussianName, _subject.Number);
                 RowCountInSection = new Dictionary<string, int>();
             }
                 LoadForm(_crf);
@@ -44,8 +47,7 @@ namespace EDC.Pages.Subject
 
         void ConfigButtonVisible()
         {
-            Models.Subject currentSubject = SR.SelectByID(_subjectID);
-            List<Models.Subject> subjectsInCenter = SR.GetManyByFilter(x=>x.MedicalCenterID == currentSubject.MedicalCenterID).OrderBy(x => x.SubjectID).ToList();
+            List<Models.Subject> subjectsInCenter = SR.GetManyByFilter(x=>x.MedicalCenterID == _subject.MedicalCenterID).OrderBy(x => x.SubjectID).ToList();
             if (subjectsInCenter.Count > 0)
             {
                 int currentSubjectIndex = subjectsInCenter.FindIndex(x => x.SubjectID == _subjectID);

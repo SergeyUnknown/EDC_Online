@@ -14,7 +14,7 @@
     <asp:GridView runat="server" ID="gvCRFs" CellPadding="4" ForeColor="#333333" GridLines="Both" AutoGenerateColumns="False" OnRowDeleting="gvCRFs_RowDeleting" OnSelectedIndexChanging="gvCRFs_SelectedIndexChanging">
         <AlternatingRowStyle BackColor="White" />
         <Columns>
-            <asp:BoundField DataField="Name" HeaderText="Название" />
+            <asp:BoundField DataField="RussianName" HeaderText="Название" />
             <asp:BoundField DataField="Version" HeaderText="Версия" />
             <asp:BoundField DataField="Identifier" HeaderText="Идентификатор" />
             <asp:BoundField DataField="CreationDate" HeaderText="Дата создания" />

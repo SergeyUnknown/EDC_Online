@@ -10,6 +10,8 @@ namespace EDC
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
+            routes.MapPageRoute(null, "NotesAndQuery", "~/Pages/Note/NotesAndQuery.aspx");
+
             routes.MapPageRoute(null, "ConfigurationTrials", "~/Pages/Administration/ConfigurationTrials.aspx");
 
             routes.MapPageRoute(null, "SubjectsMatrix/{page}", "~/Pages/Subject/SubjectsMatrix.aspx");
@@ -47,8 +49,6 @@ namespace EDC
             routes.MapPageRoute(null, "Administration/Errors", "~/Pages/Administration/ErrorLog.aspx");
             routes.MapPageRoute(null, "Administration", "~/Pages/Administration/Users.aspx");
 
-            //routes.MapPageRoute(null, "{page}", "~/Pages/Subject/SubjectsMatrix.aspx");
-            //routes.MapPageRoute(null, "", "~/Pages/Subject/SubjectsMatrix.aspx");
             routes.MapPageRoute(null, "", "~/Default.aspx");
 
             routes.RouteExistingFiles = true;

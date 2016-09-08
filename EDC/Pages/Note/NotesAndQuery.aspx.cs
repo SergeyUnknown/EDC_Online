@@ -25,8 +25,15 @@ namespace EDC.Pages.Note
 
         void LoadNotes()
         {
-            string currentUserName = User.Identity.Name;
-            notes = NR.GetManyByFilter(x=>x.ForUser == currentUserName).OrderBy(x=>x.NoteID).Skip((CurrentPage - 1) * pageSize).Take(pageSize).ToList();
+            if(User.IsInRole(Core.Roles.Data_Manager.ToString()) || User.IsInRole(Core.Roles.Administrator.ToString()))
+            {
+                notes = NR.SelectAll().OrderBy(x => x.NoteID).Skip((CurrentPage - 1) * pageSize).Take(pageSize).ToList();
+            }
+            else if(User.IsInRole(Core.Roles.Investigator.ToString()))
+            {
+                string currentUserName = User.Identity.Name;
+                notes = NR.GetManyByFilter(x => x.ForUser == currentUserName).OrderBy(x => x.NoteID).Skip((CurrentPage - 1) * pageSize).Take(pageSize).ToList();
+            }
             gvNotes.DataSource = notes;
             gvNotes.DataBind();
         }

@@ -172,12 +172,17 @@ namespace EDC.Pages.CRF
                 newCRF.Identifier = newCRF.Identifier.Substring(0, 23);
             }
 
+            if (!string.IsNullOrWhiteSpace(CRFInfo[1]))
+                newCRF.RussianName = CRFInfo[1];
+            else
+                CRF_Errors.Add(new CRF_Error(table.TableName, 2, 2, "Не указано название CRF"));
+
             newCRF.CreationDate = DateTime.Now;
             newCRF.CreatedBy = User.Identity.Name;
-            newCRF.Version = CRFInfo[1];
+            newCRF.Version = CRFInfo[2];
             if (addedCRF.Any(x => x.Version.ToLower() == newCRF.Version.ToLower()))
             {
-                CRF_Errors.Add(new CRF_Error(table.TableName, 2, 1, "CRF с указанным именем и версий уже существует"));
+                CRF_Errors.Add(new CRF_Error(table.TableName, 2, 3, "CRF с указанным именем и версий уже существует"));
             }
             else
                 newCRF.Identifier += newCRF.Version.Replace(".","_").Replace(","," ");
