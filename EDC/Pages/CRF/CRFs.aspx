@@ -19,7 +19,7 @@
             <asp:BoundField DataField="Identifier" HeaderText="Идентификатор" />
             <asp:BoundField DataField="CreationDate" HeaderText="Дата создания" />
             <asp:BoundField DataField="CreatedBy" HeaderText="Создано" />
-            <asp:CommandField HeaderText="Действия" ButtonType="Image" SelectText="Просмотреть" ShowDeleteButton="True" ShowSelectButton="true" DeleteText="Удалить" DeleteImageUrl="~/Images/delete (3).png" />
+            <asp:CommandField HeaderText="Действия" ButtonType="Image" SelectText="Просмотреть" ShowDeleteButton="True" ShowSelectButton="true" DeleteText="Удалить" DeleteImageUrl="~/Images/delete (3).png" SelectImageUrl="~/Images/magnify (1).png"/>
 
         </Columns>
         <EditRowStyle BackColor="#2461BF" />

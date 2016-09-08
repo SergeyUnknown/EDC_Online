@@ -12,6 +12,7 @@
     text-align: center;
     padding-left: 0px;
     float:none;
+    z-index:50;
 }
 
 ul.menu{
@@ -24,7 +25,7 @@ ul.menu{
 ul.menu > li{
     display: table-cell;
     position:relative;
-        vertical-align:central;
+    vertical-align:central;
 
     padding:5px;
     height:100%;
@@ -78,6 +79,11 @@ ul.menu > li:hover > ul.submenu{
     font-weight: 600;
     text-align: center;
     float:none;
+        z-index:100; 
+    animation-name:showsubmenu;
+    animation-duration:0.5s;
+    transition:all ease-in 0.5s;
+    transition-property:width;
 }
 
 
@@ -86,6 +92,7 @@ ul.submenu{   /*подменю*/
     position: absolute;
     width: 200px;
     top: 32px;
+   
     padding:0px;
     margin-top:2px;
 
@@ -132,7 +139,17 @@ ul.submenu > li > a{
 ul.submenu li:hover {
     background:#7EA2D4;
 }
-
+@keyframes showsubmenu
+{
+    from {
+        transform:scaleY(0.01);
+        /*transform:translate(0,-15px);*/
+        transform-origin:top;
+        /*height:0px;*/
+    }
+    to {
+    }
+}
 
 /* login
 ----------------------------------------------------------*/

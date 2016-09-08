@@ -507,6 +507,7 @@ namespace EDC.Pages.Subject
             {
                 Button btnNotes = new Button();
                 btnNotes.ID = "btnNotes_" + item.Identifier;
+                btnNotes.CssClass = "nodes";
                 btnNotes.Click += btnNotes_Click;
 
                 AjaxControlToolkit.ModalPopupExtender mpe = new AjaxControlToolkit.ModalPopupExtender();
