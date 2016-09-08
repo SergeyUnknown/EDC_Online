@@ -950,6 +950,11 @@ tr.pager td {
     height:auto !important;
 }
 
+.buttonHide
+{
+    display:none;
+}
+
 /********************
 *   Mobile Styles   *
 ********************/
