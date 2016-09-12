@@ -391,7 +391,7 @@ namespace EDC.Pages.Subject
             AjaxControlToolkit.ModalPopupExtender mpe = new AjaxControlToolkit.ModalPopupExtender();
             mpe.TargetControlID = btnUnvisible.ID;
             mpe.PopupControlID = "pnlModalPopup";
-            mpe.OkControlID = "btnSaveWindow";
+            //mpe.OkControlID = "btnSaveWindow";
             mpe.CancelControlID = "btnCloseWindow";
             mpe.ID = "mpe_" + id;
             tc.Controls.Add(mpe);
@@ -825,19 +825,16 @@ namespace EDC.Pages.Subject
             note.CRFID = _crfID;
             note.ItemID = _si.ItemID;
             note.IndexID = _si.IndexID;
+            note.MedicalCenterID = SR.SelectByID(_subjectID).MedicalCenterID;
 
             NR.Create(note);
             NR.Save();
 
             //note.PreviousNoteID
 
-            note.MedicalCenterID = SR.SelectByID(_subjectID).MedicalCenterID;
             
             _mpe.Hide();
         }
-
-
-
 
     }
 }

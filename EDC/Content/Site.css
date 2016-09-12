@@ -953,13 +953,8 @@ tr.pager td {
     max-width:initial;
 }
 
-<<<<<<< HEAD
-.buttonHide
-{
-    display:none;
-}
 
-=======
+
 #MainContent_pnlModalPopup
 {
     background-color:#efefef;
@@ -1010,7 +1005,12 @@ tr.pager td {
 {
     vertical-align: super
 }
->>>>>>> refs/remotes/origin/master
+
+.buttonHide
+{
+    display:none;
+}
+
 /********************
 *   Mobile Styles   *
 ********************/
