@@ -9,7 +9,7 @@
                 <p class="validation-summary-errors">
                     <asp:Literal runat="server" ID="FailureText" />
                 </p>
-                <fieldset>
+                <fieldset class="loginForm">
                     <legend>Форма входа</legend>
                     <ol>
                         <li>
@@ -27,7 +27,7 @@
                             <asp:Label runat="server" AssociatedControlID="RememberMe" CssClass="checkbox">Запомнить меня</asp:Label>
                         </li>
                     </ol>
-                    <asp:Button runat="server" CommandName="Login" Text="Выполнить вход" />
+                    <asp:Button runat="server" CommandName="Login" Text="Выполнить вход" CssClass="loginButton" />
                 </fieldset>
             </LayoutTemplate>
         </asp:Login>

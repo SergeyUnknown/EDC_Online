@@ -13,7 +13,7 @@
             <p class="field-validation-error"><%: ErrorMessage %></p>
         </asp:PlaceHolder>
 
-        <table>
+        <table class="manageAccountTable">
             <tr>
                 <td>
                     <asp:Label runat="server" ID="lblUserName" AssociatedControlID="tbUserName">Имя пользователя:</asp:Label>
@@ -51,7 +51,7 @@
                 <td>
                     <asp:RequiredFieldValidator runat="server" ControlToValidate="tbEmail"
                         CssClass="field-validation-error" ErrorMessage="Поле Email заполнять обязательно."
-                        ValidationGroup="ChangeInfo" />
+                        ValidationGroup="ChangeInfo" display="Dynamic"/>
                 </td>
             </tr> <%--Email--%>
 
@@ -65,7 +65,7 @@
                 <td>
                     <asp:RequiredFieldValidator runat="server" ControlToValidate="tbPhone"
                         CssClass="field-validation-error" ErrorMessage="Поле Номер телефона заполнять обязательно."
-                        ValidationGroup="ChangeInfo" />
+                        ValidationGroup="ChangeInfo" display="Dynamic"/>
                 </td>
             </tr> <%--Phone--%>
 
@@ -79,7 +79,7 @@
                 <td>
                     <asp:RequiredFieldValidator runat="server" ControlToValidate="tbQuestion"
                         CssClass="field-validation-error" ErrorMessage="Поле контрольный вопрос заполнять обязательно."
-                        ValidationGroup="ChangeInfo" />
+                        ValidationGroup="ChangeInfo" display="Dynamic"/>
                 </td>
             </tr> <%--Контрольный вопрос--%>
             
@@ -107,7 +107,7 @@
                 <td>
                     <asp:RequiredFieldValidator runat="server" ControlToValidate="tbCurrentPassword"
                         CssClass="field-validation-error" ErrorMessage="Поле текущего пароля заполнять обязательно."
-                        ValidationGroup="ChangeInfo" />
+                        ValidationGroup="ChangeInfo" display="Dynamic"/>
                 </td>
             </tr> <%--Текущий пароль--%>
             
