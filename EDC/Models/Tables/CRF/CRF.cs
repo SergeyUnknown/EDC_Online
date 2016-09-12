@@ -10,6 +10,7 @@ namespace EDC.Models
         public long CRFID { get; set; }
         public string Identifier { get; set; }
         public string Name { get; set; }
+        public string RussianName { get; set; }
         public string Version { get; set; }
         public DateTime CreationDate { get; set; }
         public string CreatedBy { get; set; }

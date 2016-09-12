@@ -17,12 +17,12 @@
         </Triggers>
         <ContentTemplate>
             <asp:Button runat="server" ID="btnPrevSubject" Text="Предыдущий субъект" ToolTip="Предыдущий субъект" />
-            <asp:Button runat="server" ID="btnPrevCRFInEvent" Text="Предыдущая CRF" ToolTip="Предыдущая CRF" />
+            <asp:Button runat="server" ID="btnPrevCRFInEvent" Text="Предыдущая форма" ToolTip="Предыдущая фома ввода данных" />
 
             <ajaxToolkit:TabContainer runat="server" ID="tcCRF">
             </ajaxToolkit:TabContainer>
 
-            <asp:Button runat="server" ID="btnNextCRFInEvent" Text="Следующая CRF" ToolTip="Следующая CRF" />
+            <asp:Button runat="server" ID="btnNextCRFInEvent" Text="Следующая форма" ToolTip="Следующая форма ввода данных" />
             <asp:Button runat="server" ID="btnNextSubject" Text="Следующий субъект" ToolTip="Следующий субъект" />
 
 

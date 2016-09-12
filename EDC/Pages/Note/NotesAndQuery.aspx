@@ -30,7 +30,6 @@
                     <asp:BoundField DataField="SubjectItem.Value" HeaderText="Значение записи" />
                     <asp:BoundField DataField="Text" HeaderText="Текст заметки" />
                     <asp:BoundField DataField="ForUser" HeaderText="Назначено" />
-                    
                 </Columns>
                 <EditRowStyle BackColor="#2461BF" />
                 <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />

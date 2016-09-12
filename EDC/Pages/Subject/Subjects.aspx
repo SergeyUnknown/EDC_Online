@@ -19,7 +19,7 @@
             <asp:BoundField DataField="SubjectID" HeaderText="ID" />
             <asp:BoundField DataField="Number" HeaderText="Номер" />
             <asp:BoundField DataField="MedicalCenter.Name" HeaderText="Мед. Центр" />
-            <asp:BoundField DataField="InclusionDate" HeaderText="Дата включения" />
+            <asp:BoundField DataField="InclusionDate" HeaderText="Дата включения" DataFormatString="{0:dd.MM.yyyy}" />
             <asp:BoundField DataField="CreatedBy" HeaderText="Создал" />
             <asp:BoundField DataField="CreationDate" HeaderText="Дата создания" />
             <asp:CommandField HeaderText="Действия" ButtonType="Image" SelectText="Просмотреть" ShowDeleteButton="True" DeleteText="Удалить" ShowEditButton="True" UpdateText="Обновить" CancelText="Отмена" EditText="Редактировать" DeleteImageUrl="~/Images/delete (3).png" EditImageUrl="~/Images/pencil-box (1).png" />

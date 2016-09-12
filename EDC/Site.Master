@@ -94,17 +94,17 @@
                             </li>
                         </ul>
                     <li>
-                        <a runat="server" href="#">Заметки и замечания</a>
-                        <ul class="submenu">
+                        <a runat="server" href="~/NotesAndQuery">Заметки и замечания</a>
+<%-- а нужно ли?        <ul class="submenu">
                             <li>
                                 <a runat="server" href="#">Замечания</a>
                             </li>
                             <li>
                                 <a runat="server" href="#">Заметки</a>
                             </li>
-                        </ul>
+                        </ul>--%>
                     
-                    <li>
+                    <li runat="server" visible="false" id="liAdmin">
                         <a runat="server" href="#">Администрирование/Дизайн</a>
                         <ul class="submenu">
                             <li>
@@ -126,6 +126,7 @@
                                 <a runat="server" href="~/Administration/Users">Пользователи</a>
                             </li>
                         </ul>
+                    </li>
                     <li>
                         <a runat="server" href="#">Иное</a>
                         <ul class="submenu">
