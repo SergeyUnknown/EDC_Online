@@ -249,6 +249,9 @@
     <Content Include="Pages\Administration\ConfigurationTrials.aspx" />
     <Content Include="Pages\Administration\EditCreateUser.aspx" />
     <Content Include="Pages\Administration\Web.config" />
+    <Content Include="Pages\CRF\Web.config" />
+    <Content Include="Pages\Event\Web.config" />
+    <Content Include="Pages\MedicalCenter\Web.config" />
     <None Include="Properties\PublishProfiles\ToComp.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Pages\Administration\ErrorLog.aspx" />

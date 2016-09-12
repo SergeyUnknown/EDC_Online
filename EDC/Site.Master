@@ -104,7 +104,7 @@
                             </li>
                         </ul>--%>
                     
-                    <li>
+                    <li runat="server" visible="false" id="liAdmin">
                         <a runat="server" href="#">Администрирование/Дизайн</a>
                         <ul class="submenu">
                             <li>
@@ -126,6 +126,7 @@
                                 <a runat="server" href="~/Administration/Users">Пользователи</a>
                             </li>
                         </ul>
+                    </li>
                     <li>
                         <a runat="server" href="#">Иное</a>
                         <ul class="submenu">
