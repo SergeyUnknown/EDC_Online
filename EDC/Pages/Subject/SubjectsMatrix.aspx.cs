@@ -107,7 +107,7 @@ namespace EDC.Pages.Subject
                 {
                     tc = new TableCell();
                     lb = new Label();
-                    lb.Text = eventCRFs[y].CRF.Name;
+                    lb.Text = string.IsNullOrWhiteSpace(eventCRFs[y].CRF.RussianName) ? eventCRFs[y].CRF.Name : eventCRFs[y].CRF.RussianName;
                     tc.Controls.Add(lb);
                     crfNameRow.Cells.Add(tc);
                 }
