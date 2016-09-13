@@ -85,6 +85,33 @@ namespace EDC.Pages.Subject {
         protected global::System.Web.UI.WebControls.GridView gvNotes;
         
         /// <summary>
+        /// btnCreateNote элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnCreateNote;
+        
+        /// <summary>
+        /// divCreate элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divCreate;
+        
+        /// <summary>
+        /// lbHeader элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbHeader;
+        
+        /// <summary>
         /// tbHeader элемент управления.
         /// </summary>
         /// <remarks>
@@ -92,6 +119,15 @@ namespace EDC.Pages.Subject {
         /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox tbHeader;
+        
+        /// <summary>
+        /// lbNoteText элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbNoteText;
         
         /// <summary>
         /// tbNoteText элемент управления.

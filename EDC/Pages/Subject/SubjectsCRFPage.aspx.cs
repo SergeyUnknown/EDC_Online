@@ -25,9 +25,11 @@ namespace EDC.Pages.Subject
         static long _crfID;
         static Dictionary<string, int> RowCountInSection = new Dictionary<string, int>();
 
-        AjaxControlToolkit.ModalPopupExtender _mpe = new AjaxControlToolkit.ModalPopupExtender();
+        static AjaxControlToolkit.ModalPopupExtender _mpe;
 
         static Models.SubjectsItem _si;
+
+        static int answerRowIndex;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -40,8 +42,9 @@ namespace EDC.Pages.Subject
                 ConfigButtonVisible();
                 Title = string.Format("Настройка ИРК \"{0}\" субъекта {1}", string.IsNullOrWhiteSpace(_crf.RussianName) ? _crf.Name : _crf.RussianName, _subject.Number);
                 RowCountInSection = new Dictionary<string, int>();
+                answerRowIndex = -1;
             }
-                LoadForm(_crf);
+            LoadForm(_crf);
             
         }
 
@@ -782,16 +785,28 @@ namespace EDC.Pages.Subject
             Button btn = sender as Button;
             string mpeName ="mpe" + btn.ID.Replace("btnNotes", "");
             AjaxControlToolkit.ModalPopupExtender mpe = btn.Parent.FindControl(mpeName) as AjaxControlToolkit.ModalPopupExtender;
+            LoadMPE(mpe);
+        }
+
+        void LoadMPE(string mpeName)
+        {
+            AjaxControlToolkit.ModalPopupExtender mpe = tcCRF.ActiveTab.FindControl(mpeName) as AjaxControlToolkit.ModalPopupExtender;
             _mpe = mpe;
-            tbHeader.Text = "";
-            tbNoteText.Text = "";
-            string strIndex = mpeName.Substring(mpeName.LastIndexOf('_')+1);
+            ///////////default//////////////
+            divCreate.Visible = false;
+            btnSaveWindow.Visible = false;
+            btnCreateNote.Visible = true;
+            tbHeader.Visible = true;
+            lbHeader.Visible = true;
+
+
+            string strIndex = mpeName.Substring(mpeName.LastIndexOf('_') + 1);
             int rowIndex;
             if (!int.TryParse(strIndex, out rowIndex))
                 rowIndex = -1;
 
-            string itemIdentifier = btn.ID.Replace("btnNotes_", "");
-            if(itemIdentifier.IndexOf('_')>0)
+            string itemIdentifier = mpe.ID.Replace("mpe_", "");
+            if (itemIdentifier.IndexOf('_') > 0)
             {
                 itemIdentifier = itemIdentifier.Substring(itemIdentifier.IndexOf('_'));
             }
@@ -803,20 +818,128 @@ namespace EDC.Pages.Subject
             else
                 _si = si;
             List<Models.Note> Notes = NR
-                .GetManyByFilter(x=>x.SubjectID == _subjectID && x.EventID == _eventID && x.CRFID == _crfID && x.ItemID == si.ItemID && x.IndexID == si.IndexID).ToList();
+                .GetManyByFilter(x => x.SubjectID == _subjectID && x.EventID == _eventID && x.CRFID == _crfID && x.ItemID == si.ItemID && x.IndexID == si.IndexID).ToList();
             gvNotes.DataSource = Notes;
             gvNotes.DataBind();
+
             _mpe.Show();
         }
 
+        void LoadMPE(AjaxControlToolkit.ModalPopupExtender mpe)
+        {
+            string mpeName = mpe.ID;
+            _mpe = mpe;
+            ///////////default//////////////
+            divCreate.Visible = false;
+            btnSaveWindow.Visible = false;
+            btnCreateNote.Visible = true;
+            tbHeader.Visible = true;
+            lbHeader.Visible = true; 
+            
+            string strIndex = mpeName.Substring(mpeName.LastIndexOf('_') + 1);
+            int rowIndex;
+            if (!int.TryParse(strIndex, out rowIndex))
+                rowIndex = -1;
+
+            string itemIdentifier = mpe.ID.Replace("mpe_", "");
+            if (itemIdentifier.IndexOf('_') > 0)
+            {
+                itemIdentifier = itemIdentifier.Substring(itemIdentifier.IndexOf('_'));
+            }
+            Models.CRF_Item ci = CIR.GetManyByFilter(x => x.Identifier == itemIdentifier).FirstOrDefault();
+
+            Models.SubjectsItem si = SIR.SelectByID(_subjectID, _eventID, _crfID, ci.CRF_ItemID, rowIndex);
+            if (si == null)
+                return;
+            else
+                _si = si;
+            List<Models.Note> Notes = NR
+                .GetManyByFilter(x => x.SubjectID == _subjectID && x.EventID == _eventID && x.CRFID == _crfID && x.ItemID == si.ItemID && x.IndexID == si.IndexID).ToList();
+            gvNotes.DataSource = Notes;
+            gvNotes.DataBind();
+
+            _mpe.Show();
+        }
+
+
+        /// <summary>
+        /// Нажата кнопка ответить на сообщение
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnAnswer_Click(object sender, EventArgs e)
+        {
+            LoadMPE(_mpe.ID);
+            divCreate.Visible = true;
+            lbHeader.Visible = false;
+            tbHeader.Visible = false;
+            btnSaveWindow.Visible = true;
+            lbNoteText.Text = "Текст ответа";
+            Button _btn = sender as Button;
+            int rowIndex = (_btn.Parent.Parent as GridViewRow).RowIndex;
+            answerRowIndex = rowIndex;
+
+
+        }
+
+        /// <summary>
+        /// Нажата кнопка закрыть заметку
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnCloseNote_Click(object sender, EventArgs e)
+        {
+            Button _btn = sender as Button;
+            int closingRowIndex = (_btn.Parent.Parent as GridViewRow).RowIndex;
+
+            List<Models.Note> Notes = NR
+                .GetManyByFilter(x => x.SubjectID == _subjectID && x.EventID == _eventID && x.CRFID == _crfID && x.ItemID == _si.ItemID && x.IndexID == _si.IndexID).ToList();
+            Models.Note closingNote = NR.SelectByID(Notes[closingRowIndex].NoteID);
+            CloseNote(closingNote);
+            LoadMPE(_mpe.ID);
+        }
+
+        void CloseNote(Models.Note note)
+        {
+            if (note == null)
+                throw new ArgumentNullException();
+            note.Status = Core.QueryStatus.Closed;
+            NR.Update(note);
+            NR.Save();
+        }
+
+        protected void btnCreateNote_Click(object sender, EventArgs e)
+        {
+            if(_mpe!=null)
+                LoadMPE(_mpe.ID);
+            divCreate.Visible = true;
+            btnSaveWindow.Visible = true;
+            btnCreateNote.Visible = false;
+            lbNoteText.Text = "Текст заметки";
+        }
         protected void btnSaveWindow_Click(object sender, EventArgs e)
         {
             Models.Note note = new Models.Note();
             note.Status = Core.QueryStatus.New;
+
+            if (answerRowIndex == -1)
+            {
+                note.ForUser = _si.CreatedBy;
+                note.Header = tbHeader.Text;
+            }
+            else
+            {
+                List<Models.Note> Notes = NR
+                    .GetManyByFilter(x => x.SubjectID == _subjectID && x.EventID == _eventID && x.CRFID == _crfID && x.ItemID == _si.ItemID && x.IndexID == _si.IndexID).ToList();
+                Models.Note answeringNote = NR.SelectByID(Notes[answerRowIndex].NoteID);
+                answeringNote.Status = Core.QueryStatus.Updated;
+                note.ForUser = answeringNote.FromUser;
+                note.PreviousNoteID = answeringNote.PreviousNoteID == null ? answeringNote.NoteID : answeringNote.PreviousNoteID;
+                NR.Update(answeringNote);
+            }
+
             note.Type = Core.NoteType.Note;
-            note.ForUser = _si.CreatedBy;
             note.FromUser = User.Identity.Name;
-            note.Header = tbHeader.Text;
             note.Text = tbNoteText.Text;
             note.CreationDate = DateTime.Now;
 
@@ -830,10 +953,42 @@ namespace EDC.Pages.Subject
             NR.Create(note);
             NR.Save();
 
-            //note.PreviousNoteID
+            tbHeader.Text = "";
+            tbNoteText.Text = "";
 
-            
-            _mpe.Hide();
+            LoadMPE(_mpe.ID);
+        }
+
+        protected void gvNotes_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if(e.Row.RowType == DataControlRowType.DataRow)
+            {
+                bool answer = true;
+                bool close = true;
+                Models.Note _note = (gvNotes.DataSource as List<Models.Note>)[e.Row.RowIndex];
+                if(_note.Status == Core.QueryStatus.Closed || _note.Status == Core.QueryStatus.Note)
+                {
+                    //ответить
+                    answer = false;
+
+                    //закрыть
+                    close = false;
+                }
+                if(_note.PreviousNoteID !=null)
+                {
+                    //закрыть
+                    close = false;
+
+                    if(_note.PreviousNote.Status == Core.QueryStatus.Closed)
+                        answer = false;
+                }
+
+                //ответить
+                (e.Row.Cells[6].Controls[1] as Button).Visible = answer;
+
+                //закрыть
+                (e.Row.Cells[7].Controls[1] as Button).Visible = close;
+            }
         }
 
     }
