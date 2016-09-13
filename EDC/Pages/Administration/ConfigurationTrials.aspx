@@ -12,7 +12,7 @@
 </asp:Content>
 
 <asp:Content ID="Content3" ContentPlaceHolderID="MainContent" runat="server">
-    <ol>
+    <ol class="StatusResearch vertical">
         <li>
             <asp:Label runat="server" AssociatedControlID="rbStatus">Статус исследования</asp:Label>
             <asp:RadioButtonList runat="server" ID="rbStatus">

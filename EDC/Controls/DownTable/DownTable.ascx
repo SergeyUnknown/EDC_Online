@@ -50,7 +50,7 @@ td.dtrigth2 {
 <table class="dt">
         <tr>
             <td class="dtleft">
-                <asp:LinkButton runat="server" ID="LinkButtonAddNew" CssClass="addButton" ><asp:Image ID="Image5" runat="server" ImageUrl="~/Images/note-plus-outline.png" /></asp:LinkButton>
+                <asp:LinkButton runat="server" ID="LinkButtonAddNew" CssClass="addButton" ><asp:Image ID="Image5" runat="server" ImageUrl="~/Images/table-row-plus-after.png" /></asp:LinkButton>
             </td>
             <td class="dtcenter">
                 <asp:LinkButton runat="server" ID="LinkButtonFirstPage"><asp:Image ID="Image1" runat="server" ImageUrl="~/Images/step-backward-2.png" /></asp:LinkButton>

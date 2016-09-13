@@ -384,6 +384,7 @@ namespace EDC.Pages.Subject
             Button btnNotes = new Button();
             btnNotes.ID = "btnNotes_" + id;
             btnNotes.Click += btnNotes_Click;
+            btnNotes.CssClass = "nodes";
             tc.Controls.Add(btnNotes);
 
             LinkButton btnUnvisible = new LinkButton();
