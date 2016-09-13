@@ -521,6 +521,39 @@ input[title="Следующая CRF"], input[title="Предыдущая CRF"]
     margin:6px auto 2px auto;
     right:50%;
 }
+.loginForm input
+{
+    width:220px;
+}
+.loginForm input[type=checkbox]
+{
+    width:auto;
+}
+.loginButton
+{
+    width:auto !important;
+    margin-left:109px;
+}
+
+.manageAccountTable td
+{
+    display: inline-flex;
+    margin-top:5px;
+    padding:0px;
+}
+.manageAccountTable tr
+{
+    
+}
+.manageAccountTable input
+{
+    width:220px;
+}
+.manageAccountTable label
+{
+    width:200px;
+}
+
 /* tables
 ----------------------------------------------------------*/
 table {
@@ -842,7 +875,7 @@ tr.pager td {
 {
     margin-left:auto;
     float:right;
-    width:30%;
+
 }
 
 #MainContent_tcCRF_tpPage input
@@ -983,7 +1016,13 @@ tr.pager td {
 }
 #MainContent_pnlModalPopup > #MainContent_btnCloseWindow
 {
+    
+}
 
+.StatusResearch
+{
+    list-style-type:none;
+    padding-left:0px;
 }
 
 .nodes {
@@ -998,9 +1037,18 @@ tr.pager td {
 
 #MainContent_rbStatus 
 {
-    width:50%;
+    width:auto;
+    margin-left:15px;
 }
-
+#MainContent_rbStatus > tbody > tr > td
+{
+    text-align:left;
+    padding:3px;
+}
+#MainContent_rbStatus > tbody > tr > td > label
+{
+    display:inline-flex;
+}
 .pageCount
 {
     vertical-align: super
