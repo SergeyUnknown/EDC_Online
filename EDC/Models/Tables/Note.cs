@@ -42,7 +42,7 @@ namespace EDC.Models
 
         public long? PreviousNoteID { get; set; }
         [ForeignKey("PreviousNoteID")]
-        public Note PreviousNote { get; set; }
+        public virtual Note PreviousNote { get; set; }
 
         public long? MedicalCenterID { get; set; }
         [ForeignKey("MedicalCenterID")]
