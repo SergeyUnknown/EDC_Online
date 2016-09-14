@@ -22,6 +22,15 @@ namespace EDC.Pages.Subject {
         protected global::System.Web.UI.UpdatePanel up1;
         
         /// <summary>
+        /// lbInfo элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lbInfo;
+        
+        /// <summary>
         /// btnPrevSubject элемент управления.
         /// </summary>
         /// <remarks>
