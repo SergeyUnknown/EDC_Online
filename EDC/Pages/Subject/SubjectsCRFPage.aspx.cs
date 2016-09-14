@@ -17,6 +17,7 @@ namespace EDC.Pages.Subject
         Models.Repository.SubjectRepository SR = new Models.Repository.SubjectRepository();
         Models.Repository.CRFInEventRepository CIER = new Models.Repository.CRFInEventRepository();
         Models.Repository.NoteRepository NR = new Models.Repository.NoteRepository();
+        Models.Repository.EventRepository ER = new Models.Repository.EventRepository();
 
         static Models.CRF _crf;
         static Models.Subject _subject;
@@ -39,8 +40,10 @@ namespace EDC.Pages.Subject
                 GetInfoFromRequest();
                 _crf = CRFR.SelectByID(_crfID);
                 _subject = SR.SelectByID(_subjectID);
+                Models.Event _event = ER.SelectByID(_eventID);
                 ConfigButtonVisible();
-                Title = string.Format("Настройка ИРК \"{0}\" субъекта {1}", string.IsNullOrWhiteSpace(_crf.RussianName) ? _crf.Name : _crf.RussianName, _subject.Number);
+                Title = string.Format("Настройка ИРК субъекта {0}", _subject.Number);
+                lbInfo.Text = string.Format("Визит: \"{0}\", ИРК: \"{1}\", субъект: {2}",_event.Name, string.IsNullOrWhiteSpace(_crf.RussianName) ? _crf.Name : _crf.RussianName, _subject.Number);
                 RowCountInSection = new Dictionary<string, int>();
                 answerRowIndex = -1;
             }
@@ -62,7 +65,7 @@ namespace EDC.Pages.Subject
                 if (currentSubjectIndex == subjectsInCenter.Count - 1)
                     btnNextSubject.Visible = false;
                 else
-                    btnPrevSubject.PostBackUrl = string.Format("~/Subjects/{0}/{1}/{2}", subjectsInCenter[currentSubjectIndex +1].SubjectID, _eventID, _crfID);
+                    btnNextSubject.PostBackUrl = string.Format("~/Subjects/{0}/{1}/{2}", subjectsInCenter[currentSubjectIndex +1].SubjectID, _eventID, _crfID);
             }
             else
             {
@@ -145,6 +148,7 @@ namespace EDC.Pages.Subject
 
         void LoadForm(Models.CRF _crf)
         {
+            tcCRF.Tabs.Clear();
             foreach (Models.CRF_Section section in _crf.Sections)
             {
                 if(!RowCountInSection.ContainsKey(section.Label))
@@ -153,7 +157,7 @@ namespace EDC.Pages.Subject
                 }
                 AjaxControlToolkit.TabPanel tp = new AjaxControlToolkit.TabPanel();
                 tp.HeaderText = section.Title;
-                tp.ID = "tp" + section.Label;
+                tp.ID = "tp_" + section.Label;
 
                 int columnCount = section.Items.Max(x => x.ColumnNumber);
 
@@ -477,7 +481,14 @@ namespace EDC.Pages.Subject
                         cb.Items.AddRange(GetListItems(item).ToArray());
                         cb.CssClass = "response-Item " + item.ResponseLayout;
                         if (!isNullValue)
-                            cb.SelectedValue = itemValue;
+                        {
+                            string[] values = itemValue.Split(',');
+                            foreach(ListItem li in cb.Items)
+                            {
+                                if (values.Contains(li.Value))
+                                    li.Selected = true;
+                            }
+                        }
                         addedControl = cb;
                         break;
                     }
@@ -582,8 +593,15 @@ namespace EDC.Pages.Subject
                         CheckBoxList cb = new CheckBoxList();
                         cb.Items.AddRange(GetListItems(item).ToArray());
                         cb.CssClass = "response-Item " + item.ResponseLayout;
-                        if (value != null)
-                            cb.SelectedValue = value;
+                        if (value !=null)
+                        {
+                            string[] values = value.Split(',');
+                            foreach (ListItem li in cb.Items)
+                            {
+                                if (values.Contains(li.Value))
+                                    li.Selected = true;
+                            }
+                        }
                         addedControl = cb;
                         break;
                     }
@@ -670,39 +688,55 @@ namespace EDC.Pages.Subject
                 SIR.Save();
             }
 
-
-
-            foreach(var item in groupedItems)
+            if(groupedItems.Count>0)
             {
                 Control _control;
-                _control = form.FindControl(item.Identifier + "_1");
+                _control = form.FindControl(groupedItems[0].Identifier + "_1");
                 Table groupedTable = _control.Parent.Parent.Parent as Table;
                 int valuesRowCount = groupedTable.Rows.Count - 2;
-                for(int i =0;i<valuesRowCount-1;i++)
+
+                for (int i = 0; i < valuesRowCount; i++)
                 {
-                    _control = form.FindControl(item.Identifier +"_" + (i+1).ToString());
-                    string value = GetValueFromControl(_control);
-                    SubjectsItem si = SIR.SelectByID(_subjectID, _eventID, _crfID, item.CRF_ItemID, i+1);
-                    if (si == null)
+                    string[] values = new string[groupedItems.Count];
+                    bool allNull = true;
+
+                    for (int j = 0; j < groupedItems.Count; j++)
                     {
-                        si = new SubjectsItem();
-                        si.SubjectID = _subjectID;
-                        si.EventID = _eventID;
-                        si.CRFID = _crfID;
-                        si.ItemID = item.CRF_ItemID;
-                        si.Value = value;
-                        si.IndexID = i + 1;
-                        si.IsGrouped = true;
-                        si.CreatedBy = User.Identity.Name;
-                        SIR.Create(si);
+                        CRF_Item item = groupedItems[j];
+                        _control = form.FindControl(item.Identifier + "_" + (i + 1).ToString());
+                        values[j] = GetValueFromControl(_control);
+                        if (!string.IsNullOrWhiteSpace(values[j]))
+                            allNull = false;
                     }
-                    else
+                    if (allNull)
+                        continue;
+
+                    for(int j =0;j<groupedItems.Count;j++)
                     {
-                        si.Value = value;
-                        si.CreatedBy = User.Identity.Name;
-                        SIR.Update(si);
+                        CRF_Item item = groupedItems[j];
+                        string value = values[j];
+                        SubjectsItem si = SIR.SelectByID(_subjectID, _eventID, _crfID, item.CRF_ItemID, i + 1);
+                        if (si == null)
+                        {
+                            si = new SubjectsItem();
+                            si.SubjectID = _subjectID;
+                            si.EventID = _eventID;
+                            si.CRFID = _crfID;
+                            si.ItemID = item.CRF_ItemID;
+                            si.Value = value;
+                            si.IndexID = i + 1;
+                            si.IsGrouped = true;
+                            si.CreatedBy = User.Identity.Name;
+                            SIR.Create(si);
+                        }
+                        else
+                        {
+                            si.Value = value;
+                            si.CreatedBy = User.Identity.Name;
+                            SIR.Update(si);
+                        }
+                        SIR.Save();
                     }
-                    SIR.Save();
                 }
             }
         }
@@ -728,7 +762,14 @@ namespace EDC.Pages.Subject
                 case "CheckBoxList":
                     {
                         CheckBoxList cbl = control as CheckBoxList;
-                        value = cbl.SelectedValue;
+                        foreach(ListItem item in cbl.Items)
+                        {
+                            if(item.Selected)
+                            {
+                                value += "," + item.Value;
+                            }
+                        }
+                        value = value.TrimStart(',');
                         break;
                     }
             }
@@ -770,6 +811,7 @@ namespace EDC.Pages.Subject
             string panelName = (tempControl as AjaxControlToolkit.TabPanel).HeaderText;
             CRF_Section section = _crf.Sections.First(x => x.Title == panelName);
             GetInfo(tempControl, section);
+            _crf = CRFR.SelectByID(_crf.CRFID);
             LoadForm(_crf);
         }
 
@@ -809,7 +851,7 @@ namespace EDC.Pages.Subject
             string itemIdentifier = mpe.ID.Replace("mpe_", "");
             if (itemIdentifier.IndexOf('_') > 0)
             {
-                itemIdentifier = itemIdentifier.Substring(itemIdentifier.IndexOf('_'));
+                itemIdentifier = itemIdentifier.Remove(itemIdentifier.IndexOf('_'));
             }
             Models.CRF_Item ci = CIR.GetManyByFilter(x => x.Identifier == itemIdentifier).FirstOrDefault();
 
@@ -845,7 +887,7 @@ namespace EDC.Pages.Subject
             string itemIdentifier = mpe.ID.Replace("mpe_", "");
             if (itemIdentifier.IndexOf('_') > 0)
             {
-                itemIdentifier = itemIdentifier.Substring(itemIdentifier.IndexOf('_'));
+                itemIdentifier = itemIdentifier.Remove(itemIdentifier.IndexOf('_'));
             }
             Models.CRF_Item ci = CIR.GetManyByFilter(x => x.Identifier == itemIdentifier).FirstOrDefault();
 
@@ -861,7 +903,6 @@ namespace EDC.Pages.Subject
 
             _mpe.Show();
         }
-
 
         /// <summary>
         /// Нажата кнопка ответить на сообщение

@@ -19,14 +19,17 @@
             <asp:AsyncPostBackTrigger ControlID="btnCreateNote" />
         </Triggers>
         <ContentTemplate>
-            <asp:Button runat="server" ID="btnPrevSubject" Text="Предыдущий субъект" ToolTip="Предыдущий субъект" />
-            <asp:Button runat="server" ID="btnPrevCRFInEvent" Text="Предыдущая форма" ToolTip="Предыдущая форма ввода данных" />
+            <asp:Label runat="server" ID="lbInfo" />
+            <br />
+
+            <asp:Button runat="server" ID="btnPrevSubject" Text="Предыдущий субъект" ToolTip="Предыдущий субъект" CausesValidation="false" />
+            <asp:Button runat="server" ID="btnPrevCRFInEvent" Text="Предыдущая форма" ToolTip="Предыдущая форма ввода данных" CausesValidation="false" />
 
             <ajaxToolkit:TabContainer runat="server" ID="tcCRF">
             </ajaxToolkit:TabContainer>
 
-            <asp:Button runat="server" ID="btnNextCRFInEvent" Text="Следующая форма" ToolTip="Следующая форма ввода данных" />
-            <asp:Button runat="server" ID="btnNextSubject" Text="Следующий субъект" ToolTip="Следующий субъект" />
+            <asp:Button runat="server" ID="btnNextCRFInEvent" Text="Следующая форма" ToolTip="Следующая форма ввода данных" CausesValidation="false" />
+            <asp:Button runat="server" ID="btnNextSubject" Text="Следующий субъект" ToolTip="Следующий субъект" CausesValidation="false" />
 
 
             <asp:Panel runat="server" ID="pnlModalPopup" Style="display: none">
