@@ -13,7 +13,7 @@
 
 <asp:Content ID="Content3" ContentPlaceHolderID="MainContent" runat="server">
 
-    <asp:GridView runat="server" ID="gvSubjects" CellPadding="4" ForeColor="#333333" GridLines="Both" AutoGenerateColumns="False" OnRowDeleting="gvSubjects_RowDeleting" OnRowEditing="gvSubjects_RowEditing">
+    <asp:GridView runat="server" ID="gvSubjects" CellPadding="4" ForeColor="#333333" GridLines="Both" AutoGenerateColumns="False" OnRowDeleting="gvSubjects_RowDeleting" OnRowEditing="gvSubjects_RowEditing" OnRowDataBound="gvSubjects_RowDataBound">
         <AlternatingRowStyle BackColor="White" />
         <Columns>
             <asp:BoundField DataField="SubjectID" HeaderText="ID" />
@@ -22,7 +22,13 @@
             <asp:BoundField DataField="InclusionDate" HeaderText="Дата включения" DataFormatString="{0:dd.MM.yyyy}" />
             <asp:BoundField DataField="CreatedBy" HeaderText="Создал" />
             <asp:BoundField DataField="CreationDate" HeaderText="Дата создания" />
-            <asp:CommandField HeaderText="Действия" ButtonType="Image" SelectText="Просмотреть" ShowDeleteButton="True" DeleteText="Удалить" ShowEditButton="True" UpdateText="Обновить" CancelText="Отмена" EditText="Редактировать" DeleteImageUrl="~/Images/delete (3).png" EditImageUrl="~/Images/pencil-box (1).png" />
+
+            <%--Редактировать--%>
+            <asp:CommandField HeaderText="" ButtonType="Image" ShowEditButton="True" EditText="Редактировать" EditImageUrl="~/Images/pencil-box (1).png" />
+
+            <%--Удалить--%>
+            <asp:CommandField HeaderText="" ButtonType="Image" ShowDeleteButton="True" DeleteText="Удалить" DeleteImageUrl="~/Images/delete (3).png" />
+
         </Columns>
         <EditRowStyle BackColor="#2461BF" />
         <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
@@ -36,5 +42,5 @@
         <SortedDescendingHeaderStyle BackColor="#4870BE" />
 
     </asp:GridView>
-    <DownTableControl:DownTable ID="dtInfo" runat="server" OnSelectedIndexChanged="dtInfo_SelectedIndexChanged" />
+    <DownTableControl:DownTable ID="dtInfo" runat="server" ViewButton="false" OnSelectedIndexChanged="dtInfo_SelectedIndexChanged" />
 </asp:Content>

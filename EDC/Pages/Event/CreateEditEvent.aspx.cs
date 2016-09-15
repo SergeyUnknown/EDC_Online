@@ -17,7 +17,7 @@ namespace EDC.Pages.Event
         {
             if (!IsPostBack)
             {
-                ddlRequired.DataSource = Core.DropDownListItemsYesNo;
+                ddlRequired.DataSource = Core.ddlItemsYesNo;
                 ddlRequired.DataBind();
                 if (Request.Url.ToString().IndexOf("Edit") == -1)
                 {

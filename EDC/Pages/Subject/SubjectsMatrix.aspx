@@ -13,5 +13,5 @@
 <asp:Content ID="Content3" ContentPlaceHolderID="MainContent" runat="server">
     <asp:Table runat="server" ID="tMatrix"></asp:Table>
 
-    <DownTableControl:DownTable ID="dtInfo" runat="server" OnSelectedIndexChanged="dtInfo_SelectedIndexChanged" />
+    <DownTableControl:DownTable ID="dtInfo" runat="server" ViewButton="false" OnSelectedIndexChanged="dtInfo_SelectedIndexChanged" />
 </asp:Content>

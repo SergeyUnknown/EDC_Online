@@ -145,8 +145,12 @@ namespace EDC.Pages.Administration
                 MembershipUser user = Membership.GetUser(userName);
                 if (Membership.DeleteUser(userName))
                 {
-                    PR.Delete(PR.GetManyByFilter(x => x.UserID == (Guid)user.ProviderUserKey).First().UserProfileID);
-                    PR.Save();
+                    Models.UserProfile up = PR.GetManyByFilter(x => x.UserID == (Guid)user.ProviderUserKey).FirstOrDefault();
+                    if(up!=null)
+                    {
+                        PR.Delete(up.UserProfileID);
+                        PR.Save();
+                    }
 
                     gvUsers.DataSource = GetDataTableUsers();
                     gvUsers.DataBind();
@@ -168,14 +172,7 @@ namespace EDC.Pages.Administration
 
         protected void gvUsers_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            if (e.Row.RowType == DataControlRowType.DataRow)
-            {
-                ControlCollection cc = e.Row.Cells[7].Controls;
-                if (cc.Count > 0)
-                {
-                    (cc[2] as ImageButton).Attributes.Add("onclick", "return confirm('Вы действительно хотите удалить данного пользователя?')");
-                }
-            }
+
         }
 
         protected void dtInfo_SelectedIndexChanged(object sender, EventArgs e)
@@ -183,7 +180,6 @@ namespace EDC.Pages.Administration
             pageSize = dtInfo.DropDownSelectedValue;
             int maxRecordsOnPage = (CurrentPage * pageSize) > recordCount ? recordCount : (CurrentPage * pageSize);
 
-            //EntryesInfo.Text = string.Format(Localization.Records, ((CurrentPage - 1) * pageSize + 1), maxRecordsOnPage, recordCount);
             LoadDTDataItem();
         }
 

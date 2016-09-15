@@ -25,8 +25,13 @@ namespace EDC.Pages.Subject
                 _subjects = SR.SelectAll().Skip((CurrentPage - 1) * pageSize).Take(pageSize).ToList();
                 _events = ER.SelectAll().OrderBy(x => x.Position).ToList();
                 LoadMatrix();
-                LoadDTDataItem();
             }
+            if (User.IsInRole(Core.Roles.Administrator.ToString()) || User.IsInRole(Core.Roles.Investigator.ToString()) || User.IsInRole(Core.Roles.Principal_Investigator.ToString()))
+            {
+                dtInfo.ViewButton = true;
+            }
+            LoadDTDataItem();
+
         }
 
         private int GetPageFromRequest()

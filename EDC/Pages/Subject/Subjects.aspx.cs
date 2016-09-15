@@ -14,6 +14,8 @@ namespace EDC.Pages.Subject
         static int pageSize = 50;
         static int recordCount = 0;
         static List<Models.Subject> _subjects;
+        bool canEdit = false;
+        bool canDelete = false;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -21,7 +23,18 @@ namespace EDC.Pages.Subject
             {
                 LoadSubjects();
             }
-            LoadDTDataItem();
+
+            //если Администратор, Исследователь, Главный исследователь
+            if (User.IsInRole(Core.Roles.Administrator.ToString()) || User.IsInRole(Core.Roles.Investigator.ToString()) || User.IsInRole(Core.Roles.Principal_Investigator.ToString()))
+            {
+                canEdit = true;
+                dtInfo.ViewButton = true;
+                if(User.IsInRole(Core.Roles.Administrator.ToString()))
+                {
+                    canDelete = true;
+                }
+            }
+            LoadDTDataItem(); 
         }
 
         private int GetPageFromRequest()
@@ -91,8 +104,21 @@ namespace EDC.Pages.Subject
             pageSize = dtInfo.DropDownSelectedValue;
             int maxRecordsOnPage = (CurrentPage * pageSize) > recordCount ? recordCount : (CurrentPage * pageSize);
 
-            //EntryesInfo.Text = string.Format(Localization.Records, ((CurrentPage - 1) * pageSize + 1), maxRecordsOnPage, recordCount);
             LoadDTDataItem();
+        }
+
+        protected void gvSubjects_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if(e.Row.RowType == DataControlRowType.DataRow)
+            {
+                //Редактировать
+                Control _control = e.Row.Cells[6].Controls[0];
+                _control.Visible = canEdit;
+
+                //Удалять
+                _control = e.Row.Cells[7].Controls[0];
+                _control.Visible = canDelete;
+            }
         }
     }
 }
