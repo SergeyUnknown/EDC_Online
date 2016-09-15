@@ -26,7 +26,13 @@ namespace EDC.Pages.Subject
                 _events = ER.SelectAll().OrderBy(x => x.Position).ToList();
                 LoadMatrix();
                 LoadDTDataItem();
+                LoadLegend();
             }
+        }
+
+        void LoadLegend()
+        {
+
         }
 
         private int GetPageFromRequest()

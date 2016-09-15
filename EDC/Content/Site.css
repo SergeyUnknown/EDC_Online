@@ -596,7 +596,14 @@ th:first-child{
     -webkit-border-radius: 5px 0px 0px 0px;
     
 }
-
+th:only-child
+{
+    border-left:0;
+    border-right:0;
+    border-radius: 5px 5px 0px 0px !important;
+    -moz-border-radius: 5px 5px 0px 0px;
+    -webkit-border-radius: 5px 5px 0px 0px;
+}
 tbody:first-child
 {
     border-left:0;
@@ -1128,6 +1135,51 @@ tr.pager td {
     margin-bottom:6px;
     margin-left: auto;
     margin-right: auto !important;
+}
+.Legend
+{
+    float:left;
+    width:auto;
+    max-width:15%;
+    min-width:150px;
+}
+.Legend th
+{
+    border-left:0;
+    border-right:0;
+    border-radius: 5px 5px 0px 0px !important;
+    -moz-border-radius: 5px 5px 0px 0px;
+    -webkit-border-radius: 5px 5px 0px 0px;
+}
+.Legend tr
+{
+    display:inline-flex;
+    flex-direction:column;
+}
+.Legend td
+{
+    border-bottom:1px solid #c8c8c8;
+    text-align:left;
+}
+.Clip, .Data
+{
+    border-radius: 5px;
+}
+.Unplaned, .Planed, .Lock
+{
+    background-color:#7ac0da;
+}
+.Stopped, .Delete
+{
+    background-color: RGB(255, 51, 51);
+}
+.End, .Unhide, .Approve, .CheckAll
+{
+    background-color: RGB(168, 208, 144);
+}
+.Start, .Empty, .Check, .Hide
+{
+    background-color: RGB(248, 198, 58);
 }
 /********************
 *   Mobile Styles   *
