@@ -60,12 +60,17 @@ namespace EDC.Pages.Subject
                 if (currentSubjectIndex == 0)
                     btnPrevSubject.Visible = false;
                 else
-                    btnPrevSubject.PostBackUrl = string.Format("~/Subjects/{0}/{1}/{2}", subjectsInCenter[currentSubjectIndex-1].SubjectID, _eventID, _crfID);
-                
+                {
+                    btnPrevSubject.PostBackUrl = string.Format("~/Subjects/{0}/{1}/{2}", subjectsInCenter[currentSubjectIndex - 1].SubjectID, _eventID, _crfID);
+                    btnPrevSubject.CssClass += "prevSubject";
+                }
                 if (currentSubjectIndex == subjectsInCenter.Count - 1)
                     btnNextSubject.Visible = false;
                 else
-                    btnNextSubject.PostBackUrl = string.Format("~/Subjects/{0}/{1}/{2}", subjectsInCenter[currentSubjectIndex +1].SubjectID, _eventID, _crfID);
+                {
+                    btnNextSubject.PostBackUrl = string.Format("~/Subjects/{0}/{1}/{2}", subjectsInCenter[currentSubjectIndex + 1].SubjectID, _eventID, _crfID);
+                    btnNextSubject.CssClass += "nextSubject";
+                }
             }
             else
             {
@@ -82,12 +87,17 @@ namespace EDC.Pages.Subject
                 if (currentCRFIndex == 0)
                     btnPrevCRFInEvent.Visible = false;
                 else
+                {
                     btnPrevCRFInEvent.PostBackUrl = string.Format("~/Subjects/{0}/{1}/{2}", _subjectID, _eventID, CIEs[currentCRFIndex - 1].CRFID);
-
+                    btnPrevCRFInEvent.CssClass += "prevEvent";
+                }
                 if (currentCRFIndex == CIEs.Count - 1)
                     btnNextCRFInEvent.Visible = false;
                 else
+                {
                     btnNextCRFInEvent.PostBackUrl = string.Format("~/Subjects/{0}/{1}/{2}", _subjectID, _eventID, CIEs[currentCRFIndex + 1].CRFID);
+                    btnNextCRFInEvent.CssClass += "nextEvent";
+                }
 
             }
             else

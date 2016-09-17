@@ -60,7 +60,7 @@ td.dtrigth2 {
             </td>
             <td class="dtright1">
                 <asp:DropDownList CssClass="pageCount" ID="ddlItemCount" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlItemCount_SelectedIndexChanged"/>
-                <asp:Image runat="server" ImageUrl="~/Images/note-multiple (1).png"/>
+                <asp:Image runat="server" ImageUrl="~/Images/note-multiple-grey.png"/>
             </td>
             <td class="dtrigth2">
                 <asp:Label runat="server" ID="pageInfo"></asp:Label>
