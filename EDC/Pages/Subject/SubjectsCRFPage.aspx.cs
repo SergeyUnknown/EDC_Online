@@ -62,14 +62,17 @@ namespace EDC.Pages.Subject
                 else
                 {
                     btnPrevSubject.PostBackUrl = string.Format("~/Subjects/{0}/{1}/{2}", subjectsInCenter[currentSubjectIndex - 1].SubjectID, _eventID, _crfID);
-                    btnPrevSubject.CssClass += "prevSubject";
+                    string subjectNumber = subjectsInCenter[currentSubjectIndex - 1].Number;
+                    btnPrevSubject.ToolTip = "К предыдущему субъекту (" + subjectNumber + ")";
                 }
                 if (currentSubjectIndex == subjectsInCenter.Count - 1)
                     btnNextSubject.Visible = false;
                 else
                 {
                     btnNextSubject.PostBackUrl = string.Format("~/Subjects/{0}/{1}/{2}", subjectsInCenter[currentSubjectIndex + 1].SubjectID, _eventID, _crfID);
-                    btnNextSubject.CssClass += "nextSubject";
+                    string subjectNumber = subjectsInCenter[currentSubjectIndex + 1].Number;
+                    btnNextSubject.ToolTip = "К следующему субъекту (" + subjectNumber + ")";
+
                 }
             }
             else
@@ -89,14 +92,16 @@ namespace EDC.Pages.Subject
                 else
                 {
                     btnPrevCRFInEvent.PostBackUrl = string.Format("~/Subjects/{0}/{1}/{2}", _subjectID, _eventID, CIEs[currentCRFIndex - 1].CRFID);
-                    btnPrevCRFInEvent.CssClass += "prevEvent";
+                    string crfName = string.IsNullOrWhiteSpace(CIEs[currentCRFIndex - 1].CRF.RussianName) ? CIEs[currentCRFIndex - 1].CRF.Name : CIEs[currentCRFIndex - 1].CRF.RussianName;
+                    btnPrevCRFInEvent.ToolTip = "К предыдущей форме (" + crfName + ")";
                 }
                 if (currentCRFIndex == CIEs.Count - 1)
                     btnNextCRFInEvent.Visible = false;
                 else
                 {
                     btnNextCRFInEvent.PostBackUrl = string.Format("~/Subjects/{0}/{1}/{2}", _subjectID, _eventID, CIEs[currentCRFIndex + 1].CRFID);
-                    btnNextCRFInEvent.CssClass += "nextEvent";
+                    string crfName = string.IsNullOrWhiteSpace(CIEs[currentCRFIndex + 1].CRF.RussianName) ? CIEs[currentCRFIndex + 1].CRF.Name : CIEs[currentCRFIndex + 1].CRF.RussianName;
+                    btnNextCRFInEvent.ToolTip = "К следующей форме (" + crfName + ")";
                 }
 
             }

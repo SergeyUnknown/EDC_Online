@@ -59,6 +59,9 @@ namespace EDC
                 Membership.CreateUser(user5, @"!23QWeASd");
                 Roles.AddUserToRole(user5, Core.Roles.Principal_Investigator.ToString());
 
+                string user6 = Core.Roles.Auditor.ToString(); //Аудитор
+                Membership.CreateUser(user6, @"!23QWeASd");
+                Roles.AddUserToRole(user6, Core.Roles.Auditor.ToString());
             }
         }
 

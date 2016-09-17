@@ -9,7 +9,7 @@
         </div>
     </section>
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="LegendPlace" runat="server"> 
+<%--<asp:Content ID="Content2" ContentPlaceHolderID="LegendPlace" runat="server"> 
     <asp:Table runat="server" ID="tLegend" CssClass="Legend">
         
         <asp:TableRow>
@@ -71,10 +71,11 @@
             </asp:TableCell>
         </asp:TableRow>
     </asp:Table>
-</asp:Content>
+</asp:Content>--%>
     
 <asp:Content ID="Content3" ContentPlaceHolderID="MainContent" runat="server">
     
     <asp:Table runat="server" ID="tMatrix"></asp:Table>
-    <DownTableControl:DownTable ID="dtInfo" runat="server" OnSelectedIndexChanged="dtInfo_SelectedIndexChanged" />
+    <DownTableControl:DownTable ID="dtInfo" runat="server" ViewButton="false" OnSelectedIndexChanged="dtInfo_SelectedIndexChanged" />
+
 </asp:Content>

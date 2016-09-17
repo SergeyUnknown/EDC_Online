@@ -13,7 +13,8 @@ namespace EDC
             Data_Manager,  //Data manager
             Monitor,       //Монитор
             Principal_Investigator,  //Главный Исследователь
-            Investigator //исследователь/координатор
+            Investigator, //исследователь/координатор
+            Auditor         //Аудитор
         }
 
         public enum ResponseType
@@ -79,6 +80,7 @@ namespace EDC
                 case "Monitor": return "Монитор";
                 case "Principal_Investigator": return "Главный исследователь";
                 case "Investigator": return "Координатор/Исследователь";
+                case "Auditor": return "Аудитор";
                 default: return role;
             }
         }
@@ -97,7 +99,7 @@ namespace EDC
             }
         }
 
-        public static List<string> DropDownListItemsYesNo
+        public static List<string> ddlItemsYesNo
         {
             get
             {

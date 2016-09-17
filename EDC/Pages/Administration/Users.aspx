@@ -11,10 +11,12 @@
 </asp:Content>
 
 <asp:Content ContentPlaceHolderID="MainContent" runat="server">
+    <asp:UpdatePanel runat="server">
+        <ContentTemplate>
     <asp:Label runat="server" ID="labelStatus"></asp:Label><br />
     <asp:Label runat="server" ID="lblUserOnline" EnableViewState ="False">Пользователей в сети: <%: CountUserOnline %></asp:Label><br />
 
-    <asp:GridView runat="server" ID="gvUsers" CellPadding="4" ForeColor="#333333" GridLines="Both" AutoGenerateColumns="False" OnRowDataBound="gvUsers_RowDataBound" OnRowDeleting="gvUsers_RowDeleting" OnRowEditing="gvUsers_RowEditing">
+    <asp:GridView runat="server" ID="gvUsers" CellPadding="4" ForeColor="#333333" AutoGenerateColumns="False" OnRowDataBound="gvUsers_RowDataBound" OnRowDeleting="gvUsers_RowDeleting" OnRowEditing="gvUsers_RowEditing">
         <AlternatingRowStyle BackColor="White" />
         <Columns>
             <asp:BoundField DataField="UserName" HeaderText="Имя пользователя" />
@@ -24,7 +26,12 @@
             <asp:BoundField DataField="Phone" HeaderText="Телефон" />
             <asp:BoundField DataField="Role" HeaderText="Роли" />
             <asp:BoundField DataField="Locked" HeaderText="Заблокирован" />
-            <asp:CommandField HeaderText="Действия" ButtonType="Image"  SelectText="Просмотреть" ShowDeleteButton="True" DeleteText="Удалить" DeleteImageUrl="~/Images/delete (3).png" ShowEditButton="True" UpdateText="Обновить" CancelText="Отмена" EditText="Редактировать" EditImageUrl="~/Images/pencil-box (1).png"/>
+            <asp:TemplateField HeaderText="Действия" ShowHeader="False">
+                <ItemTemplate>
+                    <asp:ImageButton ID="ibEdit" runat="server" CausesValidation="False" CommandName="Edit" ImageUrl="~/Images/pencil-box (1).png" Text="Редактировать" />
+                    &nbsp;<asp:ImageButton ID="ibDelete" runat="server" CausesValidation="False" CommandName="Delete" ImageUrl="~/Images/delete (3).png" Text="Удалить" OnClientClick="return confirm('Вы уверены, что хотите удалить данного пользователя?')" />
+                </ItemTemplate>
+            </asp:TemplateField>
         </Columns>
         <EditRowStyle BackColor="#2461BF" />
         <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
@@ -38,6 +45,7 @@
         <SortedDescendingHeaderStyle BackColor="#4870BE" />
 
     </asp:GridView>
-
+            </ContentTemplate>
+        </asp:UpdatePanel>
     <DownTableControl:DownTable ID="dtInfo" runat="server" OnSelectedIndexChanged="dtInfo_SelectedIndexChanged" />
 </asp:Content>

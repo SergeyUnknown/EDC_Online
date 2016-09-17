@@ -14,15 +14,7 @@
         <Triggers>
         </Triggers>
         <ContentTemplate>
-            <asp:Panel runat="server" ID="pnlModal" style="display:none">
-                <label>aaaaa</label>
-                <asp:Button runat="server" OnClick="Unnamed_Click" Text="Close" />
-            </asp:Panel>
-
-            <ajaxToolkit:ModalPopupExtender runat="server" ID="modalPopup" PopupControlID="pnlModal" TargetControlID="btnShow" DropShadow="true" >
-                
-            </ajaxToolkit:ModalPopupExtender>
-            <asp:Button ID="btnShow" runat="server" OnClick="btnShow_Click" Text="ShowModalPopup"/>
+            
 
         </ContentTemplate>
     </asp:UpdatePanel>
