@@ -67,10 +67,25 @@ namespace EDC
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if(HttpContext.Current.User.IsInRole(Core.Roles.Administrator.ToString()))
+            if (!(HttpContext.Current.User.IsInRole(Core.Roles.Auditor.ToString()) || !HttpContext.Current.User.Identity.IsAuthenticated))
+            {
+                liQueryAndNotes.Visible = true;
+            }
+            if (HttpContext.Current.User.IsInRole(Core.Roles.Administrator.ToString()) || HttpContext.Current.User.IsInRole(Core.Roles.Data_Manager.ToString()))
             {
                 liAdmin.Visible = true;
+                liData.Visible = true;
+                liMonitor.Visible = true;
+                liQueryAndNotes.Visible = true;
             }
+
+            if (HttpContext.Current.User.IsInRole(Core.Roles.Monitor.ToString()))
+            {
+                liMonitor.Visible = true;
+            }
+
+
+
         }
     }
 }
