@@ -9,7 +9,7 @@
         </div>
     </section>
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="LegendPlace" runat="server"> 
+<%--<asp:Content ID="Content2" ContentPlaceHolderID="LegendPlace" runat="server"> 
     <asp:Table runat="server" ID="tLegend" CssClass="Legend">
         
         <asp:TableRow>
@@ -71,7 +71,7 @@
             </asp:TableCell>
         </asp:TableRow>
     </asp:Table>
-</asp:Content>
+</asp:Content>--%>
     
 <asp:Content ID="Content3" ContentPlaceHolderID="MainContent" runat="server">
     

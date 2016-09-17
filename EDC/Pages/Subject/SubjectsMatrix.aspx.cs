@@ -26,18 +26,12 @@ namespace EDC.Pages.Subject
                 _events = ER.SelectAll().OrderBy(x => x.Position).ToList();
                 LoadMatrix();
                 LoadDTDataItem();
-                LoadLegend();
             }
             if (User.IsInRole(Core.Roles.Administrator.ToString()) || User.IsInRole(Core.Roles.Investigator.ToString()) || User.IsInRole(Core.Roles.Principal_Investigator.ToString()))
             {
                 dtInfo.ViewButton = true;
             }
             LoadDTDataItem();
-
-        }
-
-        void LoadLegend()
-        {
 
         }
 
