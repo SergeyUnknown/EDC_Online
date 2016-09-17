@@ -9,7 +9,7 @@
         </div>
     </section>
 </asp:Content>
-<%--<asp:Content ID="Content2" ContentPlaceHolderID="LegendPlace" runat="server"> 
+<asp:Content ID="Content2" ContentPlaceHolderID="LegendPlace" runat="server"> 
     <asp:Table runat="server" ID="tLegend" CssClass="Legend">
         
         <asp:TableRow>
@@ -18,15 +18,15 @@
             </asp:TableHeaderCell>
             <asp:TableCell>
                 <asp:Image runat="server" ImageUrl="~/Images/action/clipboard-text.png" CssClass="Clip Unplaned"/>
-                <asp:Label runat="server">Не запланировано </asp:Label>
+                <asp:Label runat="server">Не запланировано</asp:Label>
             </asp:TableCell>
             <asp:TableCell>
                 <asp:Image runat="server" ImageUrl="~/Images/action/calendar-clock.png" CssClass="Data Planed"/>
-                <asp:Label runat="server">Запланировано </asp:Label>
+                <asp:Label runat="server">Запланировано</asp:Label>
             </asp:TableCell>
             <asp:TableCell>
                 <asp:Image runat="server" ImageUrl="~/Images/action/message-draw.png" CssClass="Clip Start"/>
-                <asp:Label runat="server">Можно вводить данные</asp:Label>
+                <asp:Label runat="server">Ввод данных начат</asp:Label>
             </asp:TableCell>
             <asp:TableCell>
                 <asp:Image runat="server" ImageUrl="~/Images/action/alert-octagon.png" CssClass="Data Stopped"/>
@@ -38,24 +38,23 @@
             </asp:TableCell>
             <asp:TableCell>
                 <asp:Image runat="server" ImageUrl="~/Images/action/clipboard-check.png" CssClass="Clip End"/>
-                <asp:Label runat="server">Закончено</asp:Label>
+                <asp:Label runat="server">Завершено</asp:Label>
             </asp:TableCell>
             <asp:TableCell>
                 <asp:Image runat="server" ImageUrl="~/Images/action/check.png" CssClass="Data Check"/>
-                <asp:Label runat="server">Первоначальный ввод 
-                    данных завершен</asp:Label>
+                <asp:Label runat="server">Первоначальный ввод данных завершен</asp:Label>
             </asp:TableCell>
             <asp:TableCell>
                 <asp:Image runat="server" ImageUrl="~/Images/action/flask.png" CssClass="Data Unhide"/>
-                <asp:Label runat="server">Закодирован</asp:Label>
+                <asp:Label runat="server">Закодировано</asp:Label>
             </asp:TableCell>
             <asp:TableCell>
                 <asp:Image runat="server" ImageUrl="~/Images/action/flask-empty-outline.png" CssClass="Data Hide"/>
-                <asp:Label runat="server">Не закодирован</asp:Label>
+                <asp:Label runat="server">Не закодировано</asp:Label>
             </asp:TableCell>
             <asp:TableCell>
                 <asp:Image runat="server" ImageUrl="~/Images/action/check-all.png" CssClass="Data CheckAll"/>
-                <asp:Label runat="server">Данные проверены</asp:Label>
+                <asp:Label runat="server">Сверка проведена</asp:Label>
             </asp:TableCell>
             <asp:TableCell>
                 <asp:Image runat="server" ImageUrl="~/Images/action/account-check.png" CssClass="Data Approve"/>
@@ -67,11 +66,11 @@
             </asp:TableCell>
             <asp:TableCell>
                 <asp:Image runat="server" ImageUrl="~/Images/action/delete-forever.png" CssClass="Data Delete"/>
-                <asp:Label runat="server">Удален</asp:Label>
+                <asp:Label runat="server">Удалено</asp:Label>
             </asp:TableCell>
         </asp:TableRow>
     </asp:Table>
-</asp:Content>--%>
+</asp:Content>
     
 <asp:Content ID="Content3" ContentPlaceHolderID="MainContent" runat="server">
     

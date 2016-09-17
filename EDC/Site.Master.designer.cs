@@ -67,6 +67,15 @@ namespace EDC {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl liAdmin;
         
         /// <summary>
+        /// LegendPlace элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ContentPlaceHolder LegendPlace;
+        
+        /// <summary>
         /// MainContent элемент управления.
         /// </summary>
         /// <remarks>
