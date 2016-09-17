@@ -19,8 +19,7 @@
             <asp:AsyncPostBackTrigger ControlID="btnCreateNote" />
         </Triggers>
         <ContentTemplate>
-            <asp:Label runat="server" ID="lbInfo" />
-            <br />
+            <asp:Label runat="server" ID="lbInfo" CssClass="SubjectPageInfo"/>
 
             <asp:Button runat="server" ID="btnPrevSubject" Text="Предыдущий субъект" ToolTip="Предыдущий субъект" CausesValidation="false" />
             <asp:Button runat="server" ID="btnPrevCRFInEvent" Text="Предыдущая форма" ToolTip="Предыдущая форма ввода данных" CausesValidation="false" />

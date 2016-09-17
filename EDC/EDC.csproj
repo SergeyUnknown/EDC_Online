@@ -144,6 +144,19 @@
   <ItemGroup>
     <Content Include="About.aspx" />
     <Content Include="Controls\DownTable\DownTable.ascx" />
+    <Content Include="Images\action\account-check.png" />
+    <Content Include="Images\action\alert-octagon.png" />
+    <Content Include="Images\action\calendar-clock.png" />
+    <Content Include="Images\action\check-all.png" />
+    <Content Include="Images\action\check.png" />
+    <Content Include="Images\action\clipboard-check.png" />
+    <Content Include="Images\action\clipboard-outline.png" />
+    <Content Include="Images\action\clipboard-text.png" />
+    <Content Include="Images\action\delete-forever.png" />
+    <Content Include="Images\action\file-lock.png" />
+    <Content Include="Images\action\flask-empty-outline.png" />
+    <Content Include="Images\action\flask.png" />
+    <Content Include="Images\action\message-draw.png" />
     <Content Include="Images\backward.png" />
     <Content Include="Images\border-color %281%29.png" />
     <Content Include="Images\border-color %282%29.png" />
@@ -164,6 +177,7 @@
     <Content Include="Images\magnify %281%29.png" />
     <Content Include="Images\NextPage.png" />
     <Content Include="Images\note-multiple %281%29.png" />
+    <Content Include="Images\note-multiple-grey.png" />
     <Content Include="Images\note-multiple-outline.png" />
     <Content Include="Images\note-plus-outline.png" />
     <Content Include="Images\pencil-box %281%29.png" />
