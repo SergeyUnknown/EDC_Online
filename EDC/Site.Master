@@ -66,6 +66,7 @@
                 <ul class="menu">
                     <li>
                         <a runat="server" href="~/">Главная</a>
+                        </li>
                     <li>
                         <a runat="server" href="~/SubjectsMatrix">Матрица субъектов</a>
                         <ul class="submenu">
@@ -73,6 +74,7 @@
                                 <a runat="server" href="~/Subjects">Субъекты</a>
                             </li>
                         </ul>
+</li>
                     <li>
                         <a runat="server" href="#">Мониторинг данных</a>
                         <ul class="submenu">
@@ -83,6 +85,7 @@
                                 <a runat="server" href="#">Аудит данных исследования</a>
                             </li>
                         </ul>
+                        </li>
                     <li>
                         <a runat="server" href="#">Управление данными</a>
                         <ul class="submenu">
@@ -93,6 +96,7 @@
                                 <a runat="server" href="#">Импорт данных</a>
                             </li>
                         </ul>
+                        </li>
                     <li>
                         <a runat="server" href="~/NotesAndQuery">Заметки и замечания</a>
 <%-- а нужно ли?        <ul class="submenu">
@@ -143,12 +147,13 @@
                                 <a runat="server" href="#">О продукте</a>
                             </li>
                         </ul>
+                        </li>
                 </ul>
             </nav>
         </div>
     </header>
     <div id="body">
-
+        <asp:ContentPlaceHolder runat="server" ID="LegendPlace" />
         <section class="content-wrapper main-content clear-fix">
             <asp:ContentPlaceHolder runat="server" ID="MainContent" />
         </section>
