@@ -20,7 +20,14 @@ namespace EDC.Models.Repository
 
         public AppSetting SelectByID(params object[] id)
         {
-            return db.AppSettings.Find(id);
+            if (db.AppSettings.Find(id) == null)
+            {
+                db.AppSettings.Add(new AppSetting(id.ToString(), ""));
+                db.SaveChanges();
+                return db.AppSettings.Find(id);
+            }
+            else
+                return db.AppSettings.Find(id);
         }
 
         public IEnumerable<AppSetting> GetManyByFilter(System.Linq.Expressions.Expression<Func<AppSetting, bool>> filter)

@@ -11,5 +11,16 @@ namespace EDC.Models
         [Key]
         public string AppSettingID { get; set; }
         public string Value { get; set; }
+
+        public AppSetting(string key, string value)
+        {
+            this.AppSettingID = key;
+            this.Value = value;
+        }
+
+        public AppSetting()
+        {
+
+        }
     }
 }
