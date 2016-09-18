@@ -341,6 +341,7 @@
     </Compile>
     <Compile Include="Controls\DownTable\DownTableInfo.cs" />
     <Compile Include="Core\Localization.cs" />
+    <Compile Include="Models\Repository\AppSettingRepository.cs" />
     <Compile Include="Models\Repository\CRF\CRFGroupRepository.cs" />
     <Compile Include="Models\Repository\CRF\CRFItemRepository.cs" />
     <Compile Include="Models\Repository\CRF\CRFRepository.cs" />
@@ -354,6 +355,7 @@
     <Compile Include="Models\Repository\SubjectsEventRepoitory.cs" />
     <Compile Include="Models\Repository\SubjectsItemRepoitory.cs" />
     <Compile Include="Models\Tables\Audit.cs" />
+    <Compile Include="Models\Tables\AppSetting.cs" />
     <Compile Include="Models\Tables\SubjectsCRF.cs" />
     <Compile Include="Models\Tables\CRF\CRF.cs" />
     <Compile Include="Models\Tables\CRF\CRF_Group.cs" />

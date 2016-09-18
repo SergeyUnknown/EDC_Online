@@ -21,7 +21,14 @@
                 <asp:ListItem Text="Заблокировано" Value="Disable" />
             </asp:RadioButtonList>
         </li>
-
-
+        <li>
+            <asp:Label runat="server" AssociatedControlID="tbStudyName">Название исследования</asp:Label>
+            <asp:TextBox runat="server" ID="tbStudyName"/>
+        </li>
+        <li>
+            <asp:Label runat="server" AssociatedControlID="tbProtocolID">Номер протокола</asp:Label>
+            <asp:TextBox runat="server" ID="tbProtocolID"/>
+        </li>
     </ol>
+    <asp:Button runat="server" ID="btnSave" OnClick="btnSave_Click" Text="Сохранить" />
 </asp:Content>
