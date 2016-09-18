@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace EDC.Models
 {
@@ -19,6 +21,37 @@ namespace EDC.Models
         [ForeignKey("CRFID")]
         public CRF CRF { get; set; }
 
-        public bool IsClosed { get; set; }
+        /// <summary>
+        /// Ввод данных начат
+        /// </summary>
+        [DefaultValue(false)]
+        public bool IsStart { get; set; }
+        public string IsStartBy { get; set; }
+        /// <summary>
+        /// Ввод данных завершен
+        /// </summary>
+        [DefaultValue(false)]
+        public bool IsEnd { get; set; }
+        public string IsEndBy { get; set; }
+
+        /// <summary>
+        /// Подписано
+        /// </summary>
+        [DefaultValue(false)]
+        public bool IsApprove { get; set; }
+        public string IsApprovedBy { get; set; }
+
+        /// <summary>
+        /// Сверка завершена
+        /// </summary>
+        [DefaultValue(false)]
+        public bool IsCheckAll { get; set; } //сверка завершена
+        public string IsCheckAllBy { get; set; }
+        [DefaultValue(false)]
+        public bool IsStopped { get; set; } //ввод данных остановлен
+        [DefaultValue(false)]
+        public bool IsLock { get; set; } //заблокировано
+        [DefaultValue(false)]
+        public bool IsDelete { get; set; } //удалено
     }
 }

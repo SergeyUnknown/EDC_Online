@@ -49,6 +49,15 @@ namespace EDC.Pages.Subject {
         protected global::System.Web.UI.WebControls.Button btnPrevCRFInEvent;
         
         /// <summary>
+        /// cbEnd элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbEnd;
+        
+        /// <summary>
         /// tcCRF элемент управления.
         /// </summary>
         /// <remarks>

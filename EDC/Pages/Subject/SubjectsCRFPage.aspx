@@ -23,7 +23,7 @@
 
             <asp:Button runat="server" ID="btnPrevSubject" CssClass="prevSubject" Text="Предыдущий субъект" CausesValidation="false" />
             <asp:Button runat="server" ID="btnPrevCRFInEvent" CssClass="prevEvent" Text="Предыдущая форма" CausesValidation="false" />
-
+            <asp:CheckBox runat="server" ID="cbEnd" Text="Ввод данных завершен" Visible="false" />
             <ajaxToolkit:TabContainer runat="server" ID="tcCRF">
             </ajaxToolkit:TabContainer>
 

@@ -21,6 +21,7 @@ namespace EDC.Pages.Subject
 
         static Models.CRF _crf;
         static Models.Subject _subject;
+        static Models.SubjectsCRF _sCRF;
         static long _subjectID;
         static long _eventID;
         static long _crfID;
@@ -40,12 +41,19 @@ namespace EDC.Pages.Subject
                 GetInfoFromRequest();
                 _crf = CRFR.SelectByID(_crfID);
                 _subject = SR.SelectByID(_subjectID);
+                _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
                 Models.Event _event = ER.SelectByID(_eventID);
                 ConfigButtonVisible();
                 Title = string.Format("Настройка ИРК субъекта {0}", _subject.Number);
                 lbInfo.Text = string.Format("Визит: \"{0}\", ИРК: \"{1}\", субъект: {2}",_event.Name, string.IsNullOrWhiteSpace(_crf.RussianName) ? _crf.Name : _crf.RussianName, _subject.Number);
                 RowCountInSection = new Dictionary<string, int>();
                 answerRowIndex = -1;
+
+                if (tcCRF.Tabs.Count == 1)
+                {
+                    cbEnd.Visible = true;
+                    cbEnd.Checked = _sCRF == null ? false : _sCRF.IsEnd;
+                }
             }
             LoadForm(_crf);
             
@@ -826,6 +834,34 @@ namespace EDC.Pages.Subject
             string panelName = (tempControl as AjaxControlToolkit.TabPanel).HeaderText;
             CRF_Section section = _crf.Sections.First(x => x.Title == panelName);
             GetInfo(tempControl, section);
+
+            //обновления статуса Ввод начат////
+            _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
+            if(_sCRF == null)
+            {
+                _sCRF = new SubjectsCRF();
+                _sCRF.SubjectID = _subjectID;
+                _sCRF.EventID = _eventID;
+                _sCRF.CRFID = _crfID;
+                SCR.Create(_sCRF);
+                SCR.Save();
+                _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
+            }
+            _sCRF.IsStart = true;
+            _sCRF.IsStartBy = User.Identity.Name;
+            ///////////////////////////////////
+
+            //обновление статуса Ввод завершен/
+            if(cbEnd.Checked)
+            {
+                _sCRF.IsEnd = true;
+                _sCRF.IsEndBy = User.Identity.Name;
+            }
+            ///////////////////////////////////
+            SCR.Update(_sCRF);
+            SCR.Save();
+            _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
+            ///////////////////////////////////
             _crf = CRFR.SelectByID(_crf.CRFID);
             LoadForm(_crf);
         }
