@@ -10,6 +10,7 @@ namespace EDC.Pages.Subject
     public partial class SubjectsMatrix : System.Web.UI.Page
     {
         Models.Repository.SubjectRepository SR = new Models.Repository.SubjectRepository();
+        Models.Repository.SubjectsCRFRepository SCR = new Models.Repository.SubjectsCRFRepository();
         Models.Repository.EventRepository ER = new Models.Repository.EventRepository();
         Models.Repository.CRFInEventRepository CIER = new Models.Repository.CRFInEventRepository();
 
@@ -137,7 +138,25 @@ namespace EDC.Pages.Subject
                 {
                     tc = new TableCell();
                     Button btn = new Button();
+                    Models.SubjectsCRF _sc = SCR.SelectByID(_subjects[i].SubjectID, _eventCRFs[y].EventID, _eventCRFs[y].CRFID);
                     btn.PostBackUrl = string.Format("~/Subjects/{0}/{1}/{2}", _subjects[i].SubjectID, _eventCRFs[y].EventID, _eventCRFs[y].CRFID);
+                    if(_sc!=null)
+                    {
+                        if (_sc.IsDelete)
+                            btn.CssClass = "Data Delete";
+                        else if (_sc.IsStopped)
+                            btn.CssClass = "Data Lock";
+                        else if (_sc.IsStopped)
+                            btn.CssClass = "Data Stopped";
+                        else if (_sc.IsCheckAll)
+                            btn.CssClass = "Data CheckAll";
+                        else if (_sc.IsApprove)
+                            btn.CssClass = "Data Approve";
+                        else if (_sc.IsEnd)
+                            btn.CssClass = "Clip End";
+                        else if (_sc.IsStart)
+                            btn.CssClass = "Clip Start";
+                    }
                     tc.Controls.Add(btn);
                     tr.Cells.Add(tc);
                 }

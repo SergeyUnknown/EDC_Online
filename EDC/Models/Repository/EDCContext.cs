@@ -10,7 +10,7 @@ namespace EDC.Models
 {
     public class EDCContext : DbContext
     {
-
+        public DbSet<AppSetting> AppSettings { get; set; } //настройки приложения
         public DbSet<UserProfile> UsersProfiles { get; set; } //профиль пользователя
         public DbSet<MedicalCenter> MedicalCenters { get; set; } //мед центры
         public DbSet<CRF> CRFs { get; set; } // CRF

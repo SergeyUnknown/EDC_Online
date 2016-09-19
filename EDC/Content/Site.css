@@ -1087,8 +1087,9 @@ tr.pager td {
 .nextEvent {
     position: absolute;
     display: block;
-    width:48px;
-    height:48px;
+    width: 48px;
+    height: 48px;
+
     color:rgba(0, 0, 0, 0.00) !important;
     padding-right:48px !important;
     background-position:right center;
@@ -1164,6 +1165,11 @@ tr.pager td {
 .Clip, .Data
 {
     border-radius: 5px;
+    width:26px;
+    height:26px;
+    padding:0px;
+    background-repeat:no-repeat;
+    background-position:1px 1px;
 }
 .Unplaned, .Planed, .Lock
 {
@@ -1180,6 +1186,37 @@ tr.pager td {
 .Start, .Empty, .Check, .Hide
 {
     background-color: RGB(248, 198, 58);
+}
+.Unplaned 
+{
+    background-image: url('../Images/action/clipboard-text.png');
+}
+.Planed {
+    background-image: url('../Images/action/calendar-clock.png');
+}
+.Lock {
+    background-image: url('../Images/action/file-lock.png');
+}
+.Stopped {
+    background-image: url('../Images/action/alert-octagon.png');
+}
+.Delete {
+    background-image: url('../Images/action/delete-forever.png');
+}
+.End {
+    background-image: url('../Images/action/clipboard-check.png');
+}
+.Unhide {
+    background-image: url('../Images/action/flask.png');
+}
+.Hide {
+    background-image: url('../Images/action/flask-empty-outline.png');
+}
+.Empty {
+    background-image: url('../Images/action/clipboard-outline.png');
+}
+.Check {
+    background-image: url('../Images/action/check.png');
 }
 /********************
 *   Mobile Styles   *

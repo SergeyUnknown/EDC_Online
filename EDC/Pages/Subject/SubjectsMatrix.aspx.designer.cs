@@ -13,6 +13,24 @@ namespace EDC.Pages.Subject {
     public partial class SubjectsMatrix {
         
         /// <summary>
+        /// tLegend элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Table tLegend;
+        
+        /// <summary>
+        /// pScrolls элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pScrolls;
+        
+        /// <summary>
         /// tMatrix элемент управления.
         /// </summary>
         /// <remarks>

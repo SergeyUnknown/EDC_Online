@@ -254,7 +254,7 @@
             </div>
         </header>
         <div id="body">
-
+            <asp:ContentPlaceHolder runat="server" ID="LegendPlace" />
             <section class="content-wrapper main-content clear-fix">
                 <asp:ContentPlaceHolder runat="server" ID="MainContent" />
             </section>
