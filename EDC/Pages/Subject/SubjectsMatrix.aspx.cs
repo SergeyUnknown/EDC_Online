@@ -143,18 +143,19 @@ namespace EDC.Pages.Subject
                     if(_sc!=null)
                     {
                         if (_sc.IsDelete)
-                            btn.CssClass = "Data Delete";
+                            btn.CssClass = "ActionIc Delete";
                         else if (_sc.IsStopped)
-                            btn.CssClass = "Data Lock";
+                            btn.CssClass = "ActionIc Lock";
                         else if (_sc.IsStopped)
-                            btn.CssClass = "Data Stopped";
+                            btn.CssClass = "ActionIc Stopped";
                         else if (_sc.IsCheckAll)
-                            btn.CssClass = "Data CheckAll";
+                            btn.CssClass = "ActionIc CheckAll";
                         else if (_sc.IsApprove)
-                            btn.CssClass = "Data Approve";
+                            btn.CssClass = "ActionIc Approve";
                         else if (_sc.IsEnd)
-                            btn.CssClass = "Clip End";
+                            btn.CssClass = "ActionIc End";
                         else if (_sc.IsStart)
+<<<<<<< HEAD
                             btn.CssClass = "Clip Start";
                         else
                             btn.CssClass = "Unplaned";
@@ -162,6 +163,13 @@ namespace EDC.Pages.Subject
                     else
                         btn.CssClass = "Unplaned";
 
+=======
+                            btn.CssClass = "ActionIc Start";
+                       
+                    }
+                    else
+                        btn.CssClass = "ActionIc Unplaned";
+>>>>>>> refs/remotes/origin/master
                     tc.Controls.Add(btn);
                     tr.Cells.Add(tc);
                 }
