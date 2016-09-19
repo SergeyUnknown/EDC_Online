@@ -18,35 +18,35 @@
                 <asp:Label runat="server">Легенда</asp:Label>
             </asp:TableHeaderCell>
             <asp:TableCell>
-               <asp:Image runat="server" CssClass="NEWCLASS"/> 
+               <input type="button" Class="ActionIc Unplaned"/> 
                <asp:Label runat="server">Ввод данных не начат</asp:Label>
             </asp:TableCell>
             <asp:TableCell>
-                <asp:Image runat="server" CssClass="Clip Start"/>
+                <input type="button" Class="ActionIc Start"/>
                 <asp:Label runat="server">Ввод данных начат</asp:Label>
             </asp:TableCell>
             <asp:TableCell>
-                <asp:Image runat="server" CssClass="Clip End"/>
+                <input type="button" Class="ActionIc End"/>
                 <asp:Label runat="server">Завершено</asp:Label>
             </asp:TableCell>
             <asp:TableCell>
-                <asp:Image runat="server" CssClass="Data Approve"/>
+                <input type="button" Class="ActionIc Approve"/>
                 <asp:Label runat="server">Подписано</asp:Label>
             </asp:TableCell>
             <asp:TableCell>
-                <asp:Image runat="server" CssClass="Data CheckAll"/>
+                <input type="button" Class="ActionIc CheckAll"/>
                 <asp:Label runat="server">Сверка проведена</asp:Label>
             </asp:TableCell>
             <asp:TableCell>
-                <asp:Image runat="server" CssClass="Data Stopped"/>
+                <input type="button" Class="ActionIc Stopped"/>
                 <asp:Label runat="server">Остановлено</asp:Label>
             </asp:TableCell>
             <asp:TableCell>
-                <asp:Image runat="server" CssClass="Data Lock"/>
+                <input type="button" Class="ActionIc Lock"/>
                 <asp:Label runat="server">Заблокировано</asp:Label>
             </asp:TableCell>
             <asp:TableCell>
-                <asp:Image runat="server" CssClass="Data Delete"/>
+                <input type="button" Class="ActionIc Delete"/>
                 <asp:Label runat="server">Удалено</asp:Label>
             </asp:TableCell>
         </asp:TableRow>
