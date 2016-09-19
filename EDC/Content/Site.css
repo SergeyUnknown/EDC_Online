@@ -929,19 +929,7 @@ tr.pager td {
     background-color:rgba(80, 124, 209, 0.52);
     color:white;
 }
-
-#MainContent_tMatrix > tbody > tr > td > input
-{
-    width:20px;
-    height:20px;
-    margin:2px;
-}
-#MainContent_tMatrix > tbody > tr > td > input:hover
-{
-    width:22px;
-    height:22px;
-    margin:1px;
-}
+    
 .horizontal > tbody
 {
     display:inline-flex;
@@ -1162,7 +1150,7 @@ tr.pager td {
     border-bottom:1px solid #c8c8c8;
     text-align:left;
 }
-.Clip, .Data
+.ActionIc
 {
     border-radius: 5px;
     width:26px;
@@ -1177,15 +1165,15 @@ tr.pager td {
 }
 .Stopped, .Delete
 {
-    background-color: RGB(255, 51, 51);
+    background-color: RGB(255, 51, 51)!important;
 }
 .End, .Unhide, .Approve, .CheckAll
 {
-    background-color: RGB(168, 208, 144);
+    background-color: RGB(168, 208, 144)!important;
 }
 .Start, .Empty, .Check, .Hide
 {
-    background-color: RGB(248, 198, 58);
+    background-color: RGB(248, 198, 58)!important;
 }
 .Unplaned 
 {
@@ -1217,6 +1205,15 @@ tr.pager td {
 }
 .Check {
     background-image: url('../Images/action/check.png');
+}
+.CheckAll {
+    background-image: url('../Images/action/check-all.png');
+}
+.Start {
+    background-image: url('../Images/action/message-draw.png');
+}
+.Approve {
+    background-image: url('../Images/action/account-check.png');
 }
 /********************
 *   Mobile Styles   *
