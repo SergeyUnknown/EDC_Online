@@ -156,7 +156,12 @@ namespace EDC.Pages.Subject
                             btn.CssClass = "Clip End";
                         else if (_sc.IsStart)
                             btn.CssClass = "Clip Start";
+                        else
+                            btn.CssClass = "Unplaned";
                     }
+                    else
+                        btn.CssClass = "Unplaned";
+
                     tc.Controls.Add(btn);
                     tr.Cells.Add(tc);
                 }

@@ -50,7 +50,7 @@ namespace EDC.Pages.Subject
                 lbInfo.Text = string.Format("Визит: \"{0}\", ИРК: \"{1}\", субъект: {2}",_event.Name, string.IsNullOrWhiteSpace(_crf.RussianName) ? _crf.Name : _crf.RussianName, _subject.Number);
                 RowCountInSection = new Dictionary<string, int>();
                 answerRowIndex = -1;
-                if (User.IsInRole(Core.Roles.Investigator.ToString()) || User.IsInRole(Core.Roles.Principal_Investigator.ToString()))
+                if (User.IsInRole(Core.Roles.Investigator.ToString()) || User.IsInRole(Core.Roles.Principal_Investigator.ToString()) && !_sCRF.IsEnd)
                 {
                     cbEnd.Attributes.CssStyle["display"] = "block";
                     cbEnd.Checked = _sCRF == null ? false : _sCRF.IsEnd;
