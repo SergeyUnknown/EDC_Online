@@ -33,6 +33,8 @@ namespace EDC.Pages.Subject
 
         static int answerRowIndex;
 
+        static bool readOnly = false;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             
@@ -48,12 +50,24 @@ namespace EDC.Pages.Subject
                 lbInfo.Text = string.Format("Визит: \"{0}\", ИРК: \"{1}\", субъект: {2}",_event.Name, string.IsNullOrWhiteSpace(_crf.RussianName) ? _crf.Name : _crf.RussianName, _subject.Number);
                 RowCountInSection = new Dictionary<string, int>();
                 answerRowIndex = -1;
-
-                if (tcCRF.Tabs.Count == 1)
+                if (User.IsInRole(Core.Roles.Investigator.ToString()) || User.IsInRole(Core.Roles.Principal_Investigator.ToString()))
                 {
-                    cbEnd.Visible = true;
+                    cbEnd.Attributes.CssStyle["display"] = "block";
                     cbEnd.Checked = _sCRF == null ? false : _sCRF.IsEnd;
                 }
+
+                if (User.IsInRole(Core.Roles.Principal_Investigator.ToString()) && (_sCRF != null && _sCRF.IsEnd) && !_sCRF.IsApprove)
+                {
+                    btnApproved.Visible = true;
+                }
+
+                if (User.IsInRole(Core.Roles.Monitor.ToString()))
+                {
+                    readOnly = true;
+                    if ((_sCRF != null && _sCRF.IsApprove) && !_sCRF.IsCheckAll)
+                        btnCheckAll.Visible=true;
+                }
+
             }
             LoadForm(_crf);
             
@@ -249,7 +263,7 @@ namespace EDC.Pages.Subject
                         tc.Controls.Add(LIT);
                     }
 
-                    GetAddedUngroupedControl(item, ref tc); //запись в tc нужных контролов
+                    GetAddedControl(item, ref tc,-1,null); //запись в tc нужных контролов
 
                     if (!string.IsNullOrWhiteSpace(item.Units)) //Units
                     {
@@ -339,8 +353,7 @@ namespace EDC.Pages.Subject
                             for (int k = 0; k < SIs.Count; k++)
                             {
                                 tc = new TableCell();
-                                GetAddedGroupedControl(item, ref tc, SIs[k].IndexID, SIs[k].Value);
-                                GetModalPopup(ref tc,(item.Identifier + "_" + SIs[k].IndexID).ToString());
+                                GetAddedControl(item, ref tc, SIs[k].IndexID, SIs[k].Value);
                                 addedRows[k].Cells.Add(tc);
                             }
                         }
@@ -349,7 +362,7 @@ namespace EDC.Pages.Subject
 
                         ////////////////////Поле ввода данных/////////////////
                         tc = new TableCell();
-                        GetAddedGroupedControl(item, ref tc, groupedIndex, null);
+                        GetAddedControl(item, ref tc, groupedIndex, null);
                         trsGroupedValues.Cells.Add(tc);
                         //////////////////////////////////////////////////
                     }
@@ -366,7 +379,7 @@ namespace EDC.Pages.Subject
                         for (int i = 0; i < groupedItems.Count; i++)
                         {
                             TableCell tc = new TableCell();
-                            GetAddedGroupedControl(groupedItems[i], ref tc, j+2, null);
+                            GetAddedControl(groupedItems[i], ref tc, j+2, null);
                             addingTR.Cells.Add(tc);
 
                             if (groupedItems[i].Required) //если обязательное
@@ -428,21 +441,13 @@ namespace EDC.Pages.Subject
             tc.Controls.Add(mpe);
         }
 
-        void GetAddedUngroupedControl(CRF_Item item, ref TableCell tc)
+        void GetAddedControl(CRF_Item item, ref TableCell tc, int index, string value)
         {
             Control addedControl = new Control();
 
-            #region readCurrentValue
-            SubjectsItem si = SIR.SelectByID(_subjectID, _eventID, _crfID, item.CRF_ItemID,-1);
-            List<SubjectsItem> temp = SIR.SelectAll().ToList();
-            string itemValue = "";
-            bool isNullValue = true;
-            if (si != null && !string.IsNullOrWhiteSpace(si.Value))
-            {
-                isNullValue = false;
-                itemValue = si.Value;
-            }
-            #endregion
+            string id = index > 0 ? item.Identifier + "_" + index : item.Identifier;
+
+            value = value == null ? ReadCRFItemValue(item, index) : value;
 
             switch (item.ResponseType)
             {
@@ -460,7 +465,7 @@ namespace EDC.Pages.Subject
                             case Core.DataType.REAL:
                                 {
                                     AjaxControlToolkit.FilteredTextBoxExtender FTBE = new AjaxControlToolkit.FilteredTextBoxExtender();
-                                    FTBE.TargetControlID = item.Identifier;
+                                    FTBE.TargetControlID = id;
                                     FTBE.ValidChars = ".";
                                     FTBE.FilterType = AjaxControlToolkit.FilterTypes.Numbers | AjaxControlToolkit.FilterTypes.Custom;
                                     tc.Controls.Add(FTBE);
@@ -469,126 +474,12 @@ namespace EDC.Pages.Subject
                             case Core.DataType.DATE:
                                 {
                                     AjaxControlToolkit.CalendarExtender CE = new AjaxControlToolkit.CalendarExtender();
-                                    CE.TargetControlID = item.Identifier;
+                                    CE.TargetControlID = id;
                                     CE.Format = "dd.MM.yyyy";
                                     tc.Controls.Add(CE);
 
                                     AjaxControlToolkit.FilteredTextBoxExtender FTBE = new AjaxControlToolkit.FilteredTextBoxExtender();
-                                    FTBE.TargetControlID = item.Identifier;
-                                    FTBE.ValidChars = ".";
-                                    FTBE.FilterType = AjaxControlToolkit.FilterTypes.Numbers | AjaxControlToolkit.FilterTypes.Custom;
-                                    tc.Controls.Add(FTBE);
-                                    break;
-                                }
-                        }
-                        #endregion
-                        if (!isNullValue)
-                            tb.Text = itemValue;
-                        addedControl = tb;
-                        break;
-                    }
-                case Core.ResponseType.Textarea:
-                    {
-                        TextBox tb = new TextBox();
-                        tb.TextMode = TextBoxMode.MultiLine;
-                        if (!isNullValue)
-                            tb.Text = itemValue;
-                        tb.CssClass = "response-Item ";
-                        addedControl = tb;
-                        break;
-                    }
-                case Core.ResponseType.MultiSelect:
-                case Core.ResponseType.Checkbox:
-                    {
-                        CheckBoxList cb = new CheckBoxList();
-                        cb.Items.AddRange(GetListItems(item).ToArray());
-                        cb.CssClass = "response-Item " + item.ResponseLayout;
-                        if (!isNullValue)
-                        {
-                            string[] values = itemValue.Split(',');
-                            foreach(ListItem li in cb.Items)
-                            {
-                                if (values.Contains(li.Value))
-                                    li.Selected = true;
-                            }
-                        }
-                        addedControl = cb;
-                        break;
-                    }
-                case Core.ResponseType.Radio:
-                    {
-                        RadioButtonList rb = new RadioButtonList();
-                        rb.Items.AddRange(GetListItems(item).ToArray());
-                        rb.CssClass = "response-Item " + item.ResponseLayout;
-                        if (!isNullValue)
-                            rb.SelectedValue = itemValue;
-                        addedControl = rb;
-                        break;
-                    }
-                case Core.ResponseType.SingleSelect:
-                    {
-                        DropDownList ddl = new DropDownList();
-                        ddl.Items.AddRange(GetListItems(item).ToArray());
-                        if (!isNullValue)
-                            ddl.SelectedValue = itemValue;
-                        ddl.CssClass = "response-Item ";
-                        addedControl = ddl;
-                        break;
-                    }
-
-            }
-            addedControl.ID = item.Identifier; //ID параметра
-            tc.Controls.Add(addedControl);
-
-            if (item.Required) //если обязательное
-            {
-                Label lbl = new Label();
-                lbl.Text = "*";
-                lbl.CssClass = "requiredValue";
-                tc.Controls.Add(lbl);
-            }
-            if (!isNullValue)
-            {
-                GetModalPopup(ref tc, item.Identifier);
-            }
-
-        }
-
-        void GetAddedGroupedControl(CRF_Item item, ref TableCell tc, int index, string value)
-        {
-            Control addedControl = new Control();
-
-            switch (item.ResponseType)
-            {
-                case Core.ResponseType.Text:
-                    {
-                        TextBox tb = new TextBox();
-                        #region switch item.DateType
-                        switch (item.DataType)
-                        {
-                            case Core.DataType.INT:
-                                {
-                                    tb.TextMode = TextBoxMode.Number;
-                                    break;
-                                }
-                            case Core.DataType.REAL:
-                                {
-                                    AjaxControlToolkit.FilteredTextBoxExtender FTBE = new AjaxControlToolkit.FilteredTextBoxExtender();
-                                    FTBE.TargetControlID = item.Identifier+"_"+index;
-                                    FTBE.ValidChars = ".";
-                                    FTBE.FilterType = AjaxControlToolkit.FilterTypes.Numbers | AjaxControlToolkit.FilterTypes.Custom;
-                                    tc.Controls.Add(FTBE);
-                                    break;
-                                }
-                            case Core.DataType.DATE:
-                                {
-                                    AjaxControlToolkit.CalendarExtender CE = new AjaxControlToolkit.CalendarExtender();
-                                    CE.TargetControlID = item.Identifier + "_" + index;
-                                    CE.Format = "dd.MM.yyyy";
-                                    tc.Controls.Add(CE);
-
-                                    AjaxControlToolkit.FilteredTextBoxExtender FTBE = new AjaxControlToolkit.FilteredTextBoxExtender();
-                                    FTBE.TargetControlID = item.Identifier + "_" + index;
+                                    FTBE.TargetControlID = id;
                                     FTBE.ValidChars = ".";
                                     FTBE.FilterType = AjaxControlToolkit.FilterTypes.Numbers | AjaxControlToolkit.FilterTypes.Custom;
                                     tc.Controls.Add(FTBE);
@@ -598,6 +489,7 @@ namespace EDC.Pages.Subject
                         #endregion
                         if (value != null)
                             tb.Text = value;
+                        tb.Enabled = !readOnly;
                         addedControl = tb;
                         break;
                     }
@@ -607,6 +499,7 @@ namespace EDC.Pages.Subject
                         tb.TextMode = TextBoxMode.MultiLine;
                         if (value != null)
                             tb.Text = value;
+                        tb.Enabled = !readOnly;
                         addedControl = tb;
                         break;
                     }
@@ -616,7 +509,7 @@ namespace EDC.Pages.Subject
                         CheckBoxList cb = new CheckBoxList();
                         cb.Items.AddRange(GetListItems(item).ToArray());
                         cb.CssClass = "response-Item " + item.ResponseLayout;
-                        if (value !=null)
+                        if (value != null)
                         {
                             string[] values = value.Split(',');
                             foreach (ListItem li in cb.Items)
@@ -625,6 +518,7 @@ namespace EDC.Pages.Subject
                                     li.Selected = true;
                             }
                         }
+                        cb.Enabled = !readOnly;
                         addedControl = cb;
                         break;
                     }
@@ -635,6 +529,7 @@ namespace EDC.Pages.Subject
                         rb.CssClass = "response-Item " + item.ResponseLayout;
                         if (value != null)
                             rb.SelectedValue = value;
+                        rb.Enabled = !readOnly;
                         addedControl = rb;
                         break;
                     }
@@ -644,12 +539,13 @@ namespace EDC.Pages.Subject
                         ddl.Items.AddRange(GetListItems(item).ToArray());
                         if (value != null)
                             ddl.SelectedValue = value;
+                        ddl.Enabled = !readOnly;
                         addedControl = ddl;
                         break;
                     }
             }
+            addedControl.ID = id;
 
-            addedControl.ID = item.Identifier + "_" + index;
             tc.Controls.Add(addedControl);
 
             if (item.Required) //если обязательное
@@ -658,7 +554,21 @@ namespace EDC.Pages.Subject
                 lbl.Text = "*";
                 tc.Controls.Add(lbl);
             }
+            if (value != null)
+            {
+                GetModalPopup(ref tc, id);
+            }
         }
+
+        string ReadCRFItemValue(CRF_Item item,int index)
+        {
+            SubjectsItem si = SIR.SelectByID(_subjectID, _eventID, _crfID, item.CRF_ItemID, -1);
+            if (si != null)
+                return si.Value;
+            else
+                return null;
+        }
+
         List<ListItem> GetListItems(Models.CRF_Item item)
         {
             List<ListItem> listItems = new List<ListItem>();
@@ -811,7 +721,7 @@ namespace EDC.Pages.Subject
             for (int i = 0; i < groupedItems.Count; i++)
             {
                 TableCell tc = new TableCell();
-                GetAddedGroupedControl(groupedItems[i], ref tc, rIndex, null);
+                GetAddedControl(groupedItems[i], ref tc, rIndex, null);
                 addingTR.Cells.Add(tc);
 
                 if (groupedItems[i].Required) //если обязательное
@@ -1082,6 +992,30 @@ namespace EDC.Pages.Subject
                 //закрыть
                 (e.Row.Cells[7].Controls[1] as Button).Visible = close;
             }
+        }
+
+        protected void btnApproved_Click(object sender, EventArgs e)
+        {
+            _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
+            
+            _sCRF.IsApprove = true;
+            _sCRF.IsApprovedBy = User.Identity.Name;
+            SCR.Update(_sCRF);
+            SCR.Save();
+
+            _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
+        }
+
+        protected void btnCheckAll_Click(object sender, EventArgs e)
+        {
+            _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
+
+            _sCRF.IsCheckAll = true;
+            _sCRF.IsCheckAllBy = User.Identity.Name;
+            SCR.Update(_sCRF);
+            SCR.Save();
+
+            _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
         }
 
     }
