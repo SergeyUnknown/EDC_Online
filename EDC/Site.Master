@@ -57,113 +57,6 @@
                                     <asp:LoginName runat="server" CssClass="username" />
                                 </a>!</br>
                                 <asp:LoginStatus runat="server" LogoutAction="Redirect" CssClass="logout" LogoutText="Выйти из системы" LogoutPageUrl="~/" />
-<<<<<<< HEAD
-                        </LoggedInTemplate>
-                    </asp:LoginView>
-                </section>
-            </div>
-            
-            <nav>
-                <ul class="menu">
-                    <li>
-                        <a runat="server" href="~/">Главная</a>
-                        </li>
-                    <li>
-                        <a runat="server" href="~/SubjectsMatrix">Матрица субъектов</a>
-                        <ul class="submenu">
-                            <li>
-                                <a runat="server" href="~/Subjects">Субъекты</a>
-                            </li>
-                        </ul>
-</li>
-                    <li>
-                        <a runat="server" href="#">Мониторинг данных</a>
-                        <ul class="submenu">
-                            <li>
-                                <a runat="server" href="#">Сверка с первичными данными</a>
-                            </li>
-                            <li>
-                                <a runat="server" href="#">Аудит данных исследования</a>
-                            </li>
-                        </ul>
-                        </li>
-                    <li>
-                        <a runat="server" href="#">Управление данными</a>
-                        <ul class="submenu">
-                            <li>
-                                <a runat="server" href="#">Выгрузка данных</a>
-                            </li>
-                            <li>
-                                <a runat="server" href="#">Импорт данных</a>
-                            </li>
-                        </ul>
-                        </li>
-                    <li>
-                        <a runat="server" href="~/NotesAndQuery">Заметки и замечания</a>
-<%-- а нужно ли?        <ul class="submenu">
-                            <li>
-                                <a runat="server" href="#">Замечания</a>
-                            </li>
-                            <li>
-                                <a runat="server" href="#">Заметки</a>
-                            </li>
-                        </ul>--%>
-                    
-                    <li runat="server" visible="false" id="liAdmin">
-                        <a runat="server" href="#">Администрирование/Дизайн</a>
-                        <ul class="submenu">
-                            <li>
-                                <a runat="server" href="~/ConfigurationTrials">Настройка исследования</a>
-                            </li>
-                            <li>
-                                <a runat="server" href="~/Events">События</a>
-                            </li>
-                            <li>
-                                <a runat="server" href="~/CRFs">ИРК</a>
-                            </li>
-                            <li>
-                                <a runat="server" href="#">Валидация данных</a>
-                            </li>
-                            <li>
-                                <a runat="server" href="~/MedicalCenters">Центры исследования</a>
-                            </li>
-                            <li>
-                                <a runat="server" href="~/Administration/Users">Пользователи</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a runat="server" href="#">Иное</a>
-                        <ul class="submenu">
-                            <li>
-                                <a runat="server" href="~/Account/Manage">Профиль</a>
-                            </li>
-                            <li>
-                                <a runat="server" href="#">Помощь</a>
-                            </li>
-                            <li>
-                                <a runat="server" href="#">Поддержка</a>
-                            </li>
-                            <li>
-                                <a runat="server" href="#">О продукте</a>
-                            </li>
-                        </ul>
-                        </li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-    <div id="body">
-        <asp:ContentPlaceHolder runat="server" ID="LegendPlace" />
-        <section class="content-wrapper main-content clear-fix">
-            <asp:ContentPlaceHolder runat="server" ID="MainContent" />
-        </section>
-    </div>
-    <footer>
-        <div class="content-wrapper">
-            <div class="float-left">
-                <p>&copy; <%: DateTime.Now.Year %> - мое приложение ASP.NET</p>
-=======
                             </LoggedInTemplate>
                         </asp:LoginView>
                     </section>
@@ -250,7 +143,6 @@
                         </li>
                     </ul>
                 </nav>
->>>>>>> refs/remotes/origin/master
             </div>
         </header>
         <div id="body">
