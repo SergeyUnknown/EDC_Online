@@ -160,6 +160,7 @@ namespace EDC.Pages.Subject
                     }
                     else
                         btn.CssClass = "ActionIc Unplaned";
+
                     tc.Controls.Add(btn);
                     tr.Cells.Add(tc);
                 }
