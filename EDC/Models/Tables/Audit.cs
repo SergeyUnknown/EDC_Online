@@ -27,19 +27,13 @@ namespace EDC.Models
         public long? SubjectID { get; set; }
         //
         //SubjectEvent
-        public long? SubjectEventID { get; set; }
         public long? EventID { get; set; }
         //
         //SubjectCRF
-        public long? SubjectCRFSubjectID { get; set; }
-        public long? SubjectCRFEventID { get; set; }
         public long? CRFID { get; set; }
         //
 
         //SubjectItem
-        public long? SubjectItemSubjectID { get; set; }
-        public long? SubjectItemEventID { get; set; }
-        public long? SubjectItemCRFID { get; set; }
         public long? ItemID { get; set; }
         public int? IndexID { get; set; }
         //

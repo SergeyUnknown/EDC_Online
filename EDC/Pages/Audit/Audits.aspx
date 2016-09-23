@@ -23,7 +23,7 @@
             <asp:BoundField DataField="NewValue" HeaderText="Новое значение" />
             <asp:BoundField DataField="Subject.Number" HeaderText="Субъект" />
             <asp:BoundField DataField="SubjectEvent.Event.Name" HeaderText="Событие" />
-            <asp:BoundField DataField="SubjectsCRF.CRF.Name" HeaderText="ИРК" />
+            <asp:BoundField DataField="SubjectCRF.CRF.Name" HeaderText="ИРК" />
             <asp:BoundField DataField="FieldName" HeaderText="Поле" />
             <asp:CommandField HeaderText="Действия" ButtonType="Image" SelectText="Просмотреть" ShowDeleteButton="True" ShowSelectButton="true" DeleteText="Удалить" DeleteImageUrl="~/Images/delete (3).png" SelectImageUrl="~/Images/magnify (1).png"/>
 

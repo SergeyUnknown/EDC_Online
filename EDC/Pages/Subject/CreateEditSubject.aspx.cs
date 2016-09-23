@@ -143,10 +143,12 @@ namespace EDC.Pages.Subject
             if (Editing)
             {
                 SR.Update(_subject);
+                SR.Save();
             }
             else
             {
                 _subject = SR.Create(_subject);
+                SR.Save();
 
                 Models.Audit audit = new Models.Audit();
                 audit.UserName = User.Identity.Name;
@@ -182,7 +184,6 @@ namespace EDC.Pages.Subject
                 AR.Create(audit);
 
             }
-            SR.Save();
             AR.Save();
             Response.Redirect("~/Subjects");
         }
