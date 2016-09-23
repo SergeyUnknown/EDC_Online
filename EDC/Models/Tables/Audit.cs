@@ -8,7 +8,6 @@ namespace EDC.Models
     public class Audit
     {
         public int AuditID { get; set; } //ID
-        public string PageURL { get; set; }//Страница, на которой произошло действие
         public Guid UserID { get; set; }//ID пользователя
         public string UserName { get; set; } //Логин пользователя
         public DateTime ActionDate { get; set; }//Дата и время
@@ -46,23 +45,6 @@ namespace EDC.Models
         //
         public Audit()
         {
-        }
-
-        public Audit(string pageURL, Guid userID,
-            string userName,DateTime actionDate, 
-            Core.AuditActionType actionType,Core.AuditChangesType changesType,
-            string changesUserName, string fieldname,
-            string oldValue, string newValue)
-        {
-            this.PageURL = pageURL;
-            this.UserID = userID;
-            this.UserName = userName;
-            this.ActionType = actionType;
-            this.ChangesType = changesType;
-            this.OldValue = oldValue;
-            this.NewValue = newValue;
-            this.ChangedUserName = changesUserName;
-            this.FieldName = fieldname;
         }
 
     }

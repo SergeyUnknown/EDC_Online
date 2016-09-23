@@ -82,7 +82,7 @@
                                     <a runat="server" href="#">Сверка с первичными данными</a>
                                 </li>
                                 <li>
-                                    <a runat="server" href="#">Аудит данных исследования</a>
+                                    <a runat="server" href="~/Audits">Аудит данных исследования</a>
                                 </li>
                             </ul>
                         </li>

@@ -19,6 +19,7 @@ namespace EDC.Pages.Subject
         Models.Repository.NoteRepository NR = new Models.Repository.NoteRepository();
         Models.Repository.EventRepository ER = new Models.Repository.EventRepository();
         Models.Repository.AppSettingRepository ASR = new Models.Repository.AppSettingRepository();
+        Models.Repository.AuditsRepository AR = new Models.Repository.AuditsRepository();
 
         static Models.CRF _crf;
         static Models.Subject _subject;
@@ -629,15 +630,47 @@ namespace EDC.Pages.Subject
                     si.IndexID = -1;
                     si.Value = value;
                     si.CreatedBy = User.Identity.Name;
-                    SIR.Create(si);
+                    si = SIR.Create(si);
+
+                    Models.Audit audit = new Models.Audit();
+                    audit.UserName = User.Identity.Name;
+                    audit.UserID = (Guid)System.Web.Security.Membership.GetUser(User.Identity.Name).ProviderUserKey;
+                    audit.SubjectID = _subjectID;
+                    audit.EventID = _eventID;
+                    audit.CRFID = _crfID;
+                    audit.ItemID = item.CRF_ItemID;
+                    audit.IndexID = -1;
+                    audit.NewValue = value;
+                    audit.ActionDate = DateTime.Now;
+                    audit.FieldName = item.Name;
+                    audit.ActionType = Core.AuditActionType.SubjectItem;
+                    audit.ChangesType = Core.AuditChangesType.Create;
+                    AR.Create(audit);
                 }
                 else
                 {
+                    Models.Audit audit = new Models.Audit();
+                    audit.UserName = User.Identity.Name;
+                    audit.UserID = (Guid)System.Web.Security.Membership.GetUser(User.Identity.Name).ProviderUserKey;
+                    audit.SubjectID = _subjectID;
+                    audit.EventID = _eventID;
+                    audit.CRFID = _crfID;
+                    audit.ItemID = item.CRF_ItemID;
+                    audit.IndexID = -1;
+                    audit.OldValue = si.Value;
+                    audit.NewValue = value;
+                    audit.ActionDate = DateTime.Now;
+                    audit.FieldName = item.Name;
+                    audit.ActionType = Core.AuditActionType.SubjectItem;
+                    audit.ChangesType = Core.AuditChangesType.Update;
+                    AR.Create(audit);
+
                     si.Value = value;
                     si.CreatedBy = User.Identity.Name;
                     SIR.Update(si);
                 }
                 SIR.Save();
+                AR.Save();
             }
 
             if(groupedItems.Count>0)
@@ -680,14 +713,47 @@ namespace EDC.Pages.Subject
                             si.IsGrouped = true;
                             si.CreatedBy = User.Identity.Name;
                             SIR.Create(si);
+
+                            Models.Audit audit = new Models.Audit();
+                            audit.UserName = User.Identity.Name;
+                            audit.UserID = (Guid)System.Web.Security.Membership.GetUser(User.Identity.Name).ProviderUserKey;
+                            audit.SubjectID = _subjectID;
+                            audit.EventID = _eventID;
+                            audit.CRFID = _crfID;
+                            audit.ItemID = item.CRF_ItemID;
+                            audit.IndexID = i + 1;
+                            audit.NewValue = value;
+                            audit.ActionDate = DateTime.Now;
+                            audit.FieldName = item.Name;
+                            audit.ActionType = Core.AuditActionType.SubjectItem;
+                            audit.ChangesType = Core.AuditChangesType.Create;
+                            AR.Create(audit);
                         }
                         else
                         {
+                            Models.Audit audit = new Models.Audit();
+                            audit.UserName = User.Identity.Name;
+                            audit.UserID = (Guid)System.Web.Security.Membership.GetUser(User.Identity.Name).ProviderUserKey;
+                            audit.SubjectID = _subjectID;
+                            audit.EventID = _eventID;
+                            audit.CRFID = _crfID;
+                            audit.ItemID = item.CRF_ItemID;
+                            audit.IndexID = si.IndexID;
+                            audit.OldValue = si.Value;
+                            audit.NewValue = value;
+                            audit.ActionDate = DateTime.Now;
+                            audit.FieldName = item.Name;
+                            audit.ActionType = Core.AuditActionType.SubjectItem;
+                            audit.ChangesType = Core.AuditChangesType.Update;
+                            AR.Create(audit);
+
                             si.Value = value;
                             si.CreatedBy = User.Identity.Name;
                             SIR.Update(si);
+
                         }
                         SIR.Save();
+                        AR.Save();
                     }
                 }
             }

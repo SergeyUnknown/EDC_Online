@@ -263,6 +263,7 @@
     <Content Include="Pages\Administration\ConfigurationTrials.aspx" />
     <Content Include="Pages\Administration\EditCreateUser.aspx" />
     <Content Include="Pages\Administration\Web.config" />
+    <Content Include="Pages\Audit\Audits.aspx" />
     <Content Include="Pages\CRF\Web.config" />
     <Content Include="Pages\Event\Web.config" />
     <Content Include="Pages\MedicalCenter\Web.config" />
@@ -425,6 +426,13 @@
     </Compile>
     <Compile Include="Pages\Administration\EditCreateUser.aspx.designer.cs">
       <DependentUpon>EditCreateUser.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Audit\Audits.aspx.cs">
+      <DependentUpon>Audits.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Audit\Audits.aspx.designer.cs">
+      <DependentUpon>Audits.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\CRF\AddCRF.aspx.cs">
       <DependentUpon>AddCRF.aspx</DependentUpon>
