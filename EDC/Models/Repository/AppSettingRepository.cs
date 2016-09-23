@@ -22,7 +22,9 @@ namespace EDC.Models.Repository
         {
             if (db.AppSettings.Find(id) == null)
             {
-                db.AppSettings.Add(new AppSetting(id.ToString(), ""));
+                if(id.Count()<=0)
+                    return db.AppSettings.Find(id);
+                db.AppSettings.Add(new AppSetting(Convert.ToString(id[0]), ""));
                 db.SaveChanges();
                 return db.AppSettings.Find(id);
             }

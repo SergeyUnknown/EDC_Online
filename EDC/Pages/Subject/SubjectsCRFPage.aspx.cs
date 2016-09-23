@@ -18,6 +18,7 @@ namespace EDC.Pages.Subject
         Models.Repository.CRFInEventRepository CIER = new Models.Repository.CRFInEventRepository();
         Models.Repository.NoteRepository NR = new Models.Repository.NoteRepository();
         Models.Repository.EventRepository ER = new Models.Repository.EventRepository();
+        Models.Repository.AppSettingRepository ASR = new Models.Repository.AppSettingRepository();
 
         static Models.CRF _crf;
         static Models.Subject _subject;
@@ -50,11 +51,10 @@ namespace EDC.Pages.Subject
                 lbInfo.Text = string.Format("Визит: \"{0}\", ИРК: \"{1}\", субъект: {2}",_event.Name, string.IsNullOrWhiteSpace(_crf.RussianName) ? _crf.Name : _crf.RussianName, _subject.Number);
                 RowCountInSection = new Dictionary<string, int>();
                 answerRowIndex = -1;
-                if (User.IsInRole(Core.Roles.Investigator.ToString()) || User.IsInRole(Core.Roles.Principal_Investigator.ToString()))
-                {
-                    cbEnd.Attributes.CssStyle["display"] = "block";
-                    cbEnd.Checked = _sCRF == null ? false : _sCRF.IsEnd;
-                }
+
+                if (ASR.SelectByID(Core.APP_STATUS).Value == Core.AppStatus.Disable.ToString())
+                    readOnly = true;
+
 
                 if (User.IsInRole(Core.Roles.Principal_Investigator.ToString()) && (_sCRF != null && _sCRF.IsEnd) && !_sCRF.IsApprove)
                 {
@@ -68,8 +68,21 @@ namespace EDC.Pages.Subject
                         btnCheckAll.Visible=true;
                 }
 
+                if(User.IsInRole(Core.Roles.Auditor.ToString()))
+                {
+                    readOnly = true;
+                }
+
             }
             LoadForm(_crf);
+
+            
+
+            if (User.IsInRole(Core.Roles.Investigator.ToString()) || User.IsInRole(Core.Roles.Principal_Investigator.ToString()) && _sCRF !=null && !_sCRF.IsEnd)
+            {
+                if (ViewState["ActiveTabIndex"] != null && (int)ViewState["ActiveTabIndex"]== tcCRF.Tabs.Count-1)
+                    btnEnd.Visible = _sCRF.IsEnd?false: true;
+            }
             
         }
 
@@ -83,7 +96,8 @@ namespace EDC.Pages.Subject
                     btnPrevSubject.Visible = false;
                 else
                 {
-                    btnPrevSubject.PostBackUrl = string.Format("~/Subjects/{0}/{1}/{2}", subjectsInCenter[currentSubjectIndex - 1].SubjectID, _eventID, _crfID);
+                    string str = "checkChanged('" + ResolveUrl(string.Format("~/Subjects/{0}/{1}/{2}", subjectsInCenter[currentSubjectIndex - 1].SubjectID, _eventID, _crfID)) + "')";
+                    btnPrevSubject.Attributes.Add("onclick", str);
                     string subjectNumber = subjectsInCenter[currentSubjectIndex - 1].Number;
                     btnPrevSubject.ToolTip = "К предыдущему субъекту (" + subjectNumber + ")";
                 }
@@ -91,7 +105,8 @@ namespace EDC.Pages.Subject
                     btnNextSubject.Visible = false;
                 else
                 {
-                    btnNextSubject.PostBackUrl = string.Format("~/Subjects/{0}/{1}/{2}", subjectsInCenter[currentSubjectIndex + 1].SubjectID, _eventID, _crfID);
+                    string str = "checkChanged('" + ResolveUrl(string.Format("~/Subjects/{0}/{1}/{2}", subjectsInCenter[currentSubjectIndex + 1].SubjectID, _eventID, _crfID)) + "')";
+                    btnNextSubject.Attributes.Add("onclick", str);
                     string subjectNumber = subjectsInCenter[currentSubjectIndex + 1].Number;
                     btnNextSubject.ToolTip = "К следующему субъекту (" + subjectNumber + ")";
 
@@ -113,7 +128,7 @@ namespace EDC.Pages.Subject
                     btnPrevCRFInEvent.Visible = false;
                 else
                 {
-                    btnPrevCRFInEvent.PostBackUrl = string.Format("~/Subjects/{0}/{1}/{2}", _subjectID, _eventID, CIEs[currentCRFIndex - 1].CRFID);
+                    btnPrevCRFInEvent.Attributes.Add("onclick", "checkChanged('" + ResolveClientUrl(string.Format("~/Subjects/{0}/{1}/{2}", _subjectID, _eventID, CIEs[currentCRFIndex - 1].CRFID)) + "')");
                     string crfName = string.IsNullOrWhiteSpace(CIEs[currentCRFIndex - 1].CRF.RussianName) ? CIEs[currentCRFIndex - 1].CRF.Name : CIEs[currentCRFIndex - 1].CRF.RussianName;
                     btnPrevCRFInEvent.ToolTip = "К предыдущей форме (" + crfName + ")";
                 }
@@ -121,7 +136,7 @@ namespace EDC.Pages.Subject
                     btnNextCRFInEvent.Visible = false;
                 else
                 {
-                    btnNextCRFInEvent.PostBackUrl = string.Format("~/Subjects/{0}/{1}/{2}", _subjectID, _eventID, CIEs[currentCRFIndex + 1].CRFID);
+                    btnNextCRFInEvent.Attributes.Add("onclick", "checkChanged('" + ResolveUrl(string.Format("~/Subjects/{0}/{1}/{2}", _subjectID, _eventID, CIEs[currentCRFIndex + 1].CRFID)) + "')");
                     string crfName = string.IsNullOrWhiteSpace(CIEs[currentCRFIndex + 1].CRF.RussianName) ? CIEs[currentCRFIndex + 1].CRF.Name : CIEs[currentCRFIndex + 1].CRF.RussianName;
                     btnNextCRFInEvent.ToolTip = "К следующей форме (" + crfName + ")";
                 }
@@ -489,6 +504,7 @@ namespace EDC.Pages.Subject
                         #endregion
                         if (value != null)
                             tb.Text = value;
+                        tb.Attributes.Add("onchange", @"setChanged()");
                         tb.Enabled = !readOnly;
                         addedControl = tb;
                         break;
@@ -499,6 +515,7 @@ namespace EDC.Pages.Subject
                         tb.TextMode = TextBoxMode.MultiLine;
                         if (value != null)
                             tb.Text = value;
+                        tb.Attributes.Add("onchange", @"setChanged()");
                         tb.Enabled = !readOnly;
                         addedControl = tb;
                         break;
@@ -516,6 +533,7 @@ namespace EDC.Pages.Subject
                             {
                                 if (values.Contains(li.Value))
                                     li.Selected = true;
+                                li.Attributes.Add("onchange", @"setChanged()");
                             }
                         }
                         cb.Enabled = !readOnly;
@@ -529,6 +547,7 @@ namespace EDC.Pages.Subject
                         rb.CssClass = "response-Item " + item.ResponseLayout;
                         if (value != null)
                             rb.SelectedValue = value;
+                        rb.Attributes.Add("onchange", @"setChanged()");
                         rb.Enabled = !readOnly;
                         addedControl = rb;
                         break;
@@ -759,15 +778,7 @@ namespace EDC.Pages.Subject
             }
             _sCRF.IsStart = true;
             _sCRF.IsStartBy = User.Identity.Name;
-            ///////////////////////////////////
 
-            //обновление статуса Ввод завершен/
-            if(cbEnd.Checked)
-            {
-                _sCRF.IsEnd = true;
-                _sCRF.IsEndBy = User.Identity.Name;
-            }
-            ///////////////////////////////////
             SCR.Update(_sCRF);
             SCR.Save();
             _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
@@ -1016,6 +1027,20 @@ namespace EDC.Pages.Subject
             SCR.Save();
 
             _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
+        }
+
+        protected void btnEnd_Click(object sender, EventArgs e)
+        {
+            _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
+            _sCRF.IsEnd = true;
+            _sCRF.IsEndBy = User.Identity.Name;
+            SCR.Update(_sCRF);
+            SCR.Save();
+        }
+
+        protected void tcCRF_ActiveTabChanged(object sender, EventArgs e)
+        {
+            ViewState["ActiveTabIndex"] = tcCRF.ActiveTabIndex;
         }
 
     }

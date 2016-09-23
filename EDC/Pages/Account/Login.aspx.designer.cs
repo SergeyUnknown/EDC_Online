@@ -11,5 +11,14 @@ namespace EDC.Account {
     
     
     public partial class Login {
+        
+        /// <summary>
+        /// LoginControl элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Login LoginControl;
     }
 }

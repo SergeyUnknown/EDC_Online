@@ -15,34 +15,34 @@ namespace EDC.Pages.Administration
         {
             if (!IsPostBack)
             {
-                var item = ASR.SelectByID("appStatus");
+                var item = ASR.SelectByID(Core.APP_STATUS);
                 rbStatus.SelectedValue = item.Value;
 
-                item = ASR.SelectByID("studyName");
+                item = ASR.SelectByID(Core.STUDY_NAME);
                 tbStudyName.Text = item.Value;
 
-                item = ASR.SelectByID("protocolID");
+                item = ASR.SelectByID(Core.PROTOCOLID);
                 tbProtocolID.Text = item.Value;
             }
         }
 
         protected void btnSave_Click(object sender, EventArgs e)
         {
-            var item = ASR.SelectByID("appStatus");
+            var item = ASR.SelectByID(Core.APP_STATUS);
             if (item != null)
             {
                 item.Value = rbStatus.SelectedValue;
                 ASR.Update(item);
             }
 
-            item = ASR.SelectByID("studyName");
+            item = ASR.SelectByID(Core.STUDY_NAME);
             if (item != null)
             {
                 item.Value = tbStudyName.Text;
                 ASR.Update(item);
             }
 
-            item = ASR.SelectByID("protocolID");
+            item = ASR.SelectByID(Core.PROTOCOLID);
             if (item != null)
             {
                 item.Value = tbProtocolID.Text;

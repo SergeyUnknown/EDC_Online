@@ -71,9 +71,13 @@ namespace EDC.Pages.Event
                 _event.DateCreation = DateTime.Now;
                 _event.Position = ER.SelectAll().Count() + 1;
             }
-
+            else
+            {
+                _event = ER.SelectByID(_event.EventID);
+            }
             string eventName = tbName.Text.Trim();
-            if(ER.GetManyByFilter(x=>x.Name == eventName).Count()>0)
+            Models.Event tempEvent = ER.GetManyByFilter(x => x.Name == eventName).FirstOrDefault();
+            if( tempEvent != null && tempEvent.Name == eventName && (tempEvent.EventID !=_event.EventID))
             {
                 throw new ArgumentException("Событие с указаннным названием уже существует");
             }
@@ -82,7 +86,8 @@ namespace EDC.Pages.Event
 
             ///////////ID//////////////
             string identifier = tbIdentifier.Text.Trim().Replace(" ", "_").ToUpper();
-            if(ER.GetManyByFilter(x=>x.Identifier == identifier).Count() >0)
+            tempEvent = ER.GetManyByFilter(x => x.Identifier == identifier).FirstOrDefault();
+            if (tempEvent != null && tempEvent.Identifier == identifier && (tempEvent.EventID != _event.EventID))
             {
                 throw new ArgumentException("Событие с указаннным идентификатором уже существует");
             }
