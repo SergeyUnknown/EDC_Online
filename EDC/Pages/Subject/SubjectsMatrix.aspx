@@ -55,7 +55,7 @@
 
 <asp:Content ID="Content3" ContentPlaceHolderID="MainContent" runat="server">
 
-    <asp:Panel runat="server" ID="pScrolls" ScrollBars="Horizontal" style="max-width:910px">
+    <asp:Panel runat="server" ID="pScrolls" ScrollBars="Horizontal">
         <asp:Table runat="server" ID="tMatrix"></asp:Table>
     </asp:Panel>
     <DownTableControl:DownTable ID="dtInfo" runat="server" ViewButton="false" OnSelectedIndexChanged="dtInfo_SelectedIndexChanged" />

@@ -34,6 +34,9 @@ header, footer, hgroup,
 nav, section {
     display: block;
 }
+.navBlock{
+    clear:both;
+}
 
 mark {
     background-color: #a6dbed;
@@ -50,7 +53,7 @@ mark {
 }
 
 .clear-fix:after {
-    padding-bottom:10px;
+    /*padding-bottom:10px;*/
     content: ".";
     clear: both;
     display: block;
@@ -93,13 +96,15 @@ h5, h6 {
 /* main layout
 ----------------------------------------------------------*/
 .content-wrapper {
-    margin: 0 auto;
-    max-width: 900px;
+    max-width: 83%;
 }
-
+section.content-wrapper.main-content
+{
+    margin-left: auto;
+}
 #body {
     background-color: #efeeef;
-    clear: both;
+    clear: right;
     padding-bottom: 0px;
     box-shadow:0 2px 2px 0 rgba(0, 0, 0, 0.26) inset;
 }
@@ -108,14 +113,20 @@ h5, h6 {
         padding-left: 5px;
         padding-right:5px;
         padding-top: 10px;
-        padding-bottom:10px;
+        /*padding-bottom:10px;*/
         
     }
 
 header .content-wrapper {
     padding-top: 10px; 
+    width:90%;
+    margin-right: auto;
 }
     
+header
+{
+    text-align:center;
+}
 footer {
     clear: both;
     background-color: #e2e2e2;
@@ -123,7 +134,13 @@ footer {
     height: 10px;
     box-shadow:0 2px 2px 0 rgba(0, 0, 0, 0.26) inset;
 }
+.MainHeader
+{
+    padding-top:10px;
+    /*overflow:hidden;
 
+    */
+}
 
 /* site title
 ----------------------------------------------------------*/
@@ -161,7 +178,7 @@ footer {
     .featured .content-wrapper {
         background-color: #7ac0da;
         border-radius:3px 3px 3px 3px;
-        box-shadow:3px 3px 6px 0 rgba(0, 0, 0, 0.36);
+        box-shadow:0px 3px 5px 0 rgba(0, 0, 0, 0.4);
         vertical-align:central;
         padding-top:0px;
         /*
@@ -744,7 +761,8 @@ tr.pager td {
 
 .dt {
     -webkit-box-shadow: rgba(0,0,0,0.8) 0px 2px 5px;
-
+    margin-bottom: 10px;
+    clear:right;
 }
 .dtleft
 {
@@ -898,6 +916,10 @@ tr.pager td {
 }
 
 /*главная матрица*/
+#MainContent_tMatrix
+{
+    margin-top: 0px;
+}
 #MainContent_tMatrix > tbody > tr > td
 {
     border:1px solid #c8c8c8;
@@ -985,8 +1007,6 @@ tr.pager td {
 {
     max-width:initial;
 }
-
-
 
 #MainContent_pnlModalPopup
 {
@@ -1125,18 +1145,26 @@ tr.pager td {
     margin-left: auto;
     margin-right: auto !important;
 }
-.Legend
+.leftMenu
 {
     float:left;
+    margin-top:10px;
     width:auto;
     max-width:15%;
     min-width:150px;
+    background: snow;
+    -webkit-box-shadow: rgba(0,0,0,0.8) 0px 2px 5px;
+}
+.Legend
+{
+    margin-top:0px;
+    box-shadow:none;
 }
 .Legend th
 {
     border-left:0;
     border-right:0;
-    border-radius: 5px 5px 0px 0px !important;
+    border-radius: 0px 0px 0px 0px !important;
     -moz-border-radius: 5px 5px 0px 0px;
     -webkit-border-radius: 5px 5px 0px 0px;
 }
@@ -1144,6 +1172,7 @@ tr.pager td {
 {
     display:inline-flex;
     flex-direction:column;
+        width: 100%;
 }
 .Legend td
 {

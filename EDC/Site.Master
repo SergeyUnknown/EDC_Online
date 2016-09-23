@@ -37,14 +37,14 @@
             </Scripts>
         </asp:ScriptManager>
         <header>
-            <div class="content-wrapper">
+            <div class="MainHeader">
                 <div class="float-left">
                     <p class="site-title">
                         <a runat="server" href="~/">MDP-Group</a>
                     </p>
                 </div>
                 <asp:ContentPlaceHolder runat="server" ID="FeaturedContent" />
-                <div class="float-right">
+                <div class="loginView float-right">
                     <section id="login">
                         <asp:LoginView runat="server" ViewStateMode="Disabled">
                             <AnonymousTemplate>
@@ -62,7 +62,7 @@
                     </section>
                 </div>
 
-                <nav>
+                <nav class="navBlock">
                     <ul class="menu">
                         <li>
                             <a runat="server" href="~/">Главная</a>
@@ -100,7 +100,6 @@
                         <li runat="server" visible="false" id="liQueryAndNotes">
                             <a runat="server" href="~/NotesAndQuery">Заметки и замечания</a>
                         </li>
-
                         <li runat="server" visible="false" id="liAdmin">
                             <a runat="server" href="#">Администрирование/Дизайн</a>
                             <ul class="submenu">
@@ -124,6 +123,7 @@
                                 </li>
                             </ul>
                         </li>
+
                         <li>
                             <a runat="server" href="#">Иное</a>
                             <ul class="submenu">
@@ -145,8 +145,11 @@
                 </nav>
             </div>
         </header>
+        
         <div id="body">
+            <div class="leftMenu ">
             <asp:ContentPlaceHolder runat="server" ID="LegendPlace" />
+        </div>
             <section class="content-wrapper main-content clear-fix">
                 <asp:ContentPlaceHolder runat="server" ID="MainContent" />
             </section>
