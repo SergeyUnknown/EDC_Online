@@ -155,21 +155,12 @@ namespace EDC.Pages.Subject
                         else if (_sc.IsEnd)
                             btn.CssClass = "ActionIc End";
                         else if (_sc.IsStart)
-<<<<<<< HEAD
-                            btn.CssClass = "Clip Start";
-                        else
-                            btn.CssClass = "Unplaned";
-                    }
-                    else
-                        btn.CssClass = "Unplaned";
-
-=======
                             btn.CssClass = "ActionIc Start";
                        
                     }
                     else
                         btn.CssClass = "ActionIc Unplaned";
->>>>>>> refs/remotes/origin/master
+
                     tc.Controls.Add(btn);
                     tr.Cells.Add(tc);
                 }

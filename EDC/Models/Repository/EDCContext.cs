@@ -23,7 +23,6 @@ namespace EDC.Models
         public DbSet<Note> Notes { get; set; } // 
         public DbSet<Subject> Subjects { get; set; } // Субъекты исследования 
         public DbSet<SubjectsEvent> SubjectsEvents { get; set; } //Связующая таблица
-
         public DbSet<SubjectsCRF> SubjectsCRFs { get; set; }
         public DbSet<SubjectsItem> SubjectsItems { get; set; }
 
@@ -76,6 +75,31 @@ namespace EDC.Models
                 .WithMany(x => x.Notes)
                 .HasForeignKey(t => new { t.SubjectID, t.EventID, t.CRFID, t.ItemID, t.IndexID })
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Audit>()
+                .HasOptional(x => x.Subject)
+                .WithMany(x => x.Audits)
+                .HasForeignKey(t => new {t.SubjectID })
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Audit>()
+                .HasOptional(x => x.SubjectEvent)
+                .WithMany(x => x.Audits)
+                .HasForeignKey(t => new { t.SubjectID, t.EventID })
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Audit>()
+                .HasOptional(x => x.SubjectCRF)
+                .WithMany(x => x.Audits)
+                .HasForeignKey(t => new { t.SubjectID, t.EventID, t.CRFID })
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Audit>()
+                .HasOptional(x => x.SubjectItem)
+                .WithMany(x => x.Audits)
+                .HasForeignKey(t => new { t.SubjectID, t.EventID, t.CRFID, t.ItemID,t.IndexID })
+                .WillCascadeOnDelete(false);
+
 
         }
     }

@@ -13,5 +13,10 @@ namespace EDC.Account
         {
 
         }
+
+        protected void Unnamed_LoggingIn(object sender, LoginCancelEventArgs e)
+        {
+            LoginControl.UserName = LoginControl.UserName.Trim(' ','.',',',';','$','@','#','&','%','?','/',')','(');
+        }
     }
 }

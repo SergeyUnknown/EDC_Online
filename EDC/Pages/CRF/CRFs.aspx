@@ -17,7 +17,7 @@
             <asp:BoundField DataField="RussianName" HeaderText="Название" />
             <asp:BoundField DataField="Version" HeaderText="Версия" />
             <asp:BoundField DataField="Identifier" HeaderText="Идентификатор" />
-            <asp:BoundField DataField="CreationDate" HeaderText="Дата создания" />
+            <asp:BoundField DataField="CreationDate" HeaderText="Дата создания" DataFormatString="{0:dd.MM.yyyy}" />
             <asp:BoundField DataField="CreatedBy" HeaderText="Создано" />
             <asp:CommandField HeaderText="Действия" ButtonType="Image" SelectText="Просмотреть" ShowDeleteButton="True" ShowSelectButton="true" DeleteText="Удалить" DeleteImageUrl="~/Images/delete (3).png" SelectImageUrl="~/Images/magnify (1).png"/>
 
