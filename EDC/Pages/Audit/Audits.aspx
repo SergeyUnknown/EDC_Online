@@ -25,8 +25,6 @@
             <asp:BoundField DataField="SubjectEvent.Event.Name" HeaderText="Событие" />
             <asp:BoundField DataField="SubjectCRF.CRF.Name" HeaderText="ИРК" />
             <asp:BoundField DataField="FieldName" HeaderText="Поле" />
-            <asp:CommandField HeaderText="Действия" ButtonType="Image" SelectText="Просмотреть" ShowDeleteButton="True" ShowSelectButton="true" DeleteText="Удалить" DeleteImageUrl="~/Images/delete (3).png" SelectImageUrl="~/Images/magnify (1).png"/>
-
         </Columns>
         <EditRowStyle BackColor="#2461BF" />
         <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
