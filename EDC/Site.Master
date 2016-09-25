@@ -20,10 +20,10 @@
             <Scripts>
                 <%--To learn more about bundling scripts in ScriptManager see http://go.microsoft.com/fwlink/?LinkID=272931&clcid=0x409 --%>
                 <%--Framework Scripts--%>
-
                 <asp:ScriptReference Name="MsAjaxBundle" />
                 <asp:ScriptReference Name="jquery" />
                 <asp:ScriptReference Name="jquery.ui.combined" />
+                <asp:ScriptReference Path="~/Scripts/jquery.cookie.js" />
                 <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
                 <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
                 <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />
@@ -36,6 +36,28 @@
                 <%--Site Scripts--%>
             </Scripts>
         </asp:ScriptManager>
+        <script type="text/javascript">
+            function showHideLeftMenu() {
+                var $leftElem = $("#sectionLeftMenu");
+                var $mainElem = $("#sectionMainMenu");
+                if ($leftElem.css('display') == 'block') {
+                    $leftElem.css('display', 'none');
+                    $mainElem.css('max-width', '100%');
+                    $.cookie('LeftMenuVisible', 'false');
+                }
+                else {
+                    $leftElem.fadeIn(500);
+                    $mainElem.css('max-width', '83%');
+                    $.cookie('LeftMenuVisible', 'true');
+                }
+            }
+        </script>
+        <script type="text/javascript">
+            function mouseOnLeftBorder(e) {
+                if (e.pageX < 10 && $("#sectionLeftMenu").css('display') == 'none')
+                    showHideLeftMenu();
+            }
+        </script>
         <header>
             <div class="MainHeader">
                 <div class="float-left">
@@ -61,7 +83,6 @@
                         </asp:LoginView>
                     </section>
                 </div>
-
                 <nav class="navBlock">
                     <ul class="menu">
                         <li>
@@ -82,7 +103,7 @@
                                     <a runat="server" href="#">Сверка с первичными данными</a>
                                 </li>
                                 <li>
-                                    <a runat="server" href="#">Аудит данных исследования</a>
+                                    <a runat="server" href="~/Audits">Аудит данных исследования</a>
                                 </li>
                             </ul>
                         </li>
@@ -145,12 +166,13 @@
                 </nav>
             </div>
         </header>
-        
-        <div id="body">
-            <div class="leftMenu ">
-            <asp:ContentPlaceHolder runat="server" ID="LegendPlace" />
-        </div>
-            <section class="content-wrapper main-content clear-fix">
+
+        <div id="body" onmousemove="mouseOnLeftBorder(event)">
+            <section id="sectionLeftMenu" class="leftMenu ">
+                <asp:ContentPlaceHolder runat="server" ID="LegendPlace" />
+                <input type="button" id="btnShowHideLeftMenu" value="Скрыть" onclick="showHideLeftMenu()" style="width: 100%">
+            </section>
+            <section id="sectionMainMenu" class="content-wrapper main-content clear-fix">
                 <asp:ContentPlaceHolder runat="server" ID="MainContent" />
             </section>
         </div>

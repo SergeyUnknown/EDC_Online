@@ -147,7 +147,9 @@ namespace EDC
 
         public enum AuditActionType
         {
-            Field,
+            Subject,
+            SubjectParam,
+            SubjectItem,
             User
         }
 

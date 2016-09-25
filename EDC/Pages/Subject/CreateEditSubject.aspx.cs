@@ -100,7 +100,7 @@ namespace EDC.Pages.Subject
                     audit.NewValue = tbNumber.Text;
                     audit.ActionDate = DateTime.Now;
                     audit.FieldName = "Номер субъекта";
-                    audit.ActionType = Core.AuditActionType.Field;
+                    audit.ActionType = Core.AuditActionType.SubjectParam;
                     audit.ChangesType = Core.AuditChangesType.Update;
                     AR.Create(audit);
                 }
@@ -114,7 +114,7 @@ namespace EDC.Pages.Subject
                     audit.NewValue = _MCs[ddlCenters.SelectedIndex - 1].Name;
                     audit.ActionDate = DateTime.Now;
                     audit.FieldName = "Мед. Центр";
-                    audit.ActionType = Core.AuditActionType.Field;
+                    audit.ActionType = Core.AuditActionType.SubjectParam;
                     audit.ChangesType = Core.AuditChangesType.Update;
                     AR.Create(audit);
                 }
@@ -128,7 +128,7 @@ namespace EDC.Pages.Subject
                     audit.NewValue = tbDate.Text;
                     audit.ActionDate = DateTime.Now;
                     audit.FieldName = "Дата включения";
-                    audit.ActionType = Core.AuditActionType.Field;
+                    audit.ActionType = Core.AuditActionType.SubjectParam;
                     audit.ChangesType = Core.AuditChangesType.Update;
                     AR.Create(audit);
                 }
@@ -143,12 +143,47 @@ namespace EDC.Pages.Subject
             if (Editing)
             {
                 SR.Update(_subject);
+                SR.Save();
             }
             else
             {
-                SR.Create(_subject);
+                _subject = SR.Create(_subject);
+                SR.Save();
+
+                Models.Audit audit = new Models.Audit();
+                audit.UserName = User.Identity.Name;
+                audit.UserID = (Guid)System.Web.Security.Membership.GetUser(User.Identity.Name).ProviderUserKey;
+                audit.SubjectID = _subject.SubjectID;
+                audit.NewValue = tbNumber.Text;
+                audit.ActionDate = DateTime.Now;
+                audit.FieldName = "Номер субъекта";
+                audit.ActionType = Core.AuditActionType.SubjectParam;
+                audit.ChangesType = Core.AuditChangesType.Create;
+                AR.Create(audit);
+
+                audit = new Models.Audit();
+                audit.UserName = User.Identity.Name;
+                audit.UserID = (Guid)System.Web.Security.Membership.GetUser(User.Identity.Name).ProviderUserKey;
+                audit.SubjectID = _subject.SubjectID;
+                audit.NewValue = _MCs[ddlCenters.SelectedIndex - 1].Name;
+                audit.ActionDate = DateTime.Now;
+                audit.FieldName = "Мед. Центр";
+                audit.ActionType = Core.AuditActionType.SubjectParam;
+                audit.ChangesType = Core.AuditChangesType.Create;
+                AR.Create(audit);
+
+                audit = new Models.Audit();
+                audit.UserName = User.Identity.Name;
+                audit.UserID = (Guid)System.Web.Security.Membership.GetUser(User.Identity.Name).ProviderUserKey;
+                audit.SubjectID = _subject.SubjectID;
+                audit.NewValue = tbDate.Text;
+                audit.ActionDate = DateTime.Now;
+                audit.FieldName = "Дата включения";
+                audit.ActionType = Core.AuditActionType.SubjectParam;
+                audit.ChangesType = Core.AuditChangesType.Create;
+                AR.Create(audit);
+
             }
-            SR.Save();
             AR.Save();
             Response.Redirect("~/Subjects");
         }
