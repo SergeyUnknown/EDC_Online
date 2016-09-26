@@ -13,13 +13,13 @@ namespace EDC.Models
         
         public long SubjectID { get; set; }
         [ForeignKey("SubjectID")]
-        public Subject Subject { get; set; }
+        public virtual Subject Subject { get; set; }
         public long EventID { get; set; }
         [ForeignKey("EventID")]
-        public Event Event { get; set; }
+        public virtual Event Event { get; set; }
         public long CRFID { get; set; }
         [ForeignKey("CRFID")]
-        public CRF CRF { get; set; }
+        public virtual CRF CRF { get; set; }
 
         /// <summary>
         /// Ввод данных начат
@@ -53,5 +53,6 @@ namespace EDC.Models
         public bool IsLock { get; set; } //заблокировано
         [DefaultValue(false)]
         public bool IsDelete { get; set; } //удалено
+        public virtual List<Audit> Audits { get; set; } //Аудит
     }
 }

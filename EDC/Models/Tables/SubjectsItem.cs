@@ -30,5 +30,7 @@ namespace EDC.Models
         public string CreatedBy { get; set; } //UserName
 
         public virtual List<Note> Notes { get; set; }
+
+        public virtual List<Audit> Audits { get; set; } //Аудит
     }
 }

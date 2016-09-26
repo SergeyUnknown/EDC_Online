@@ -19,11 +19,6 @@ namespace EDC.Pages.Subject
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if(!IsPostBack)
-            {
-                LoadSubjects();
-            }
-
             //если Администратор, Исследователь, Главный исследователь
             if (User.IsInRole(Core.Roles.Administrator.ToString()) || User.IsInRole(Core.Roles.Investigator.ToString()) || User.IsInRole(Core.Roles.Principal_Investigator.ToString()))
             {
@@ -35,6 +30,12 @@ namespace EDC.Pages.Subject
                 }
             }
             LoadDTDataItem(); 
+
+            if(!IsPostBack)
+            {
+                LoadSubjects();
+            }
+
         }
 
         private int GetPageFromRequest()

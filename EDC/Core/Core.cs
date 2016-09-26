@@ -125,5 +125,39 @@ namespace EDC
             Note
         }
 
+        public enum AppStatus
+        {
+            Design,
+            Enable,
+            Disable
+        }
+
+        /// <summary>
+        /// Статус приложения
+        /// </summary>
+        public const string APP_STATUS = "appStatus";
+        /// <summary>
+        /// Название исследования
+        /// </summary>
+        public const string STUDY_NAME = "studyName";
+        /// <summary>
+        /// Номер протокола
+        /// </summary>
+        public const string PROTOCOLID = "protocolID";
+
+        public enum AuditActionType
+        {
+            Subject,
+            SubjectParam,
+            SubjectItem,
+            User
+        }
+
+        public enum AuditChangesType
+        {
+            Create,
+            Update,
+            Delete
+        }
     }
 }

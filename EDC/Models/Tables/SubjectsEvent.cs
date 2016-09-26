@@ -17,6 +17,8 @@ namespace EDC.Models
         public virtual Subject Subject { get; set; }
         //public virtual List<SubjectsCRF> CRFs { get; set; }
 
+        public virtual List<Audit> Audits { get; set; } //Аудит
+
 
     }
 }

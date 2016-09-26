@@ -19,5 +19,6 @@ namespace EDC.Models
         public string CreatedBy { get; set; }
         public DateTime CreationDate { get; set; }
         public DateTime InclusionDate { get; set; }
+        public virtual List<Audit> Audits { get; set; } //Аудит
     }
 }

@@ -15,11 +15,9 @@ namespace EDC.Models
         public Core.NoteType Type { get; set; } //тип (заметка или квери)
         public string ForUser { get; set; } //для кого
         public string FromUser { get; set; } //от кого
-
         public string Header { get; set; } //заголовок
         public string Text { get; set; } //текст
         public DateTime CreationDate { get; set; } //дата создания
-
 
         public Models.SubjectsItem SubjectItem { get; set; } //итем
 

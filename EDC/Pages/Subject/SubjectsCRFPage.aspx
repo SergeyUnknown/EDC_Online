@@ -13,22 +13,41 @@
 
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
 
+    <script type="text/javascript">
+        function setChanged() {
+            document.getElementById('inHide').innerHTML = 'true';
+        }
+    </script>
+
+    <script type="text/javascript">
+        function checkChanged(url) {
+            if ($("#inHide").text() != '') {
+                if (confirm('Имеются не сохранённые данные, Вы уверены, что хотите покинуть форму?')) {
+                    window.location.href = url;
+                }
+            }
+            else
+                window.location.href = url;
+        }
+    </script>
 
     <asp:UpdatePanel runat="server" ID="up1">
         <Triggers>
             <asp:AsyncPostBackTrigger ControlID="btnCreateNote" />
         </Triggers>
         <ContentTemplate>
-            <asp:Label runat="server" ID="lbInfo" CssClass="SubjectPageInfo"/>
+            <asp:Label runat="server" ID="lbInfo" CssClass="SubjectPageInfo" />
+
+            <input id="inHide" style="display: none" />
 
             <asp:Button runat="server" ID="btnPrevSubject" CssClass="prevSubject" Text="Предыдущий субъект" CausesValidation="false" />
             <asp:Button runat="server" ID="btnPrevCRFInEvent" CssClass="prevEvent" Text="Предыдущая форма" CausesValidation="false" />
-<%-- располагаться выше таблицы в правом углу--%>
-            <asp:Button runat="server" ID="btnCheckAll" Text="Сверить" Visible="false" OnClick="btnCheckAll_Click"/>
+            <%-- располагаться выше таблицы в правом углу--%>
+            <asp:Button runat="server" ID="btnCheckAll" Text="Сверить" Visible="false" OnClick="btnCheckAll_Click" />
             <asp:Button runat="server" ID="btnApproved" Text="Подписать" Visible="false" OnClick="btnApproved_Click" />
-            <asp:CheckBox runat="server" ID="cbEnd" Text="Ввод данных завершен" style="display:none" />
+            <asp:Button runat="server" ID="btnEnd" Text="Ввод данных завершен" Visible="false" OnClick="btnEnd_Click" />
 
-            <ajaxToolkit:TabContainer runat="server" ID="tcCRF">
+            <ajaxToolkit:TabContainer runat="server" ID="tcCRF" OnActiveTabChanged="tcCRF_ActiveTabChanged" AutoPostBack="true">
             </ajaxToolkit:TabContainer>
 
             <asp:Button runat="server" ID="btnNextCRFInEvent" CssClass="nextEvent" Text="Следующая форма" CausesValidation="false" />
@@ -36,7 +55,7 @@
 
 
             <asp:Panel runat="server" ID="pnlModalPopup" Style="display: none">
-                <asp:GridView runat="server" ID="gvNotes" CellPadding="4" ForeColor="#333333" GridLines="Both" AutoGenerateColumns="False" OnRowDataBound="gvNotes_RowDataBound" >
+                <asp:GridView runat="server" ID="gvNotes" CellPadding="4" ForeColor="#333333" GridLines="Both" AutoGenerateColumns="False" OnRowDataBound="gvNotes_RowDataBound">
                     <AlternatingRowStyle BackColor="White" />
                     <Columns>
                         <asp:BoundField DataField="CreationDate" HeaderText="Дата создания" />

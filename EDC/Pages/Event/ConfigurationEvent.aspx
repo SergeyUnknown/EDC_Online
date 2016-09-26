@@ -43,6 +43,7 @@
                 </asp:GridView>
 
                 <asp:Button runat="server" ID="btnAddCRF" Text="Добавить CRF" OnClick="btnAddCRF_Click"></asp:Button>
+                <asp:Button runat="server" ID="btnSave" PostBackUrl="~/Events" Text="Сохранить" />
             </div>
 
             <div runat="server" id="divAddCRF">
