@@ -30,10 +30,6 @@ namespace EDC.Models
         public long? EventID { get; set; }
         //
         //SubjectCRF
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/forstyle
         public long? CRFID { get; set; }
         //
 
