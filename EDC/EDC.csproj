@@ -266,6 +266,7 @@
     <Content Include="Pages\MedicalCenter\Web.config" />
     <Content Include="Pages\Note\Web.config" />
     <Content Include="Pages\Subject\Web.config" />
+    <Content Include="Pages\Audit\Web.config" />
     <None Include="Properties\PublishProfiles\ToComp.pubxml" />
     <Content Include="Pages\Administration\ErrorLog.aspx" />
     <Content Include="Pages\Administration\Users.aspx" />
