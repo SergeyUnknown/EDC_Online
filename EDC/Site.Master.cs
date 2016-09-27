@@ -84,7 +84,15 @@ namespace EDC
                 liMonitor.Visible = true;
             }
 
-
+            HttpCookie cookie = Request.Cookies["LeftMenuVisible"];// Response.Cookies["LeftMenuVisible"];
+            if(cookie!=null)
+            {
+                if(cookie.Value == "false")
+                {
+                    sectionLeftMenu.Style.Add("display", "none");
+                    sectionMainMenu.Style.Add("max-width","100%");
+                }
+            }
 
         }
     }

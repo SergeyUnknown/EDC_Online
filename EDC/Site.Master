@@ -36,25 +36,26 @@
                 <%--Site Scripts--%>
             </Scripts>
         </asp:ScriptManager>
+
         <script type="text/javascript">
             function showHideLeftMenu() {
-                var $leftElem = $("#sectionLeftMenu");
-                var $mainElem = $("#sectionMainMenu");
+                var $leftElem = $("#<%: sectionLeftMenu.ClientID %>");
+                var $mainElem = $("#<%: sectionMainMenu.ClientID %>");
                 if ($leftElem.css('display') == 'block') {
                     $leftElem.css('display', 'none');
                     $mainElem.css('max-width', '100%');
-                    $.cookie('LeftMenuVisible', 'false');
+                    $.cookie('LeftMenuVisible', 'false', { expires: 365, path: '/' });
                 }
                 else {
                     $leftElem.fadeIn(500);
                     $mainElem.css('max-width', '83%');
-                    $.cookie('LeftMenuVisible', 'true');
+                    $.cookie('LeftMenuVisible', 'true', { expires: 365, path: '/' });
                 }
             }
         </script>
         <script type="text/javascript">
             function mouseOnLeftBorder(e) {
-                if (e.pageX < 10 && $("#sectionLeftMenu").css('display') == 'none')
+                if (e.pageX < 10 && $("#<%: sectionLeftMenu.ClientID %>").css('display') == 'none')
                     showHideLeftMenu();
             }
         </script>
@@ -168,11 +169,11 @@
         </header>
 
         <div id="body" onmousemove="mouseOnLeftBorder(event)">
-            <section id="sectionLeftMenu" class="leftMenu ">
+            <section runat="server" id="sectionLeftMenu" class="leftMenu ">
                 <asp:ContentPlaceHolder runat="server" ID="LegendPlace" />
                 <input type="button" id="btnShowHideLeftMenu" value="Скрыть" onclick="showHideLeftMenu()" style="width: 100%">
             </section>
-            <section id="sectionMainMenu" class="content-wrapper main-content clear-fix">
+            <section runat="server" id="sectionMainMenu" class="content-wrapper main-content clear-fix">
                 <asp:ContentPlaceHolder runat="server" ID="MainContent" />
             </section>
         </div>
