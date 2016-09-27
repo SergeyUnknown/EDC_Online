@@ -75,7 +75,7 @@
                                 </ul>
                             </AnonymousTemplate>
                             <LoggedInTemplate>
-                                Здравствуйте, <a runat="server" class="username" href="~/Account/Manage" title="Настройки аккаунта">
+                                Здравствуйте, <a runat="server" class="LinkUsername" href="~/Account/Manage" title="Настройки аккаунта">
                                     <asp:LoginName runat="server" CssClass="username" />
                                 </a>!</br>
                                 <asp:LoginStatus runat="server" LogoutAction="Redirect" CssClass="logout" LogoutText="Выйти из системы" LogoutPageUrl="~/" />
