@@ -47,6 +47,7 @@ D:\Repos\GitHub\EDC_Online\EDC\bin\ru\System.Web.Optimization.resources.dll
 D:\Repos\GitHub\EDC_Online\EDC\bin\ru\Microsoft.AspNet.Membership.OpenAuth.resources.dll
 D:\Repos\GitHub\EDC_Online\EDC\obj\Debug\EDC.dll
 D:\Repos\GitHub\EDC_Online\EDC\obj\Debug\EDC.pdb
+<<<<<<< HEAD
 D:\Repos\GitHub\EDC_Online\EDC\obj\Debug\EDC.csprojResolveAssemblyReference.cache
 D:\VS\EDC_Online\EDC\bin\EDC.dll.config
 D:\VS\EDC_Online\EDC\bin\EDC.dll
@@ -98,3 +99,5 @@ D:\VS\EDC_Online\EDC\bin\ru\Microsoft.AspNet.Membership.OpenAuth.resources.dll
 D:\VS\EDC_Online\EDC\obj\Debug\EDC.csprojResolveAssemblyReference.cache
 D:\VS\EDC_Online\EDC\obj\Debug\EDC.dll
 D:\VS\EDC_Online\EDC\obj\Debug\EDC.pdb
+=======
+>>>>>>> origin/forstyle
