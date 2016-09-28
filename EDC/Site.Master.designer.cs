@@ -67,6 +67,15 @@ namespace EDC {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl liAdmin;
         
         /// <summary>
+        /// sectionLeftMenu элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl sectionLeftMenu;
+        
+        /// <summary>
         /// LegendPlace элемент управления.
         /// </summary>
         /// <remarks>
@@ -74,6 +83,15 @@ namespace EDC {
         /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ContentPlaceHolder LegendPlace;
+        
+        /// <summary>
+        /// sectionMainMenu элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl sectionMainMenu;
         
         /// <summary>
         /// MainContent элемент управления.

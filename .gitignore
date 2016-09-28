@@ -53,3 +53,4 @@ Temporary Items
 *.xltx
 EDC/obj/Debug/EDC.pdb
 EDC/obj/Debug/Release/
+*.pubxml
