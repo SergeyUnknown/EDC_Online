@@ -6,7 +6,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <_PublishTargetUrl>C:\Users\Sergey Unknown\Desktop\EDC_v9</_PublishTargetUrl>
+    <_PublishTargetUrl>C:\Users\Sergey Unknown\Desktop\EDC_v10</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="About.aspx">
@@ -43,7 +43,7 @@
       <publishTime>04/19/2016 22:41:44</publishTime>
     </File>
     <File Include="bin/EDC.dll">
-      <publishTime>09/27/2016 16:54:51</publishTime>
+      <publishTime>09/28/2016 16:22:32</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>04/27/2016 15:46:05</publishTime>
@@ -559,7 +559,7 @@
       <publishTime>09/08/2016 21:34:24</publishTime>
     </File>
     <File Include="Pages/Audit/Audits.aspx">
-      <publishTime>09/24/2016 00:45:10</publishTime>
+      <publishTime>09/28/2016 00:46:50</publishTime>
     </File>
     <File Include="Pages/Audit/Web.config">
       <publishTime>09/27/2016 16:52:09</publishTime>
@@ -730,7 +730,7 @@
       <publishTime>09/24/2016 15:19:33</publishTime>
     </File>
     <File Include="Site.Master">
-      <publishTime>09/24/2016 22:49:33</publishTime>
+      <publishTime>09/27/2016 19:51:06</publishTime>
     </File>
     <File Include="Site.Mobile.Master">
       <publishTime>09/24/2016 15:22:14</publishTime>
@@ -739,7 +739,7 @@
       <publishTime>09/24/2016 15:22:14</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>09/27/2016 16:54:53</publishTime>
+      <publishTime>09/28/2016 16:22:35</publishTime>
     </File>
   </ItemGroup>
 </Project>

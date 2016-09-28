@@ -84,7 +84,7 @@ namespace EDC
                 liMonitor.Visible = true;
             }
 
-            HttpCookie cookie = Request.Cookies["LeftMenuVisible"];// Response.Cookies["LeftMenuVisible"];
+            HttpCookie cookie = Request.Cookies["LeftMenuVisible"];
             if(cookie!=null)
             {
                 if(cookie.Value == "false")
