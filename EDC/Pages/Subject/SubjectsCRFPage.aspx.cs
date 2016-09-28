@@ -10,12 +10,14 @@ namespace EDC.Pages.Subject
 {
     public partial class SubjectsCRFPage : System.Web.UI.Page
     {
-        Models.Repository.CRFRepository CRFR = new Models.Repository.CRFRepository();
-        Models.Repository.CRFItemRepository CIR = new Models.Repository.CRFItemRepository();
-        Models.Repository.SubjectsItemRepoitory SIR = new Models.Repository.SubjectsItemRepoitory();
-        Models.Repository.SubjectsCRFRepository SCR = new Models.Repository.SubjectsCRFRepository();
         Models.Repository.SubjectRepository SR = new Models.Repository.SubjectRepository();
+        Models.Repository.SubjectsEventRepoitory SER = new Models.Repository.SubjectsEventRepoitory();
+        Models.Repository.SubjectsCRFRepository SCR = new Models.Repository.SubjectsCRFRepository();
+        Models.Repository.SubjectsItemRepoitory SIR = new Models.Repository.SubjectsItemRepoitory();
+
+        Models.Repository.CRFRepository CRFR = new Models.Repository.CRFRepository();
         Models.Repository.CRFInEventRepository CIER = new Models.Repository.CRFInEventRepository();
+        Models.Repository.CRFItemRepository CIR = new Models.Repository.CRFItemRepository();
         Models.Repository.NoteRepository NR = new Models.Repository.NoteRepository();
         Models.Repository.EventRepository ER = new Models.Repository.EventRepository();
         Models.Repository.AppSettingRepository ASR = new Models.Repository.AppSettingRepository();
@@ -613,12 +615,15 @@ namespace EDC.Pages.Subject
                 .Where(x => x.Ungrouped)
                 .OrderBy(x => x.CRF_ItemID).ToList(); //итемы без группы
 
+            #region foreach UngroupedItems
             foreach (var item in ungroupedItems)
             {
                 Control _control;
                 _control = form.FindControl(item.Identifier);
                 string value = GetValueFromControl(_control);
                 SubjectsItem si = SIR.SelectByID(_subjectID, _eventID, _crfID, item.CRF_ItemID,-1);
+                Models.Audit audit = new Models.Audit();
+
                 if (si == null)
                 {
                     si = new SubjectsItem();
@@ -631,49 +636,42 @@ namespace EDC.Pages.Subject
                     si.Value = value;
                     si.CreatedBy = User.Identity.Name;
                     si = SIR.Create(si);
+                    SIR.Save();
 
-                    Models.Audit audit = new Models.Audit();
-                    audit.UserName = User.Identity.Name;
-                    audit.UserID = (Guid)System.Web.Security.Membership.GetUser(User.Identity.Name).ProviderUserKey;
-                    audit.SubjectID = _subjectID;
-                    audit.EventID = _eventID;
-                    audit.CRFID = _crfID;
-                    audit.ItemID = item.CRF_ItemID;
-                    audit.IndexID = -1;
                     audit.NewValue = value;
-                    audit.ActionDate = DateTime.Now;
-                    audit.FieldName = item.Name;
-                    audit.ActionType = Core.AuditActionType.SubjectItem;
-                    audit.ChangesType = Core.AuditChangesType.Create;
-                    AR.Create(audit);
                 }
                 else
                 {
-                    Models.Audit audit = new Models.Audit();
-                    audit.UserName = User.Identity.Name;
-                    audit.UserID = (Guid)System.Web.Security.Membership.GetUser(User.Identity.Name).ProviderUserKey;
-                    audit.SubjectID = _subjectID;
-                    audit.EventID = _eventID;
-                    audit.CRFID = _crfID;
-                    audit.ItemID = item.CRF_ItemID;
-                    audit.IndexID = -1;
+                    if (si.Value == value)
+                        continue;
+
                     audit.OldValue = si.Value;
                     audit.NewValue = value;
-                    audit.ActionDate = DateTime.Now;
-                    audit.FieldName = item.Name;
-                    audit.ActionType = Core.AuditActionType.SubjectItem;
-                    audit.ChangesType = Core.AuditChangesType.Update;
-                    AR.Create(audit);
-
+                    
                     si.Value = value;
                     si.CreatedBy = User.Identity.Name;
                     SIR.Update(si);
                 }
-                SIR.Save();
-                AR.Save();
-            }
 
-            if(groupedItems.Count>0)
+                audit.UserName = User.Identity.Name;
+                audit.UserID = (Guid)System.Web.Security.Membership.GetUser(User.Identity.Name).ProviderUserKey;
+                audit.SubjectID = _subjectID;
+                audit.EventID = _eventID;
+                audit.CRFID = _crfID;
+                audit.ItemID = item.CRF_ItemID;
+                audit.IndexID = -1;
+                audit.ActionDate = DateTime.Now;
+                audit.FieldName = item.Name;
+                audit.ActionType = Core.AuditActionType.SubjectItem;
+                audit.ChangesType = Core.AuditChangesType.Create;
+                AR.Create(audit);
+
+                AR.Save();
+                SIR.Save();
+            }
+            #endregion
+
+            if (groupedItems.Count>0)
             {
                 Control _control;
                 _control = form.FindControl(groupedItems[0].Identifier + "_1");
@@ -701,6 +699,8 @@ namespace EDC.Pages.Subject
                         CRF_Item item = groupedItems[j];
                         string value = values[j];
                         SubjectsItem si = SIR.SelectByID(_subjectID, _eventID, _crfID, item.CRF_ItemID, i + 1);
+                        Models.Audit audit = new Models.Audit();
+
                         if (si == null)
                         {
                             si = new SubjectsItem();
@@ -713,45 +713,37 @@ namespace EDC.Pages.Subject
                             si.IsGrouped = true;
                             si.CreatedBy = User.Identity.Name;
                             SIR.Create(si);
+                            SIR.Save();
 
-                            Models.Audit audit = new Models.Audit();
-                            audit.UserName = User.Identity.Name;
-                            audit.UserID = (Guid)System.Web.Security.Membership.GetUser(User.Identity.Name).ProviderUserKey;
-                            audit.SubjectID = _subjectID;
-                            audit.EventID = _eventID;
-                            audit.CRFID = _crfID;
-                            audit.ItemID = item.CRF_ItemID;
-                            audit.IndexID = i + 1;
                             audit.NewValue = value;
-                            audit.ActionDate = DateTime.Now;
-                            audit.FieldName = item.Name;
-                            audit.ActionType = Core.AuditActionType.SubjectItem;
-                            audit.ChangesType = Core.AuditChangesType.Create;
-                            AR.Create(audit);
                         }
                         else
                         {
-                            Models.Audit audit = new Models.Audit();
-                            audit.UserName = User.Identity.Name;
-                            audit.UserID = (Guid)System.Web.Security.Membership.GetUser(User.Identity.Name).ProviderUserKey;
-                            audit.SubjectID = _subjectID;
-                            audit.EventID = _eventID;
-                            audit.CRFID = _crfID;
-                            audit.ItemID = item.CRF_ItemID;
-                            audit.IndexID = si.IndexID;
+                            if (si.Value == value)
+                                continue;
+
                             audit.OldValue = si.Value;
                             audit.NewValue = value;
-                            audit.ActionDate = DateTime.Now;
-                            audit.FieldName = item.Name;
-                            audit.ActionType = Core.AuditActionType.SubjectItem;
-                            audit.ChangesType = Core.AuditChangesType.Update;
-                            AR.Create(audit);
 
                             si.Value = value;
                             si.CreatedBy = User.Identity.Name;
                             SIR.Update(si);
 
                         }
+
+                        audit.UserName = User.Identity.Name;
+                        audit.UserID = (Guid)System.Web.Security.Membership.GetUser(User.Identity.Name).ProviderUserKey;
+                        audit.SubjectID = _subjectID;
+                        audit.EventID = _eventID;
+                        audit.CRFID = _crfID;
+                        audit.ItemID = item.CRF_ItemID;
+                        audit.IndexID = si.IndexID;
+                        audit.ActionDate = DateTime.Now;
+                        audit.FieldName = item.Name;
+                        audit.ActionType = Core.AuditActionType.SubjectItem;
+                        audit.ChangesType = Core.AuditChangesType.Update;
+                        AR.Create(audit);
+
                         SIR.Save();
                         AR.Save();
                     }
@@ -828,7 +820,6 @@ namespace EDC.Pages.Subject
             Control tempControl = ((Button)sender).Parent;
             string panelName = (tempControl as AjaxControlToolkit.TabPanel).HeaderText;
             CRF_Section section = _crf.Sections.First(x => x.Title == panelName);
-            GetInfo(tempControl, section);
 
             //обновления статуса Ввод начат////
             _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
@@ -842,14 +833,30 @@ namespace EDC.Pages.Subject
                 SCR.Save();
                 _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
             }
-            _sCRF.IsStart = true;
-            _sCRF.IsStartBy = User.Identity.Name;
+            if (!_sCRF.IsStart)
+            {
+                _sCRF.IsStart = true;
+                _sCRF.IsStartBy = User.Identity.Name;
+                SCR.Update(_sCRF);
+                SCR.Save();
 
-            SCR.Update(_sCRF);
-            SCR.Save();
-            _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
+                _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
+            }
             ///////////////////////////////////
-            _crf = CRFR.SelectByID(_crf.CRFID);
+            var se = SER.SelectByID(_subjectID,_eventID);
+            if(se==null)
+            {
+                se = new SubjectsEvent();
+                se.SubjectID = _subjectID;
+                se.EventID = _eventID;
+                SER.Create(se);
+                SER.Save();
+            }
+
+
+            _crf = CRFR.SelectByID(_crf.CRFID); //не очень понятно зачем=(
+            
+            GetInfo(tempControl, section); //считывание информации из полей и запись в БД.
             LoadForm(_crf);
         }
 
