@@ -15,7 +15,7 @@
     <ol class="StatusResearch vertical">
         <li>
             <asp:Label runat="server" AssociatedControlID="rbStatus">Статус исследования</asp:Label>
-            <asp:RadioButtonList runat="server" ID="rbStatus">
+            <asp:RadioButtonList runat="server" ID="rbStatus" CssClass="radibuttonStatus">
                 <asp:ListItem Text="Дизайн" Value="Design"/>
                 <asp:ListItem Text="Активно" Value="Enable"/>
                 <asp:ListItem Text="Заблокировано" Value="Disable" />

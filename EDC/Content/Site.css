@@ -1,4 +1,6 @@
-﻿html {
+﻿/*--- hover #0a5bcc ----*/
+
+html {
     background-color: #e2e2e2;
     margin: 0;
     padding: 0;
@@ -7,7 +9,7 @@
 body {
     background-color: #fff;
     color: #333;
-    font-size: .85em;
+    font-size: 0.9em;
     font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
     margin: 0;
     padding: 0;
@@ -27,9 +29,16 @@ a {
     }
 
     a:hover {
-        
     }
-
+.loginView{
+        padding: 10px;
+    background-color: #6EB2C4;
+    border-radius: 4px;
+}
+.radibuttonStatus
+{
+    box-shadow:none;
+}
 header, footer, hgroup,
 nav, section {
     display: block;
@@ -154,6 +163,7 @@ footer {
 .site-title a, .site-title a:hover, .site-title a:active {
     background: none;
     color: #c8c8c8;
+    
     outline: none;
     text-decoration: none;
 }
@@ -266,6 +276,14 @@ aside {
     font-weight: 700;
 }
 
+.loginInfo > li
+{
+    list-style:none;
+}
+.loginInfo
+{
+    padding-left:0px;
+}
 /* login page */
 #loginForm {
     border-right: solid 2px #c8c8c8;
@@ -340,7 +358,7 @@ fieldset {
 
     label {
         display: block;
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 600;
     }
 
@@ -379,7 +397,7 @@ fieldset {
     button {
         background-color:#7ac0da;
         border: 0;
-        border-radius:5px;
+        border-radius:2px;
         cursor: pointer;
         font-size: 11px;
         font-weight: 600;
@@ -410,7 +428,7 @@ fieldset {
 
     input[type=text]
     {
-        font-size:11px;
+        font-size: 13px
     }
     .inputbutton
     {
@@ -418,7 +436,7 @@ fieldset {
         border: 0;
         border-radius:5px;
         cursor: pointer;
-        font-size: 11px;
+        font-size: 13px;
         font-weight: 600;
         color: white;
         box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.36) ;
@@ -538,18 +556,56 @@ input[title="Следующая CRF"], input[title="Предыдущая CRF"]
     margin:6px auto 2px auto;
     right:50%;
 }
+
+.loginForm {
+    text-align:center;
+    width:auto;
+    font-size:1.1em;
+}
+
+.align-middle
+{
+    float:none !important;
+    text-align:center;
+}
 .loginForm input
 {
-    width:220px;
+    width:200px;
+    padding:5px 2px;
+    margin-right:0px;
 }
 .loginForm input[type=checkbox]
 {
     width:auto;
 }
+
 .loginButton
 {
-    width:auto !important;
-    margin-left:109px;
+    width:204px !important;
+    margin-right: 5px !important;
+    border-radius: 2px;
+}
+
+.LoginWindow
+{
+    padding:10px;
+    height:auto;
+    width:300px;
+    text-align:center;
+    margin:5px auto;
+    border:solid 1px #aaa;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.26);
+}
+
+.LoginWindow > h1 
+{
+        font-family: sans-serif;
+}
+.manageAccountTable 
+{
+    width:auto;
+    margin-bottom:20px;
+    box-shadow:none;
 }
 
 .manageAccountTable td
@@ -557,6 +613,7 @@ input[title="Следующая CRF"], input[title="Предыдущая CRF"]
     display: inline-flex;
     margin-top:5px;
     padding:0px;
+    
 }
 .manageAccountTable tr
 {
@@ -569,6 +626,8 @@ input[title="Следующая CRF"], input[title="Предыдущая CRF"]
 .manageAccountTable label
 {
     width:200px;
+    text-align:left;
+    font-size:0.9em;
 }
 
 /* tables
@@ -900,7 +959,7 @@ tr.pager td {
 {
     margin-left:auto;
     float:right;
-    font-size:0.85em;
+    font-size:0.75em;
 }
 .SubjectPageInfo
 {

@@ -3,27 +3,29 @@
 {
     display:inline-flex;
     flex-direction:row;
+    background-color:#6EB2C4;
     position:relative;
     margin-top:4px;
     margin-bottom: 8px;
     min-width:768px;
     max-height:35px;
-    text-align: center;
     padding-left:0px;
     float:none;
     z-index:50;
     text-align: justify;
+    justify-content:space-between;
     border-radius:5px;
     box-shadow:0px 3px 5px 0 rgba(0, 0, 0, 0.4);
+    
 }
 
 .menu > li{
-    display: inline-flexbox;
+    display: inline-flex;
     list-style:none;
     position:relative;
     vertical-align:central;
     background-color:#6EB2C4;
-    border-right:solid 1px #808080;
+    /*border-right:solid 1px #808080;*/
     margin:0px;
     height:100%;
     border-color:#739EB4;
@@ -38,6 +40,7 @@
 
 .menu > li:last-child
 {
+    
     padding-right:0px;
     border-radius: 0px 5px 5px 0px;
     border-right:none;
@@ -45,12 +48,16 @@
 }
 .menu > li:last-child:hover > ul.submenu {
     /*left:-155px;*/
-    float:right;
+    /*float:right;
+    /*position:relative;
+    right:0px;*/
 
 }
 .menu > li:last-child > ul.submenu
 {
+    right:0px;
     /*/left:-155px;*/
+    float:right;
 }
 .menu > li > a{
     background:none;
@@ -65,6 +72,7 @@
 
 ul.menu > li:hover{
     background-color:#7EA2D4;
+    z-index:40;
     box-shadow:0px 3px 5px 0 rgba(0, 0, 0, 0.6);
 }
 
@@ -131,7 +139,8 @@ ul.submenu > li:only-child
     margin-top:0px;
 }
 ul.submenu > li > a{
-    display:block;
+    display:flex;
+    width:100%;
     background:none;
     color:#FFF;
     text-decoration:none;
@@ -165,7 +174,8 @@ ul.submenu li:hover {
     }
 
     #login a:hover{
-        background-color:#7EA2D4;
+        background-color:#d7eeff;
+        border-radius:2px;
     }
     
     #login a.logout{

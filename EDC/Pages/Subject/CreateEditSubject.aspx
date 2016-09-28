@@ -26,7 +26,6 @@
             <ajaxToolkit:CalendarExtender runat="server" ID="ajaxCalendar" FirstDayOfWeek="Monday" TargetControlID="tbDate" Format="dd.MM.yyyy" />
             <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="tbDate" Display="Dynamic"
                 CssClass="field-validation-error" ErrorMessage="Данное поле обязательно для заполнения" />
-            <img src="../../Images/calendar-plus%20(2).png" class="calendarImg"/>
         </li>
         <li>
             <asp:Label runat="server" AssociatedControlID="ddlCenters">Мед. центр</asp:Label>
