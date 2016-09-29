@@ -17,9 +17,7 @@
         function setChanged() {
             document.getElementById('inHide').innerHTML = 'true';
         }
-    </script>
 
-    <script type="text/javascript">
         function checkChanged(url) {
             if ($("#inHide").text() != '') {
                 if (confirm('Имеются не сохранённые данные, Вы уверены, что хотите покинуть форму?')) {
@@ -29,6 +27,11 @@
             else
                 window.location.href = url;
         }
+
+        function setActiveTab(sender, args) {
+            $.cookie("activeTabIndex", sender.get_activeTabIndex(), { path: '/' });
+        }
+
     </script>
 
     <asp:UpdatePanel runat="server" ID="up1">
@@ -40,18 +43,18 @@
 
             <input id="inHide" style="display: none" />
 
-            <asp:Button runat="server" ID="btnPrevSubject" CssClass="prevSubject" Text="Предыдущий субъект" CausesValidation="false" />
-            <asp:Button runat="server" ID="btnPrevCRFInEvent" CssClass="prevEvent" Text="Предыдущая форма" CausesValidation="false" />
+            <asp:Button runat="server" ID="btnPrevSubject" Text="Предыдущий субъект" CssClass="prevSubject" CausesValidation="false" />
+            <asp:Button runat="server" ID="btnPrevCRFInEvent" CssClass="prevEvent" CausesValidation="false" />
             <%-- располагаться выше таблицы в правом углу--%>
-            <asp:Button runat="server" ID="btnCheckAll" Text="Сверить" Visible="false" OnClick="btnCheckAll_Click" />
-            <asp:Button runat="server" ID="btnApproved" Text="Подписать" Visible="false" OnClick="btnApproved_Click" />
-            <asp:Button runat="server" ID="btnEnd" Text="Ввод данных завершен" Visible="false" OnClick="btnEnd_Click" />
+            <asp:Button runat="server" ID="btnCheckAll" Text="Сверить" Visible="false" OnClick="btnCheckAll_Click" EnableViewState="false" />
+            <asp:Button runat="server" ID="btnApproved" Text="Подписать" Visible="false" OnClick="btnApproved_Click" EnableViewState="false" />
+            <asp:Button runat="server" ID="btnEnd" Text="Ввод данных завершен" Visible="false" OnClick="btnEnd_Click" EnableViewState="false" />
 
-            <ajaxToolkit:TabContainer runat="server" ID="tcCRF" OnActiveTabChanged="tcCRF_ActiveTabChanged" AutoPostBack="true">
+            <ajaxToolkit:TabContainer runat="server" ID="tcCRF" OnClientActiveTabChanged="setActiveTab" AutoPostBack="true">
             </ajaxToolkit:TabContainer>
 
-            <asp:Button runat="server" ID="btnNextCRFInEvent" CssClass="nextEvent" Text="Следующая форма" CausesValidation="false" />
-            <asp:Button runat="server" ID="btnNextSubject" CssClass="nextSubject" Text="Следующий субъект" CausesValidation="false" />
+            <asp:Button runat="server" ID="btnNextCRFInEvent" CssClass="nextEvent" CausesValidation="false" />
+            <asp:Button runat="server" ID="btnNextSubject" Text="Следующий субъект" CssClass="nextSubject" CausesValidation="false" />
 
 
             <asp:Panel runat="server" ID="pnlModalPopup" Style="display: none">
