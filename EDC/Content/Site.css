@@ -31,10 +31,13 @@ a {
     a:hover {
     }
 .loginView{
-        padding: 10px;
-    background-color: #6EB2C4;
+    padding: 10px;
+    /*background-color: #6EB2C4;*/
+    color:white;
     border-radius: 4px;
+    margin-bottom:4px;
 }
+
 .radibuttonStatus
 {
     box-shadow:none;
@@ -45,6 +48,8 @@ nav, section {
 }
 .navBlock{
     clear:both;
+    background-color:#6EB2C4;
+
 }
 
 mark {
@@ -145,7 +150,8 @@ footer {
 }
 .MainHeader
 {
-    padding-top:10px;
+    padding-top:5px;
+    background-color: #7ac0da;
     /*overflow:hidden;
 
     */
@@ -173,7 +179,7 @@ footer {
 ----------------------------------------------------------*/
 /* featured */
 .featured {
-    background-color: #fff;
+    /*background-color: #fff;*/
     width:60%;
     min-width:380px;
     float:left;
@@ -184,11 +190,14 @@ footer {
     margin-left:auto;
     margin-right:auto;
 }
-
+.featured > .content-wrapper
+{
+    max-width:100%;
+}
     .featured .content-wrapper {
-        background-color: #7ac0da;
+        /*background-color: #7ac0da;
         border-radius:3px 3px 3px 3px;
-        box-shadow:0px 3px 5px 0 rgba(0, 0, 0, 0.4);
+        box-shadow:0px 3px 5px 0 rgba(0, 0, 0, 0.4);*/
         vertical-align:central;
         padding-top:0px;
         /*
@@ -275,7 +284,10 @@ aside {
 .label {
     font-weight: 700;
 }
-
+.username
+{
+    text-decoration:none;
+}
 .loginInfo > li
 {
     list-style:none;
