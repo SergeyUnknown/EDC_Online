@@ -3,20 +3,16 @@
 {
     display:inline-flex;
     flex-direction:row;
-    background-color:#6EB2C4;
     position:relative;
-    margin-top:4px;
-    margin-bottom: 8px;
+    margin-top:2px;
+    margin-bottom: 2px;
     min-width:768px;
-    max-height:35px;
     padding-left:0px;
     float:none;
     z-index:50;
     text-align: justify;
     justify-content:space-between;
     border-radius:5px;
-    box-shadow:0px 3px 5px 0 rgba(0, 0, 0, 0.4);
-    
 }
 
 .menu > li{
@@ -27,6 +23,7 @@
     background-color:#6EB2C4;
     /*border-right:solid 1px #808080;*/
     margin:0px;
+    margin-right:4px;
     height:100%;
     border-color:#739EB4;
     transition:background-color 0.1s ease;
@@ -46,17 +43,10 @@
     border-right:none;
     
 }
-.menu > li:last-child:hover > ul.submenu {
-    /*left:-155px;*/
-    /*float:right;
-    /*position:relative;
-    right:0px;*/
 
-}
 .menu > li:last-child > ul.submenu
 {
     right:0px;
-    /*/left:-155px;*/
     float:right;
 }
 .menu > li > a{
@@ -170,16 +160,17 @@ ul.submenu li:hover {
 }
 
     #login a {
-        text-decoration: none;
+        color:white;
     }
 
     #login a:hover{
-        background-color:#d7eeff;
+        background-color:#739EB4;
         border-radius:2px;
     }
     
     #login a.logout{
         text-decoration:underline;
+        color:white;
     }
     #login ul {
         margin: 0;
