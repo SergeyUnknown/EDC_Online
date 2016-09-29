@@ -600,18 +600,19 @@ input[title="Следующая CRF"], input[title="Предыдущая CRF"]
 
 .LoginWindow
 {
-    padding:10px;
-    height:auto;
-    width:300px;
-    text-align:center;
-    margin:5px auto;
-    border:solid 1px #aaa;
+    height: 242px;
+    width: 322px;
+    border: solid 1px #aaa;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.26);
+    position: fixed;
+    top: calc(50% - 131px);
+    left: calc(50% - 171px);
+    padding: 10px;
 }
 
 .LoginWindow > h1 
 {
-        font-family: sans-serif;
+    font-family: sans-serif;
 }
 .manageAccountTable 
 {

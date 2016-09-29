@@ -54,43 +54,23 @@ namespace EDC.Pages.Subject
                 lbInfo.Text = string.Format("Визит: \"{0}\", ИРК: \"{1}\", субъект: {2}",_event.Name, string.IsNullOrWhiteSpace(_crf.RussianName) ? _crf.Name : _crf.RussianName, _subject.Number);
                 RowCountInSection = new Dictionary<string, int>();
                 answerRowIndex = -1;
-
-                if (ASR.SelectByID(Core.APP_STATUS).Value == Core.AppStatus.Disable.ToString())
-                    readOnly = true;
-
-
-                if (User.IsInRole(Core.Roles.Principal_Investigator.ToString()) && (_sCRF != null && _sCRF.IsEnd) && !_sCRF.IsApprove)
-                {
-                    btnApproved.Visible = true;
-                }
-
-                if (User.IsInRole(Core.Roles.Monitor.ToString()))
-                {
-                    readOnly = true;
-                    if ((_sCRF != null && _sCRF.IsApprove) && !_sCRF.IsCheckAll)
-                        btnCheckAll.Visible=true;
-                }
-
-                if(User.IsInRole(Core.Roles.Auditor.ToString()))
+                if (Request.Cookies["activeTabIndex"] != null)
+                    Request.Cookies["activeTabIndex"].Value = "0";
+                if (ASR.SelectByID(Core.APP_STATUS).Value == Core.AppStatus.Disable.ToString() || User.IsInRole(Core.Roles.Monitor.ToString()) || User.IsInRole(Core.Roles.Auditor.ToString()))
                 {
                     readOnly = true;
                 }
 
             }
+
             LoadForm(_crf);
 
-            
-
-            if (User.IsInRole(Core.Roles.Investigator.ToString()) || User.IsInRole(Core.Roles.Principal_Investigator.ToString()) && _sCRF !=null && !_sCRF.IsEnd)
-            {
-                if (ViewState["ActiveTabIndex"] != null && (int)ViewState["ActiveTabIndex"]== tcCRF.Tabs.Count-1)
-                    btnEnd.Visible = _sCRF.IsEnd?false: true;
-            }
-            
+            ConfigActionButtons();
         }
 
         void ConfigButtonVisible()
         {
+            #region buttonGoSubjects
             List<Models.Subject> subjectsInCenter = SR.GetManyByFilter(x=>x.MedicalCenterID == _subject.MedicalCenterID).OrderBy(x => x.SubjectID).ToList();
             if (subjectsInCenter.Count > 0)
             {
@@ -120,15 +100,32 @@ namespace EDC.Pages.Subject
                 btnNextSubject.Visible = false;
                 btnPrevSubject.Visible = false;
             }
-
+            #endregion
 
             Models.CRFInEvent CIE = CIER.SelectByID(_crfID, _eventID);
+            List<Models.Event> events = ER.SelectAll().OrderBy(x => x.Position).ToList();
             List<Models.CRFInEvent> CIEs = CIER.GetManyByFilter(x => x.EventID == _eventID).OrderBy(x => x.Position).ToList();
+            int currentEventIndex = events.IndexOf(events.Find(x => x.EventID == _eventID));
             if (CIEs.Count > 0)
             {
                 int currentCRFIndex = CIEs.FindIndex(x => x.EventID == _eventID && x.CRFID == _crfID);
-                if (currentCRFIndex == 0)
-                    btnPrevCRFInEvent.Visible = false;
+                if (currentCRFIndex == 0) //Если ИРК первая в списке
+                {
+                    if (currentEventIndex != 0) //если событие не первое в списке
+                    {
+                        long prevEventID = events[currentEventIndex - 1].EventID;
+                        List<Models.CRFInEvent> cies = CIER.GetManyByFilter(x => x.EventID == prevEventID).OrderBy(x => x.Position).ToList();
+                        if (cies.Count > 0)
+                        {
+                            btnPrevCRFInEvent.Attributes.Add("onclick", "checkChanged('" + ResolveClientUrl(string.Format("~/Subjects/{0}/{1}/{2}", _subjectID, prevEventID, cies.Last().CRFID)) + "')");
+                            btnPrevCRFInEvent.ToolTip = "К предыдущему событию (" + events[currentEventIndex - 1].Name + ")";
+                        }
+                        else
+                            btnNextCRFInEvent.Visible = false;
+                    }
+                    else
+                        btnPrevCRFInEvent.Visible = false;
+                }
                 else
                 {
                     btnPrevCRFInEvent.Attributes.Add("onclick", "checkChanged('" + ResolveClientUrl(string.Format("~/Subjects/{0}/{1}/{2}", _subjectID, _eventID, CIEs[currentCRFIndex - 1].CRFID)) + "')");
@@ -136,7 +133,22 @@ namespace EDC.Pages.Subject
                     btnPrevCRFInEvent.ToolTip = "К предыдущей форме (" + crfName + ")";
                 }
                 if (currentCRFIndex == CIEs.Count - 1)
-                    btnNextCRFInEvent.Visible = false;
+                {
+                    if (currentEventIndex != events.Count-1) //если событие не первое в списке
+                    {
+                        long nextEventID = events[currentEventIndex + 1].EventID;
+                        List<Models.CRFInEvent> cies = CIER.GetManyByFilter(x => x.EventID == nextEventID).OrderBy(x => x.Position).ToList();
+                        if (cies.Count > 0)
+                        {
+                            btnNextCRFInEvent.Attributes.Add("onclick", "checkChanged('" + ResolveClientUrl(string.Format("~/Subjects/{0}/{1}/{2}", _subjectID, nextEventID, cies.First().CRFID)) + "')");
+                            btnNextCRFInEvent.ToolTip = "К следующему событию (" + events[currentEventIndex + 1].Name + ")";
+                        }
+                        else
+                            btnNextCRFInEvent.Visible = false;
+                    }
+                    else
+                        btnNextCRFInEvent.Visible = false;
+                }
                 else
                 {
                     btnNextCRFInEvent.Attributes.Add("onclick", "checkChanged('" + ResolveUrl(string.Format("~/Subjects/{0}/{1}/{2}", _subjectID, _eventID, CIEs[currentCRFIndex + 1].CRFID)) + "')");
@@ -149,6 +161,31 @@ namespace EDC.Pages.Subject
             {
                 btnPrevCRFInEvent.Visible = false;
                 btnNextCRFInEvent.Visible = false;
+            }
+        }
+
+        void ConfigActionButtons()
+        {
+            HttpCookie cookie = Request.Cookies["activeTabIndex"];
+            int tabIndex = 0;
+            if (cookie != null)
+            {
+                string sTabIndex = cookie.Value;
+                if (!int.TryParse(sTabIndex, out tabIndex))
+                    tabIndex = 0;
+            }
+            if (_sCRF != null && (tcCRF.Tabs.Count==1 || tabIndex== tcCRF.Tabs.Count-1))
+            {
+                if ((User.IsInRole(Core.Roles.Investigator.ToString()) || User.IsInRole(Core.Roles.Principal_Investigator.ToString())) && !_sCRF.IsEnd)
+                    btnEnd.Visible = true;
+                else if (User.IsInRole(Core.Roles.Principal_Investigator.ToString()) && _sCRF.IsEnd && !_sCRF.IsApprove)
+                {
+                    btnApproved.Visible = true;
+                }
+                else if (User.IsInRole(Core.Roles.Monitor.ToString()) && _sCRF.IsApprove && !_sCRF.IsCheckAll)
+                {
+                    btnCheckAll.Visible = true;
+                }
             }
         }
 
@@ -453,7 +490,6 @@ namespace EDC.Pages.Subject
             AjaxControlToolkit.ModalPopupExtender mpe = new AjaxControlToolkit.ModalPopupExtender();
             mpe.TargetControlID = btnUnvisible.ID;
             mpe.PopupControlID = "pnlModalPopup";
-            //mpe.OkControlID = "btnSaveWindow";
             mpe.CancelControlID = "btnCloseWindow";
             mpe.ID = "mpe_" + id;
             tc.Controls.Add(mpe);
@@ -1109,11 +1145,6 @@ namespace EDC.Pages.Subject
             _sCRF.IsEndBy = User.Identity.Name;
             SCR.Update(_sCRF);
             SCR.Save();
-        }
-
-        protected void tcCRF_ActiveTabChanged(object sender, EventArgs e)
-        {
-            ViewState["ActiveTabIndex"] = tcCRF.ActiveTabIndex;
         }
 
     }
