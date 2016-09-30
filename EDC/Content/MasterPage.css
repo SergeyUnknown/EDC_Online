@@ -79,14 +79,14 @@ ul.menu > li:hover{
     float:none;
     z-index:100; 
     animation-name:showsubmenu;
-    animation-duration:0.5s;
-    transition:all ease-in 0.5s;
+    animation-duration:0.2s;
+    transition:all ease-in 0.2s;
     transition-property:width;
 }
 
 
 ul.submenu {   /*подменю*/
-    display: block;
+    display: none;
     visibility:hidden;
     position: absolute;
     width: 200px;

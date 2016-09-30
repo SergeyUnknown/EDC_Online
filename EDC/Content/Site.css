@@ -600,7 +600,6 @@ input[title="Следующая CRF"], input[title="Предыдущая CRF"]
 
 .LoginWindow
 {
-    height: 242px;
     width: 322px;
     border: solid 1px #aaa;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.26);
