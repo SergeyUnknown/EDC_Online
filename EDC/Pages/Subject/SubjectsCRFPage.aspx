@@ -1,4 +1,27 @@
 ﻿<%@ Page Title="Просмотр ИРК субъекта" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="SubjectsCRFPage.aspx.cs" Inherits="EDC.Pages.Subject.SubjectsCRFPage" %>
+<asp:Content runat="server" ContentPlaceHolderID="HeadContent">
+        <script type="text/javascript">
+            function setChanged() {
+                document.getElementById('inHide').innerHTML = 'true';
+            }
+
+            function checkChanged(url) {
+                if ($("#inHide").text() != '') {
+                    if (confirm('Имеются не сохранённые данные, Вы уверены, что хотите покинуть форму?')) {
+                        window.location.href = url;
+                    }
+                }
+                else
+                    window.location.href = url;
+            }
+
+            function setActiveTab(sender, args) {
+                $.cookie("activeTabIndex", sender.get_activeTabIndex(), { path: '/' });
+
+            }
+
+    </script>
+</asp:Content>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="FeaturedContent" runat="server">
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -12,27 +35,6 @@
 </asp:Content>
 
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
-
-    <script type="text/javascript">
-        function setChanged() {
-            document.getElementById('inHide').innerHTML = 'true';
-        }
-
-        function checkChanged(url) {
-            if ($("#inHide").text() != '') {
-                if (confirm('Имеются не сохранённые данные, Вы уверены, что хотите покинуть форму?')) {
-                    window.location.href = url;
-                }
-            }
-            else
-                window.location.href = url;
-        }
-
-        function setActiveTab(sender, args) {
-            $.cookie("activeTabIndex", sender.get_activeTabIndex(), { path: '/' });
-        }
-
-    </script>
 
     <asp:UpdatePanel runat="server" ID="up1">
         <Triggers>

@@ -62,15 +62,7 @@
                 if (e.pageX < 10 && $("#<%: sectionLeftMenu.ClientID %>").css('display') == 'none')
                     showHideLeftMenu();
             }
-            /*
-            $(document).ready(function () {
-                var $body = $("#body");
-                var headerHeight = $('header').height();
-                $body.height($(this).height() - headerHeight - $('footer').height());
-                $body.css('padding-top', headerHeight);
 
-            });
-            */
         </script>
         <header>
             <div class="MainHeader">
@@ -189,8 +181,6 @@
             <section runat="server" id="sectionMainMenu" class="content-wrapper main-content clear-fix">
                 <asp:ContentPlaceHolder runat="server" ID="MainContent" />
             </section>
-        </div>
-        <div class="LegendAndMainBorder" id="mainBorder">   
         </div>
         <footer>
             <div class="content-wrapper">

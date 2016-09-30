@@ -1190,7 +1190,7 @@ tr.pager td {
 } 
 .midTD
 {
-    width:100%;
+    width:90%;
 }
 .eventArrow
 {
@@ -1249,13 +1249,14 @@ tr.pager td {
 }
 .leftMenu
 {
+    position:absolute;
+    min-height:calc(100% - 144px);
     box-sizing:border-box;
     float:left;
     padding-top:10px;
     padding-left: 5px;
     padding-right:5px;
     width:190px;
-    height:100%;
     border-right: solid;
     border-color: rgba(0, 0, 0, 0.26);
     border-width: 1px;
@@ -1266,16 +1267,18 @@ tr.pager td {
 .leftMenu input[type=button] {
     margin:0px;
 }
+/*
 .LegendAndMainBorder {
     position: absolute;
     top: 1px;
     left: 189px;
-    /* width: 189px; */
+    /* width: 189px; 
     z-index: 2;
     background-color: darkgray;
     height: 99%;
     width: 1px;
 }
+*/
 .Legend
 {
     margin-top:0px;
