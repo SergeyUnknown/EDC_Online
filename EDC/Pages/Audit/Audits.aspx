@@ -65,8 +65,6 @@
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="MainContent" runat="server">
     <asp:UpdatePanel runat="server">
-        <Triggers>
-        </Triggers>
         <ContentTemplate>
             <asp:Label runat="server" ID="lblMessage" Visible="false" />
             <asp:GridView runat="server" ID="gvAudits" CellPadding="4" ForeColor="#333333" GridLines="Both" AutoGenerateColumns="False">

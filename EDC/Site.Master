@@ -15,7 +15,7 @@
     <asp:ContentPlaceHolder runat="server" ID="HeadContent" />
 </head>
 <body>
-    <form runat="server">
+    <form runat="server" class="gBlock">
         <asp:ScriptManager runat="server">
             <Scripts>
                 <%--To learn more about bundling scripts in ScriptManager see http://go.microsoft.com/fwlink/?LinkID=272931&clcid=0x409 --%>
@@ -44,20 +44,29 @@
                 if ($leftElem.css('display') == 'block') {
                     $leftElem.css('display', 'none');
                     $mainElem.css('max-width', '100%');
+                    $mainElem.css('margin-left', '0px');
                     $.cookie('LeftMenuVisible', 'false', { expires: 365, path: '/' });
                 }
                 else {
                     $leftElem.fadeIn(500);
-                    $mainElem.css('max-width', '83%');
+                    $mainElem.css('max-width', 'calc(100% - 200px)');
+                    $mainElem.css('margin-left', '190px');
                     $.cookie('LeftMenuVisible', 'true', { expires: 365, path: '/' });
                 }
             }
-        </script>
-        <script type="text/javascript">
+
             function mouseOnLeftBorder(e) {
                 if (e.pageX < 10 && $("#<%: sectionLeftMenu.ClientID %>").css('display') == 'none')
                     showHideLeftMenu();
             }
+
+            $(document).ready(function () {
+                var $body = $("#body");
+                var headerHeight = $('header').height();
+                $body.height($(this).height() - headerHeight - $('footer').height());
+                $body.css('padding-top', headerHeight);
+
+            });
         </script>
         <header>
             <div class="MainHeader">
@@ -179,9 +188,7 @@
         </div>
         <footer>
             <div class="content-wrapper">
-                <div class="float-left">
-                    <p>&copy; <%: DateTime.Now.Year %> - мое приложение ASP.NET</p>
-                </div>
+                <p>&copy; <%: DateTime.Now.Year %> - MDP-Group</p>
             </div>
         </footer>
     </form>

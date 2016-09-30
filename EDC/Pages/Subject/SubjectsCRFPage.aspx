@@ -50,9 +50,8 @@
             <asp:Button runat="server" ID="btnApproved" Text="Подписать" Visible="false" OnClick="btnApproved_Click" EnableViewState="false" />
             <asp:Button runat="server" ID="btnEnd" Text="Ввод данных завершен" Visible="false" OnClick="btnEnd_Click" EnableViewState="false" />
 
-            <ajaxToolkit:TabContainer runat="server" ID="tcCRF" OnClientActiveTabChanged="setActiveTab" AutoPostBack="true">
+            <ajaxToolkit:TabContainer runat="server" CssClass="tcCRF" ID="tcCRF" OnClientActiveTabChanged="setActiveTab" AutoPostBack="true">
             </ajaxToolkit:TabContainer>
-
             <asp:Button runat="server" ID="btnNextCRFInEvent" CssClass="nextEvent" CausesValidation="false" />
             <asp:Button runat="server" ID="btnNextSubject" Text="Следующий субъект" CssClass="nextSubject" CausesValidation="false" />
 
