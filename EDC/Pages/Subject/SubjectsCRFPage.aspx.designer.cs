@@ -40,15 +40,6 @@ namespace EDC.Pages.Subject {
         protected global::System.Web.UI.WebControls.Button btnPrevSubject;
         
         /// <summary>
-        /// btnPrevCRFInEvent элемент управления.
-        /// </summary>
-        /// <remarks>
-        /// Автоматически создаваемое поле.
-        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnPrevCRFInEvent;
-        
-        /// <summary>
         /// btnCheckAll элемент управления.
         /// </summary>
         /// <remarks>
@@ -74,6 +65,15 @@ namespace EDC.Pages.Subject {
         /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnEnd;
+        
+        /// <summary>
+        /// btnPrevCRFInEvent элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnPrevCRFInEvent;
         
         /// <summary>
         /// tcCRF элемент управления.

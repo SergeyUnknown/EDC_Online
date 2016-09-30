@@ -41,8 +41,10 @@
             function showHideLeftMenu() {
                 var $leftElem = $("#<%: sectionLeftMenu.ClientID %>");
                 var $mainElem = $("#<%: sectionMainMenu.ClientID %>");
+                var $mainBorder = $("#mainBorder");
                 if ($leftElem.css('display') == 'block') {
                     $leftElem.css('display', 'none');
+                    $mainBorder.css('left', '0px');
                     $mainElem.css('max-width', '100%');
                     $mainElem.css('margin-left', '0px');
                     $.cookie('LeftMenuVisible', 'false', { expires: 365, path: '/' });
@@ -51,6 +53,7 @@
                     $leftElem.fadeIn(500);
                     $mainElem.css('max-width', 'calc(100% - 200px)');
                     $mainElem.css('margin-left', '190px');
+                    $mainBorder.css('left', '189px');
                     $.cookie('LeftMenuVisible', 'true', { expires: 365, path: '/' });
                 }
             }
@@ -59,7 +62,7 @@
                 if (e.pageX < 10 && $("#<%: sectionLeftMenu.ClientID %>").css('display') == 'none')
                     showHideLeftMenu();
             }
-
+            /*
             $(document).ready(function () {
                 var $body = $("#body");
                 var headerHeight = $('header').height();
@@ -67,6 +70,7 @@
                 $body.css('padding-top', headerHeight);
 
             });
+            */
         </script>
         <header>
             <div class="MainHeader">
@@ -185,6 +189,8 @@
             <section runat="server" id="sectionMainMenu" class="content-wrapper main-content clear-fix">
                 <asp:ContentPlaceHolder runat="server" ID="MainContent" />
             </section>
+        </div>
+        <div class="LegendAndMainBorder" id="mainBorder">   
         </div>
         <footer>
             <div class="content-wrapper">
