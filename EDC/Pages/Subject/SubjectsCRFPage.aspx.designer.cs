@@ -22,6 +22,15 @@ namespace EDC.Pages.Subject {
         protected global::System.Web.UI.UpdatePanel up1;
         
         /// <summary>
+        /// btnPrevCRFInEvent элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnPrevCRFInEvent;
+        
+        /// <summary>
         /// lbInfo элемент управления.
         /// </summary>
         /// <remarks>
@@ -38,15 +47,6 @@ namespace EDC.Pages.Subject {
         /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnPrevSubject;
-        
-        /// <summary>
-        /// btnPrevCRFInEvent элемент управления.
-        /// </summary>
-        /// <remarks>
-        /// Автоматически создаваемое поле.
-        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnPrevCRFInEvent;
         
         /// <summary>
         /// btnCheckAll элемент управления.
@@ -85,15 +85,6 @@ namespace EDC.Pages.Subject {
         protected global::AjaxControlToolkit.TabContainer tcCRF;
         
         /// <summary>
-        /// btnNextCRFInEvent элемент управления.
-        /// </summary>
-        /// <remarks>
-        /// Автоматически создаваемое поле.
-        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnNextCRFInEvent;
-        
-        /// <summary>
         /// btnNextSubject элемент управления.
         /// </summary>
         /// <remarks>
@@ -101,6 +92,15 @@ namespace EDC.Pages.Subject {
         /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnNextSubject;
+        
+        /// <summary>
+        /// btnNextCRFInEvent элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnNextCRFInEvent;
         
         /// <summary>
         /// pnlModalPopup элемент управления.
