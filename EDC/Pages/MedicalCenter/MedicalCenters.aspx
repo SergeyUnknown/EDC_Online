@@ -10,9 +10,8 @@
     </section>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MainContent" runat="server">
-    <asp:Label CssClass="lable_error" ID="ErrorLable" runat="server" Text="" Width="950px"></asp:Label><br />
-
-    <asp:Table runat="server">
+    <asp:Label CssClass="lable_error" ID="ErrorLable" runat="server" Text="" Width="950px" Visible="false"></asp:Label>
+    <asp:Table runat="server" CssClass="tableSearch">
         <asp:TableRow>
             <asp:TableCell>
                 <asp:TextBox ID="tbName" runat="server" placeholder="Название" Width="200"></asp:TextBox>

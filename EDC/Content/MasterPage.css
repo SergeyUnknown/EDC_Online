@@ -16,7 +16,7 @@
 }
 
 .menu > li{
-    display: inline-flex;
+    display: block;
     list-style:none;
     position:relative;
     vertical-align:central;
