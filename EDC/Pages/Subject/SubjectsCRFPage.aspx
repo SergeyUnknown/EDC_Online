@@ -1,4 +1,27 @@
 ﻿<%@ Page Title="Просмотр ИРК субъекта" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="SubjectsCRFPage.aspx.cs" Inherits="EDC.Pages.Subject.SubjectsCRFPage" %>
+<asp:Content runat="server" ContentPlaceHolderID="HeadContent">
+        <script type="text/javascript">
+            function setChanged() {
+                document.getElementById('inHide').innerHTML = 'true';
+            }
+
+            function checkChanged(url) {
+                if ($("#inHide").text() != '') {
+                    if (confirm('Имеются не сохранённые данные, Вы уверены, что хотите покинуть форму?')) {
+                        window.location.href = url;
+                    }
+                }
+                else
+                    window.location.href = url;
+            }
+
+            function setActiveTab(sender, args) {
+                $.cookie("activeTabIndex", sender.get_activeTabIndex(), { path: '/' });
+
+            }
+
+    </script>
+</asp:Content>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="FeaturedContent" runat="server">
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -13,38 +36,18 @@
 
 <asp:Content runat="server" ID="BodyContent" ContentPlaceHolderID="MainContent">
 
-    <script type="text/javascript">
-        function setChanged() {
-            document.getElementById('inHide').innerHTML = 'true';
-        }
-
-        function checkChanged(url) {
-            if ($("#inHide").text() != '') {
-                if (confirm('Имеются не сохранённые данные, Вы уверены, что хотите покинуть форму?')) {
-                    window.location.href = url;
-                }
-            }
-            else
-                window.location.href = url;
-        }
-
-        function setActiveTab(sender, args) {
-            $.cookie("activeTabIndex", sender.get_activeTabIndex(), { path: '/' });
-        }
-
-    </script>
-
     <asp:UpdatePanel runat="server" ID="up1">
         <Triggers>
             <asp:AsyncPostBackTrigger ControlID="btnCreateNote" />
         </Triggers>
         <ContentTemplate>
-            <asp:Label runat="server" ID="lbInfo" CssClass="SubjectPageInfo" />
 
-            <input id="inHide" style="display: none" />
-
-            <asp:Button runat="server" ID="btnPrevSubject" Text="Предыдущий субъект" CssClass="prevSubject" CausesValidation="false" />
             <asp:Button runat="server" ID="btnPrevCRFInEvent" CssClass="prevEvent" CausesValidation="false" />
+
+            <div id="centerDiv">
+            <asp:Label runat="server" ID="lbInfo" CssClass="SubjectPageInfo" />
+            <input id="inHide" style="display: none" />
+            <asp:Button runat="server" ID="btnPrevSubject" Text="Предыдущий субъект" CssClass="prevSubject" CausesValidation="false" />
             <%-- располагаться выше таблицы в правом углу--%>
             <asp:Button runat="server" ID="btnCheckAll" Text="Сверить" Visible="false" OnClick="btnCheckAll_Click" EnableViewState="false" />
             <asp:Button runat="server" ID="btnApproved" Text="Подписать" Visible="false" OnClick="btnApproved_Click" EnableViewState="false" />
@@ -52,9 +55,10 @@
 
             <ajaxToolkit:TabContainer runat="server" CssClass="tcCRF" ID="tcCRF" OnClientActiveTabChanged="setActiveTab" AutoPostBack="true">
             </ajaxToolkit:TabContainer>
-            <asp:Button runat="server" ID="btnNextCRFInEvent" CssClass="nextEvent" CausesValidation="false" />
             <asp:Button runat="server" ID="btnNextSubject" Text="Следующий субъект" CssClass="nextSubject" CausesValidation="false" />
+            </div>
 
+            <asp:Button runat="server" ID="btnNextCRFInEvent" CssClass="nextEvent" CausesValidation="false" />
 
             <asp:Panel runat="server" ID="pnlModalPopup" Style="display: none">
                 <asp:GridView runat="server" ID="gvNotes" CellPadding="4" ForeColor="#333333" GridLines="Both" AutoGenerateColumns="False" OnRowDataBound="gvNotes_RowDataBound">

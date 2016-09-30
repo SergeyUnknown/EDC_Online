@@ -1235,13 +1235,14 @@ tr.pager td {
 }
 .leftMenu
 {
+    position:absolute;
+    min-height:calc(100% - 144px);
     box-sizing:border-box;
     float:left;
     padding-top:10px;
     padding-left: 5px;
     padding-right:5px;
     width:190px;
-    height:100%;
     border-right: solid;
     border-color: rgba(0, 0, 0, 0.26);
     border-width: 1px;
