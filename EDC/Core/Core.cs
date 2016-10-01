@@ -153,11 +153,34 @@ namespace EDC
             User
         }
 
+        public static string GetAuditActionTypeRusName(AuditActionType item)
+        {
+            switch (item)
+            {
+                case AuditActionType.Subject: return "Субъект";
+                case AuditActionType.SubjectItem: return "Поле данных";
+                case AuditActionType.SubjectParam: return "Параметры Субъекта";
+                case AuditActionType.User: return "Пользователь";
+                default: return"";
+            }
+        }
+
         public enum AuditChangesType
         {
             Create,
             Update,
             Delete
+        }
+
+        public static string GetAuditChangesTypeRusName(AuditChangesType item)
+        {
+            switch (item)
+            {
+                case AuditChangesType.Create: return "Создание";
+                case AuditChangesType.Delete: return "Удаление";
+                case AuditChangesType.Update: return "Обновление";
+                default: return "";
+            }
         }
     }
 }

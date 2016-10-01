@@ -84,5 +84,20 @@ namespace EDC.Pages.Audit
         {
             LoadAudits(tbUserName.Text, tbDateMin.Text, tbDateMax.Text);
         }
+
+        protected string GetCRFName(Models.SubjectsCRF sCRF)
+        {
+            if (sCRF != null)
+            {
+                string rusName = sCRF.CRF.RussianName;
+                string engName = sCRF.CRF.Name;
+                if (string.IsNullOrWhiteSpace(rusName))
+                    return engName;
+                else
+                    return rusName;
+            }
+            else
+                return "";
+        }
     }
 }
