@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel;
 
 namespace EDC.Models
 {
@@ -20,5 +21,7 @@ namespace EDC.Models
         public DateTime CreationDate { get; set; }
         public DateTime InclusionDate { get; set; }
         public virtual List<Audit> Audits { get; set; } //Аудит
+        [DefaultValue(false)]
+        public bool IsDeleted { get; set; }
     }
 }

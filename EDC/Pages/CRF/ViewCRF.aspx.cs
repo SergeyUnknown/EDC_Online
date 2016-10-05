@@ -25,17 +25,7 @@ namespace EDC.Pages.CRF
             {
                 CRFID = GetIDFromRequest();
                 string tableType = GetTableTypeFromRequest();
-                switch (tableType)
-                {
-                    case "Sections": LoadSections();
-                        break;
-                    case "Groups": LoadGroups();
-                        break;
-                    case "Items": LoadItems();
-                        break;
-                    default: LoadSections();
-                        break;
-                }
+                LoadTables();
             }
 
         }
@@ -60,47 +50,21 @@ namespace EDC.Pages.CRF
             return (string)RouteData.Values["table"] ?? Request.QueryString["table"];
         }
 
-        void LoadSections()
+        void LoadTables()
         {
-            gvSections.Visible = true;
-            gvGroups.Visible = false;
-            gvCRF_Fields.Visible = false;
-            _sections = CSR.GetManyByFilter(x=>x.CRFID == CRFID).ToList();
+            _sections = CSR.GetManyByFilter(x => x.CRFID == CRFID).ToList();
             gvSections.DataSource = _sections;
             gvSections.DataBind();
-        }
-        void LoadGroups()
-        {
-            gvSections.Visible = false;
-            gvGroups.Visible = true;
-            gvCRF_Fields.Visible = false;
+
             _groups = CGR.GetManyByFilter(x => x.CRFID == CRFID).ToList();
             gvGroups.DataSource = _groups;
             gvGroups.DataBind();
-        }
-        void LoadItems()
-        {
-            gvSections.Visible = false;
-            gvGroups.Visible = false;
-            gvCRF_Fields.Visible = true;
+            gvGroups.Style.Add("display","none");
+
             _items = IR.GetManyByFilter(x => x.CRFID == CRFID).ToList();
             gvCRF_Fields.DataSource = _items;
             gvCRF_Fields.DataBind();
-        }
-
-        protected void btnSections_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("~/CRFs/View/"+CRFID+"/Sections");
-        }
-
-        protected void btnGroups_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("~/CRFs/View/" + CRFID + "/Groups");
-        }
-
-        protected void btnItems_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("~/CRFs/View/" + CRFID + "/Items");
+            gvCRF_Fields.Style.Add("display", "none");
         }
 
     }

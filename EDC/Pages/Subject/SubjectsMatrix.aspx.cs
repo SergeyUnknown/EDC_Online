@@ -86,7 +86,11 @@ namespace EDC.Pages.Subject
 
             LoadDTDataItem();
         }
-
+        
+        bool ShowDeleted()
+        {
+            return User.IsInRole(Core.Roles.Data_Manager.ToString()) || User.IsInRole(Core.Roles.Administrator.ToString());
+        }
         void LoadMatrix()
         {
             TableRow tr = new TableRow();
@@ -101,6 +105,7 @@ namespace EDC.Pages.Subject
             TableRow crfNameRow = new TableRow();
             for(int i =0;i< _events.Count;i++)
             {
+                
                 tc = new TableCell();
                 lb = new Label();
                 lb.Text = _events[i].Name;
@@ -125,6 +130,8 @@ namespace EDC.Pages.Subject
 
             for(int i =0;i< _subjects.Count;i++)
             {
+                if (!ShowDeleted() && _subjects[i].IsDeleted)
+                    continue;
                 tr = new TableRow();
                 tc = new TableCell();
                 lb = new Label();
@@ -140,9 +147,9 @@ namespace EDC.Pages.Subject
                     Button btn = new Button();
                     Models.SubjectsCRF _sc = SCR.SelectByID(_subjects[i].SubjectID, _eventCRFs[y].EventID, _eventCRFs[y].CRFID);
                     btn.PostBackUrl = string.Format("~/Subjects/{0}/{1}/{2}", _subjects[i].SubjectID, _eventCRFs[y].EventID, _eventCRFs[y].CRFID);
-                    if(_sc!=null)
+                    if (_sc != null)
                     {
-                        if (_sc.IsDelete)
+                        if (_sc.IsDeleted)
                             btn.CssClass = "ActionIc Delete";
                         else if (_sc.IsStopped)
                             btn.CssClass = "ActionIc Lock";
@@ -156,10 +163,15 @@ namespace EDC.Pages.Subject
                             btn.CssClass = "ActionIc End";
                         else if (_sc.IsStart)
                             btn.CssClass = "ActionIc Start";
-                       
+
                     }
                     else
-                        btn.CssClass = "ActionIc Unplaned";
+                    {
+                        if (_subjects[i].IsDeleted)
+                            btn.CssClass = "ActionIc Delete";
+                        else
+                            btn.CssClass = "ActionIc Unplaned";
+                    }
 
                     tc.Controls.Add(btn);
                     tr.Cells.Add(tc);

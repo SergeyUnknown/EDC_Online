@@ -63,6 +63,9 @@ namespace EDC
                 Membership.CreateUser(user6, @"!23QWeASd");
                 Roles.AddUserToRole(user6, Core.Roles.Auditor.ToString());
             }
+
+            Models.Repository.AppSettingRepository ASR = new Models.Repository.AppSettingRepository();
+            ASR.SelectByID(Core.STUDY_NAME);
         }
 
         void Application_End(object sender, EventArgs e)

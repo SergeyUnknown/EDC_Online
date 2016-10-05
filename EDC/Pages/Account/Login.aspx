@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="Выполнить вход" Language="C#" AutoEventWireup="true" CodeBehind="Login.aspx.cs" Inherits="EDC.Account.Login" %>
 
 <!DOCTYPE html>
-<html lang="ru" style="height:100%">
+<html lang="ru" style="height: 100%; background-color: #fff">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
@@ -13,15 +13,16 @@
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width" />
 </head>
-<body style="height:100%">
+<body style="height: 100%">
     <form runat="server">
+
         <div class="LoginWindow">
-            <hgroup class="title align-middle">
-                <h1><%: Title %></h1>
+            <hgroup>
+                <h2 style="text-align: center">MDP-Group</h2>
             </hgroup>
             <asp:Login runat="server" ID="LoginControl" ViewStateMode="Disabled" DisplayRememberMe="false" RenderOuterTable="false" OnLoggingIn="Unnamed_LoggingIn">
                 <LayoutTemplate>
-                    <p class="validation-summary-errors">
+                    <p class="validation-summary-errors loginError">
                         <asp:Literal runat="server" ID="FailureText" />
                     </p>
                     <fieldset class="loginForm">

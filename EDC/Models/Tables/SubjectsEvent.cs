@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel;
 
 namespace EDC.Models
 {
@@ -18,6 +19,9 @@ namespace EDC.Models
         //public virtual List<SubjectsCRF> CRFs { get; set; }
 
         public virtual List<Audit> Audits { get; set; } //Аудит
+
+        [DefaultValue(false)]
+        public bool IsDeleted { get; set; }
 
 
     }

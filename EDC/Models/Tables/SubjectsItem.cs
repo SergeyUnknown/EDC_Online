@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel;
 
 namespace EDC.Models
 {
@@ -28,6 +29,9 @@ namespace EDC.Models
         public string Value { get; set; }   //значение
 
         public string CreatedBy { get; set; } //UserName
+
+        [DefaultValue(false)]
+        public bool IsDeleted { get; set; } //удалено
 
         public virtual List<Note> Notes { get; set; }
 

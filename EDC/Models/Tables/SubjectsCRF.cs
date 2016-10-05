@@ -52,7 +52,7 @@ namespace EDC.Models
         [DefaultValue(false)]
         public bool IsLock { get; set; } //заблокировано
         [DefaultValue(false)]
-        public bool IsDelete { get; set; } //удалено
+        public bool IsDeleted { get; set; } //удалено
         public virtual List<Audit> Audits { get; set; } //Аудит
     }
 }

@@ -22,6 +22,15 @@ namespace EDC {
         protected global::System.Web.UI.WebControls.ContentPlaceHolder HeadContent;
         
         /// <summary>
+        /// ddlCurrentCenter элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlCurrentCenter;
+        
+        /// <summary>
         /// FeaturedContent элемент управления.
         /// </summary>
         /// <remarks>

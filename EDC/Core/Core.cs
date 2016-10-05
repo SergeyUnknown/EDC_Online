@@ -149,8 +149,24 @@ namespace EDC
         {
             Subject,
             SubjectParam,
+            SubjectEvent,
+            SubjectCRF,
             SubjectItem,
             User
+        }
+
+        public static string GetAuditActionTypeRusName(AuditActionType item)
+        {
+            switch (item)
+            {
+                case AuditActionType.Subject: return "Субъект";
+                case AuditActionType.SubjectParam: return "Параметр Субъекта";
+                case AuditActionType.SubjectEvent: return "Событие Субъекта";
+                case AuditActionType.SubjectCRF: return "ИРК Субъекта";
+                case AuditActionType.SubjectItem: return "Поле данных";
+                case AuditActionType.User: return "Пользователь";
+                default: return"";
+            }
         }
 
         public enum AuditChangesType
@@ -158,6 +174,17 @@ namespace EDC
             Create,
             Update,
             Delete
+        }
+
+        public static string GetAuditChangesTypeRusName(AuditChangesType item)
+        {
+            switch (item)
+            {
+                case AuditChangesType.Create: return "Создание";
+                case AuditChangesType.Delete: return "Удаление";
+                case AuditChangesType.Update: return "Обновление";
+                default: return "";
+            }
         }
     }
 }

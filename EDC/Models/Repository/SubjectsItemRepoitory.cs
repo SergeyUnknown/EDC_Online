@@ -30,6 +30,8 @@ namespace EDC.Models.Repository
 
         public SubjectsItem Create(SubjectsItem obj)
         {
+            var subject = db.Subjects.Find(obj.SubjectID);
+            obj.IsDeleted = subject.IsDeleted;
             return db.SubjectsItems.Add(obj);
         }
 
