@@ -35,7 +35,7 @@
 
         td.dtcenter a img {
             background-color: #7ac0da;
-            border-radius: 5px;
+            border-radius: 2px;
             transition: border-radius 0.1s ease;
         }
 

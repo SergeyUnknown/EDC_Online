@@ -67,7 +67,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td >
+                        <td class="EventArrow">
                             <asp:Button runat="server" ID="btnPrevCRFInEvent" CssClass="prevEvent" CausesValidation="false" />
                         </td>
                         <td>

@@ -13,7 +13,7 @@
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width" />
 </head>
-<body style="height:100%">
+<body style="height:100%" class="loginBody">
     <form runat="server">
         <div class="LoginWindow">
             <hgroup class="title align-middle">

@@ -42,11 +42,13 @@
                 var $leftElem = $("#<%: sectionLeftMenu.ClientID %>");
                 var $mainElem = $("#<%: sectionMainMenu.ClientID %>");
                 var $mainBorder = $("#mainBorder");
+                var $navigating = $("#navigationMenu");
                 if ($leftElem.css('display') == 'block') {
                     $leftElem.css('display', 'none');
                     $mainBorder.css('left', '0px');
                     $mainElem.css('max-width', '100%');
                     $mainElem.css('margin-left', '0px');
+                    $navigating.css('margin-left', '0px');
                     $.cookie('LeftMenuVisible', 'false', { expires: 365, path: '/' });
                 }
                 else {
@@ -54,6 +56,7 @@
                     $mainElem.css('max-width', 'calc(100% - 200px)');
                     $mainElem.css('margin-left', '190px');
                     $mainBorder.css('left', '189px');
+                    $navigating.css('margin-left', '190px');
                     $.cookie('LeftMenuVisible', 'true', { expires: 365, path: '/' });
                 }
             }
@@ -89,7 +92,7 @@
                         </asp:LoginView>
                     </section>
                 </div>
-                <nav class="navBlock">
+                <nav class="navBlock" id="navigationMenu">
                     <ul class="menu">
                         <li>
                             <a runat="server" href="~/">Главная</a>
