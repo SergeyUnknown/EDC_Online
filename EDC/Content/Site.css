@@ -1,4 +1,5 @@
 ﻿/*--- hover #0a5bcc ----*/
+
 html, body{
     margin: 0;
     padding: 0;
@@ -71,6 +72,7 @@ mark {
 
 .float-right {
     float: right;
+    background: linear-gradient(to top, #7ac0da, #6eb2c4);
 }
 
 .clear-fix:after {
@@ -117,7 +119,7 @@ h5, h6 {
 /* main layout
 ----------------------------------------------------------*/
 #body {
-    padding-top:104px;
+    padding-top:91px;
     padding-bottom: 40px;
     padding-left:0px;
     padding-right:0px;
@@ -557,7 +559,7 @@ input[type="checkbox"].input-validation-error {
 }
 .addButton > img{
     background-color:#7ac0da;
-    border-radius:5px;
+    border-radius:2px;
 }
 /*календарь на добавлении субъекта
 */
@@ -614,13 +616,17 @@ input[title="Следующая CRF"], input[title="Предыдущая CRF"]
 {
     width: 322px;
     border: solid 1px #aaa;
+    background-color:white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.26);
     position: fixed;
     top: calc(50% - 131px);
     left: calc(50% - 171px);
     padding: 10px;
 }
-
+.loginBody
+{
+    background-color: #87bace;
+}
 .LoginWindow > h1 
 {
     font-family: sans-serif;
@@ -663,9 +669,9 @@ table {
     /*margin-top: 0.75em;*/
     border: 0 none;
     
-    border-radius: 5px 5px 5px 5px;
-    -moz-border-radius: 5px 5px 5px 5px;
-    -webkit-border-radius: 5px 5px 5px 5px;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
     
     -webkit-box-shadow: rgba(0,0,0,0.26) 0px 3px 10px;
     box-shadow:1px 2px 10px 2px rgba(0, 0, 0, 0.26);
@@ -691,34 +697,34 @@ th::selection
 th:first-child{
     border-left:0;
 
-    border-radius: 5px 0px 0px 0px !important;
-    -moz-border-radius: 5px 0px 0px 0px;
-    -webkit-border-radius: 5px 0px 0px 0px;
+    border-radius: 2px 0px 0px 0px !important;
+    -moz-border-radius: 2px 0px 0px 0px;
+    -webkit-border-radius: 2px 0px 0px 0px;
     
 }
 th:only-child
 {
     border-left:0;
     border-right:0;
-    border-radius: 5px 5px 0px 0px !important;
-    -moz-border-radius: 5px 5px 0px 0px;
-    -webkit-border-radius: 5px 5px 0px 0px;
+    border-radius: 2px 2px 0px 0px !important;
+    -moz-border-radius: 2px 2px 0px 0px;
+    -webkit-border-radius: 2px 2px 0px 0px;
 }
 tbody:first-child
 {
     border-left:0;
 
-    border-radius: 5px 0px 0px 0px;
-    -moz-border-radius: 5px 0px 0px 0px;
-    -webkit-border-radius: 5px 0px 0px 0px;
+    border-radius: 2px 0px 0px 0px;
+    -moz-border-radius: 2px 0px 0px 0px;
+    -webkit-border-radius: 2px 0px 0px 0px;
 }
 
 th:last-child{
     border-right:0;
     
-    border-radius: 0px 5px 0px 0px !important;
-    -moz-border-radius: 0px 5px 0px 0px;
-    -webkit-border-radius: 0px 5px 0px 0px;
+    border-radius: 0px 2px 0px 0px !important;
+    -moz-border-radius: 0px 2px 0px 0px;
+    -webkit-border-radius: 0px 2px 0px 0px;
         
 }
 
@@ -1171,66 +1177,65 @@ tr.pager td {
     display:none;
 }
 
-@keyframes opa
-{
-    from 
-    {
-        color:rgba(0, 0, 0, 0.00);
-    }
-    to
-    {
-        width:auto;
-        color:white;
-    }
-}
 .subjectCRFTable
 {
     table-layout:fixed;
     width:100%;
+    box-shadow:none !important;
 } 
+.subjectCRFTable > tbody > tr > th 
+{
+    background-color:rgba(255, 255, 255, 0.00);
+    border:none;
+}
 .midTD
 {
+    /*
     width:90%;
+        */
 }
-.eventArrow
+.EventArrow
 {
-    width:20px;
+    width:12px;
+    overflow-x:visible;
 }
+
 .nextEvent {
-    display: block;
-    width: 48px;
+    display: inline-block;
+    width: 10px;
     height: 48px;
     float:right;
+
     color:rgba(0, 0, 0, 0.00) !important;
-    padding-right:48px !important;
-    background-position:right center;
+    padding-right:10px !important;
+    background-position: right center;
     background-image: url('../Images/forward (3).png');
-    background-repeat:no-repeat;
-    top: 200px;
-    right: 0px;
+    background-repeat: no-repeat;
+    
     margin-right:0px !important;
+    -webkit-transition:all ease 0.5s; 
+    transition:all ease 0.5s;
     
 }
 .nextEvent:hover, .prevEvent:hover
 {
-    animation-name:opa;
-    animation-duration:0.5s;
-    animation-iteration-count: 1;
-    animation-fill-mode:forwards;
-    animation-play-state:running;
-    transition:all none 0.5s;
-    transition-property:all;
+    width:48px;
+    padding-left:20px;
+    /*
+    -webkit-transition:all ease-in 0.5s; 
+    transition:all ease-in 0.5s;
+        */
 }
 .prevEvent {
-    display: block;
-    width:48px;
+    display: inline-block;
+    width:10px;
     height:48px;
-    padding-left: 48px !important;
+    padding-left:10px !important;
     color:rgba(0, 0, 0, 0.00) !important;
-    background-image: url('../Images/backward.png');
+    background-image:url('../Images/backward.png');
     background-repeat:no-repeat;
-    top: 200px;
-    left: 0px;
+    -webkit-transition:all ease 0.5s; 
+    transition:all ease 0.5s;
 }
 
 .nextSubject
@@ -1250,7 +1255,7 @@ tr.pager td {
 .leftMenu
 {
     position:absolute;
-    min-height:calc(100% - 144px);
+    min-height:calc(100% - 130px);
     box-sizing:border-box;
     float:left;
     padding-top:10px;
@@ -1368,6 +1373,7 @@ tr.pager td {
 .Approve {
     background-image: url('../Images/action/account-check.png');
 }
+
 /********************
 *   Mobile Styles   *
 ********************/
