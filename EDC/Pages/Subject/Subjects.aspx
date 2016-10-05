@@ -5,7 +5,7 @@
     <section class="featured">
         <div class="content-wrapper">
             <hgroup class="title">
-                <h1><%: Title %></h1>
+                <h2><%: Title %></h2>
             </hgroup>
         </div>
     </section>
@@ -17,7 +17,9 @@
         <AlternatingRowStyle BackColor="White" />
         <Columns>
             <asp:BoundField DataField="SubjectID" HeaderText="ID" />
-            <asp:BoundField DataField="Number" HeaderText="Номер" />
+            <asp:TemplateField HeaderText="Номер">
+                <ItemTemplate><%# IsDeleted((string)Eval("Number"),(bool)Eval("IsDeleted")) %></ItemTemplate>
+            </asp:TemplateField>
             <asp:BoundField DataField="MedicalCenter.Name" HeaderText="Мед. Центр" />
             <asp:BoundField DataField="InclusionDate" HeaderText="Дата включения" DataFormatString="{0:dd.MM.yyyy}" />
             <asp:BoundField DataField="CreatedBy" HeaderText="Создал" />

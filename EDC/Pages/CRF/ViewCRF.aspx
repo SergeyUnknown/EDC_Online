@@ -1,26 +1,63 @@
 ﻿<%@ Page Title="Просмотр CRF" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ViewCRF.aspx.cs" Inherits="EDC.Pages.CRF.ViewCRF" %>
 
+<asp:Content runat="server" ContentPlaceHolderID="HeadContent">
+    <script type="text/javascript">
+        function onButtonClick(index) {
+            var $sections = $('#<%: gvSections.ClientID %>');
+            var $groups = $('#<%: gvGroups.ClientID %>');
+            var $items = $('#<%: gvCRF_Fields.ClientID %>');
+            switch (index) {
+                case 0:
+                    $sections.show();
+                    $groups.hide();
+                    $items.hide();
+                    break;
+                case 1:
+                    $sections.hide();
+                    $groups.show();
+                    $items.hide();
+                    break;
+                case 2:
+                    $sections.hide();
+                    $groups.hide();
+                    $items.show();
+                    break;
+            }
+        }
+    </script>
+</asp:Content>
+
 <asp:Content ID="Content2" ContentPlaceHolderID="FeaturedContent" runat="server">
     <section class="featured">
         <div class="content-wrapper">
             <hgroup class="title">
-                <h1><%: Title %></h1>
+                <h2><%: Title %></h2>
             </hgroup>
         </div>
     </section>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var $sections = $("#<%: gvSections.ClientID %>");
+            var $groups = $("#<%: gvGroups.ClientID %>");
+            var $items = $("#<%: gvCRF_Fields.ClientID %>");
+            $sections.show();
+            $groups.hide();
+            $items.hide();
+        });
+    </script>
 </asp:Content>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <asp:UpdatePanel runat="server">
         <Triggers>
-            <asp:AsyncPostBackTrigger ControlID="btnSections" EventName="Click" />
+            <%--            <asp:AsyncPostBackTrigger ControlID="btnSections" EventName="Click" />
             <asp:AsyncPostBackTrigger ControlID="btnGroups" EventName="Click" />
-            <asp:AsyncPostBackTrigger ControlID="btnItems" EventName="Click" />
+            <asp:AsyncPostBackTrigger ControlID="btnItems" EventName="Click" />--%>
         </Triggers>
         <ContentTemplate>
-            <asp:Button runat="server" ID="btnSections" OnClick="btnSections_Click" Text="Секции" />
-            <asp:Button runat="server" ID="btnGroups" OnClick="btnGroups_Click" Text="Группы" />
-            <asp:Button runat="server" ID="btnItems" OnClick="btnItems_Click" Text="Итемы" />
+            <input type="button" onclick="onButtonClick(0)" id="btnSections" value="Секции" />
+            <input type="button" onclick="onButtonClick(1)" id="btnGroups" value="Группы" />
+            <input type="button" onclick="onButtonClick(2)" id="btnItems" value="Итемы" />
 
             <asp:GridView runat="server" ID="gvSections" CellPadding="4" ForeColor="#333333" GridLines="Both" AutoGenerateColumns="False">
                 <AlternatingRowStyle BackColor="White" />

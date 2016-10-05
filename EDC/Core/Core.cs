@@ -149,6 +149,8 @@ namespace EDC
         {
             Subject,
             SubjectParam,
+            SubjectEvent,
+            SubjectCRF,
             SubjectItem,
             User
         }
@@ -158,8 +160,10 @@ namespace EDC
             switch (item)
             {
                 case AuditActionType.Subject: return "Субъект";
+                case AuditActionType.SubjectParam: return "Параметр Субъекта";
+                case AuditActionType.SubjectEvent: return "Событие Субъекта";
+                case AuditActionType.SubjectCRF: return "ИРК Субъекта";
                 case AuditActionType.SubjectItem: return "Поле данных";
-                case AuditActionType.SubjectParam: return "Параметры Субъекта";
                 case AuditActionType.User: return "Пользователь";
                 default: return"";
             }

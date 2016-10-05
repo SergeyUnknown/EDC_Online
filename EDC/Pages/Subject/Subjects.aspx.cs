@@ -67,7 +67,10 @@ namespace EDC.Pages.Subject
 
         void LoadSubjects()
         {
-            _subjects = SR.SelectAll().ToList();
+            if (User.IsInRole(Core.Roles.Administrator.ToString()) || User.IsInRole(Core.Roles.Data_Manager.ToString()))
+                _subjects = SR.SelectAll().ToList();
+            else
+                _subjects = SR.GetManyByFilter(x=>!x.IsDeleted).ToList();
             gvSubjects.DataSource = _subjects;
             gvSubjects.DataBind();
         }
@@ -95,7 +98,9 @@ namespace EDC.Pages.Subject
 
         protected void gvSubjects_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
-            SR.Delete(_subjects[e.RowIndex].SubjectID);
+            Models.Subject s = SR.SelectByID(_subjects[e.RowIndex].SubjectID);
+
+            SR.Delete(_subjects[e.RowIndex].SubjectID,User);
             SR.Save();
             LoadSubjects();
         }
@@ -118,8 +123,19 @@ namespace EDC.Pages.Subject
 
                 //Удалять
                 _control = e.Row.Cells[7].Controls[0];
-                _control.Visible = canDelete;
+                if (_subjects[e.Row.RowIndex].IsDeleted)
+                    _control.Visible = false;
+                else
+                    _control.Visible = canDelete;
             }
+        }
+
+        protected string IsDeleted(string number, bool isDeleted)
+        {
+            if (isDeleted)
+                return number + " - Удалён";
+            else
+                return number;
         }
     }
 }
