@@ -152,6 +152,42 @@ ul.submenu li:hover {
     }
 }
 
+.logo
+{
+    width:190px;
+    height:100%;
+}
+
+.rightHeader{
+    margin-left:190px;
+    height:100%;
+}
+
+.StudyCenterInfo{
+    float:left;
+}
+.StudyCenterInfo h2{
+    color:#fff;
+    font-weight:normal;
+    display:inline;
+}
+.StudyCenterInfo select{
+    border:none;
+    background-color:inherit;
+    color:#fff;
+    text-decoration:underline;
+    font-size:1.4em;
+    font-weight:normal;
+}
+
+.StudyCenterInfo option[selected]{
+    background-color:#fff;
+    color:#7ac0da;
+}
+
+
+
+
 /* login
 ----------------------------------------------------------*/
 #login {

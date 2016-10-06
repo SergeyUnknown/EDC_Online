@@ -267,8 +267,10 @@
     <Content Include="Pages\Event\Web.config" />
     <Content Include="Pages\MedicalCenter\Web.config" />
     <Content Include="Pages\Note\Web.config" />
+    <Content Include="Pages\SDV\SDV.aspx" />
     <Content Include="Pages\Subject\Web.config" />
     <Content Include="Pages\Audit\Web.config" />
+    <Content Include="Pages\SDV\Web.config" />
     <None Include="Properties\PublishProfiles\ToComp.pubxml" />
     <Content Include="Pages\Administration\ErrorLog.aspx" />
     <Content Include="Pages\Administration\Users.aspx" />
@@ -499,6 +501,13 @@
     </Compile>
     <Compile Include="Pages\Note\NotesAndQuery.aspx.designer.cs">
       <DependentUpon>NotesAndQuery.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SDV\SDV.aspx.cs">
+      <DependentUpon>SDV.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\SDV\SDV.aspx.designer.cs">
+      <DependentUpon>SDV.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\Subject\CreateEditSubject.aspx.cs">
       <DependentUpon>CreateEditSubject.aspx</DependentUpon>

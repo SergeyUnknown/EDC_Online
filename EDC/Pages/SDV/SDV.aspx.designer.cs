@@ -7,36 +7,27 @@
 // </автоматически создаваемое>
 //------------------------------------------------------------------------------
 
-namespace EDC.Pages.CRF {
+namespace EDC.Pages.SDV {
     
     
-    public partial class ViewCRF {
+    public partial class SDV {
         
         /// <summary>
-        /// gvSections элемент управления.
+        /// lblInfo элемент управления.
         /// </summary>
         /// <remarks>
         /// Автоматически создаваемое поле.
         /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvSections;
+        protected global::System.Web.UI.WebControls.Label lblInfo;
         
         /// <summary>
-        /// gvGroups элемент управления.
+        /// gvApprovedSubjectsCRF элемент управления.
         /// </summary>
         /// <remarks>
         /// Автоматически создаваемое поле.
         /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvGroups;
-        
-        /// <summary>
-        /// gvCRF_Fields элемент управления.
-        /// </summary>
-        /// <remarks>
-        /// Автоматически создаваемое поле.
-        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvCRF_Fields;
+        protected global::System.Web.UI.WebControls.GridView gvApprovedSubjectsCRF;
     }
 }

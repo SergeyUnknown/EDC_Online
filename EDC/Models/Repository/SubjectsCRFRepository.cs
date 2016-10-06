@@ -27,6 +27,8 @@ namespace EDC.Models.Repository
         }
         public SubjectsCRF Create(SubjectsCRF obj)
         {
+            var subject = db.Subjects.Find(obj.SubjectID);
+            obj.IsDeleted = subject.IsDeleted;
             return db.SubjectsCRFs.Add(obj);
         }
         public void Update(SubjectsCRF obj)

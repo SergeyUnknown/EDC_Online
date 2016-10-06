@@ -53,10 +53,17 @@ nav, section {
     display: block;
 }
 .navBlock{
-    clear:both;
+    display:block;
+    width:calc(100% - 190px);
     background-color:#6EB2C4;
+<<<<<<< HEAD
     margin-left:190px;
     text-align:start;
+=======
+    position:absolute;
+    bottom:4px;
+
+>>>>>>> refs/remotes/origin/master
 }
 
 mark {
@@ -166,6 +173,7 @@ footer {
 }
 .MainHeader
 {
+    height:95px;
     padding-top:5px;
     background-color: #7ac0da;
     box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.26);
@@ -199,7 +207,7 @@ footer {
     float:left;
     height:auto;
     display:block;
-    text-align:center;
+    text-align:left;
     
     margin-left:auto;
     margin-right:auto;
@@ -209,18 +217,8 @@ footer {
     max-width:100%;
 }
     .featured .content-wrapper {
-        /*background-color: #7ac0da;
-        border-radius:3px 3px 3px 3px;
-        box-shadow:0px 3px 5px 0 rgba(0, 0, 0, 0.4);*/
         vertical-align:central;
         padding-top:0px;
-        /*
-        background-image: -ms-linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
-        background-image: -o-linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
-        background-image: -webkit-gradient(linear, left top, right top, color-stop(0, #7ac0da), color-stop(1, #a4d4e6));
-        background-image: -webkit-linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
-        background-image: linear-gradient(left, #7ac0da 0%, #a4d4e6 100%);
-            */
         color: #3e5667;
     }
 
@@ -240,7 +238,10 @@ hgroup.title {
 
 hgroup.title h1, hgroup.title h2 {
     display: inline;
+<<<<<<< HEAD
     /*margin: 10px;*/
+=======
+>>>>>>> refs/remotes/origin/master
 }
 
 hgroup.title h2 {
@@ -630,6 +631,12 @@ input[title="Следующая CRF"], input[title="Предыдущая CRF"]
 .LoginWindow > h1 
 {
     font-family: sans-serif;
+}
+
+.loginError{
+    position: absolute;
+    top: -65px;
+    text-align: center;
 }
 .manageAccountTable 
 {

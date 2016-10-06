@@ -50,18 +50,19 @@ namespace EDC.Pages.Subject
                 _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
                 Models.Event _event = ER.SelectByID(_eventID);
                 ConfigButtonVisible();
-                Title = string.Format("Настройка ИРК субъекта {0}", _subject.Number);
-                lbInfo.Text = string.Format("Визит: \"{0}\", ИРК: \"{1}\", субъект: {2}",_event.Name, string.IsNullOrWhiteSpace(_crf.RussianName) ? _crf.Name : _crf.RussianName, _subject.Number);
+                lbInfo.Text = string.Format("Пациент № {2}, {0}, Форма \"{1}\"",_event.Name, string.IsNullOrWhiteSpace(_crf.RussianName) ? _crf.Name : _crf.RussianName, _subject.Number);
                 RowCountInSection = new Dictionary<string, int>();
                 answerRowIndex = -1;
                 if (Request.Cookies["activeTabIndex"] != null)
                     Request.Cookies["activeTabIndex"].Value = "0";
-                if (ASR.SelectByID(Core.APP_STATUS).Value == Core.AppStatus.Disable.ToString() || User.IsInRole(Core.Roles.Monitor.ToString()) || User.IsInRole(Core.Roles.Auditor.ToString()))
-                {
-                    readOnly = true;
-                }
-
             }
+            if (_subject.IsDeleted || ASR.SelectByID(Core.APP_STATUS).Value == Core.AppStatus.Disable.ToString() || User.IsInRole(Core.Roles.Monitor.ToString()) || User.IsInRole(Core.Roles.Auditor.ToString()))
+            {
+                readOnly = true;
+            }
+            else
+                readOnly = false;
+            Title = string.Format("Заполнение ИРК пациента №{0}", _subject.Number);
 
             LoadForm(_crf);
 
@@ -468,7 +469,11 @@ namespace EDC.Pages.Subject
                 tp.ScrollBars = ScrollBars.Auto; //скролбар
                 tcCRF.ScrollBars = ScrollBars.Auto; //скролбар
                 tp.Controls.Add(tableGrouped); //таблицу в tabPanel
-                tp.Controls.Add(btnSave);
+                Panel panel = new Panel();
+                panel.HorizontalAlign = HorizontalAlign.Right;
+                panel.Controls.Add(btnSave);
+                if(!readOnly)
+                    tp.Controls.Add(panel);
                 tcCRF.Tabs.Add(tp); //панель в tabConteiner
 
             }
@@ -514,6 +519,7 @@ namespace EDC.Pages.Subject
                             case Core.DataType.INT:
                                 {
                                     tb.TextMode = TextBoxMode.Number;
+                                    tb.Attributes.Add("min", "0");
                                     break;
                                 }
                             case Core.DataType.REAL:
@@ -853,7 +859,7 @@ namespace EDC.Pages.Subject
 
         protected void btnSave_Click(object sender, EventArgs e)
         {
-            Control tempControl = ((Button)sender).Parent;
+            Control tempControl = ((Button)sender).Parent.Parent;
             string panelName = (tempControl as AjaxControlToolkit.TabPanel).HeaderText;
             CRF_Section section = _crf.Sections.First(x => x.Title == panelName);
 
@@ -894,6 +900,8 @@ namespace EDC.Pages.Subject
             
             GetInfo(tempControl, section); //считывание информации из полей и запись в БД.
             LoadForm(_crf);
+            if (User.IsInRole(Core.Roles.Investigator.ToString()) || User.IsInRole(Core.Roles.Principal_Investigator.ToString()))
+                btnEnd.Visible = true;
         }
 
         protected void btnAdd_Click(object sender, EventArgs e)
@@ -1124,6 +1132,7 @@ namespace EDC.Pages.Subject
             SCR.Save();
 
             _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
+            btnApproved.Visible = false;
         }
 
         protected void btnCheckAll_Click(object sender, EventArgs e)
@@ -1136,6 +1145,7 @@ namespace EDC.Pages.Subject
             SCR.Save();
 
             _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
+            btnCheckAll.Visible = false;
         }
 
         protected void btnEnd_Click(object sender, EventArgs e)
@@ -1145,6 +1155,9 @@ namespace EDC.Pages.Subject
             _sCRF.IsEndBy = User.Identity.Name;
             SCR.Update(_sCRF);
             SCR.Save();
+            btnEnd.Visible = false;
+            if (User.IsInRole(Core.Roles.Principal_Investigator.ToString()))
+                btnApproved.Visible = true;
         }
 
     }

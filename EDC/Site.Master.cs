@@ -14,6 +14,8 @@ namespace EDC
         private const string AntiXsrfUserNameKey = "__AntiXsrfUserName";
         private string _antiXsrfTokenValue;
 
+        Models.Repository.AppSettingRepository ASR = new Models.Repository.AppSettingRepository();
+
         protected void Page_Init(object sender, EventArgs e)
         {
             // The code below helps to protect against XSRF attacks
@@ -91,9 +93,16 @@ namespace EDC
                 {
                     sectionLeftMenu.Style.Add("display", "none");
                     sectionMainMenu.Style.Add("max-width","100%");
+                    sectionMainMenu.Style.Add("margin-left", "0px");
                 }
             }
+            ddlCurrentCenter.Items.Add("...");
+        }
 
+        protected string StudyName
+        {
+            get { return ASR.SelectByID(Core.STUDY_NAME).Value; }
+            set { }
         }
     }
 }

@@ -37,7 +37,7 @@
     <section class="featured">
         <div class="content-wrapper">
             <hgroup class="title">
-                <h1><%: Title %></h1>
+                <h2><%: Title %></h2>
             </hgroup>
         </div>
     </section>
@@ -72,13 +72,20 @@
                 <Columns>
                     <asp:BoundField DataField="UserName" HeaderText="Пользователь" />
                     <asp:BoundField DataField="ActionDate" HeaderText="Дата" DataFormatString="{0:dd.MM.yyyy}" />
-                    <asp:BoundField DataField="ActionType" HeaderText="Тип поля" />
-                    <asp:BoundField DataField="ChangesType" HeaderText="Действие" />
-                    <asp:BoundField DataField="OldValue" HeaderText="Старое значение" />
-                    <asp:BoundField DataField="NewValue" HeaderText="Новое значение" />
+                    <asp:BoundField DataField="ActionDate" HeaderText="Время" DataFormatString="{0:hh:mm:ss}" />
+                    <asp:TemplateField HeaderText="Тип">
+                        <ItemTemplate><%# EDC.Core.GetAuditActionTypeRusName((EDC.Core.AuditActionType)Eval("ActionType")) %></ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="Действие">
+                        <ItemTemplate><%# EDC.Core.GetAuditChangesTypeRusName((EDC.Core.AuditChangesType)Eval("ChangesType")) %></ItemTemplate>
+                    </asp:TemplateField>
                     <asp:BoundField DataField="Subject.Number" HeaderText="Субъект" />
                     <asp:BoundField DataField="SubjectEvent.Event.Name" HeaderText="Событие" />
-                    <asp:BoundField DataField="SubjectCRF.CRF.Name" HeaderText="ИРК" />
+                    <asp:TemplateField HeaderText="ИРК">
+                        <ItemTemplate><%# GetCRFName((EDC.Models.SubjectsCRF)Eval("SubjectCRF")) %></ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:BoundField DataField="OldValue" HeaderText="Старое значение" />
+                    <asp:BoundField DataField="NewValue" HeaderText="Новое значение" />
                     <asp:BoundField DataField="FieldName" HeaderText="Поле" />
                 </Columns>
                 <EditRowStyle BackColor="#2461BF" />
