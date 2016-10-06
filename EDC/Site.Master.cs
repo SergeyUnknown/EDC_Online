@@ -94,6 +94,8 @@ namespace EDC
                     sectionLeftMenu.Style.Add("display", "none");
                     sectionMainMenu.Style.Add("max-width","100%");
                     sectionMainMenu.Style.Add("margin-left", "0px");
+                    navigationMenu.Style.Add("padding-left", "14px");
+                    navigationMenu.Style.Add("width", "calc(100% - 14px)");
                 }
             }
             ddlCurrentCenter.Items.Add("...");

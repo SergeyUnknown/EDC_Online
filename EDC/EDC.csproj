@@ -217,6 +217,7 @@
     <Content Include="Images\calendar-plus.png" />
     <Content Include="Images\delete %283%29.png" />
     <Content Include="Images\delete.png" />
+    <Content Include="Images\down.png" />
     <Content Include="Images\emoticon-poop.png" />
     <Content Include="Images\FirstPage.png" />
     <Content Include="Images\forward %283%29.png" />
@@ -226,6 +227,7 @@
     <Content Include="Images\login-variant %281%29.png" />
     <Content Include="Images\logo.png" />
     <Content Include="Images\magnify %281%29.png" />
+    <Content Include="Images\mdplogo2.png" />
     <Content Include="Images\NextPage.png" />
     <Content Include="Images\note-multiple %281%29.png" />
     <Content Include="Images\note-multiple-grey.png" />
@@ -247,6 +249,7 @@
     <Content Include="Images\table-row-plus-after.png" />
     <Content Include="Images\tag-text-outline %281%29.png" />
     <Content Include="Images\tag-text-outline.png" />
+    <Content Include="Images\up.png" />
     <Content Include="Images\wrench %281%29.png" />
     <Content Include="Pages\Account\Login.aspx" />
     <Content Include="Pages\Account\Manage.aspx" />
