@@ -13,7 +13,11 @@
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width" />
 </head>
+<<<<<<< HEAD
+<body style="height:100%" class="loginBody">
+=======
 <body style="height: 100%">
+>>>>>>> refs/remotes/origin/master
     <form runat="server">
 
         <div class="LoginWindow">
