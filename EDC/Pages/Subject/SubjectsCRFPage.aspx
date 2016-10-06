@@ -42,7 +42,6 @@
             <asp:AsyncPostBackTrigger ControlID="btnCreateNote" />
         </Triggers>
         <ContentTemplate>
-<<<<<<< HEAD
             <table class="subjectCRFTable">
                 <tbody>
                     <tr>
@@ -87,28 +86,6 @@
                     </tr>
                 </tbody>
             </table>
-=======
-
-            <asp:Button runat="server" ID="btnPrevCRFInEvent" CssClass="prevEvent" CausesValidation="false" />
-
-            <div id="centerDiv">
-                <asp:Label runat="server" ID="lbInfo" CssClass="SubjectPageInfo" />
-                <input id="inHide" style="display: none" />
-                <asp:Button runat="server" ID="btnPrevSubject" Text="Предыдущий субъект" CssClass="prevSubject" CausesValidation="false" />
-                <%-- располагаться выше таблицы в правом углу--%>
-                <div style="text-align:right">
-                    <asp:Button runat="server" ID="btnCheckAll" Text="Сверить" Visible="false" OnClick="btnCheckAll_Click" EnableViewState="false" />
-                    <asp:Button runat="server" ID="btnApproved" Text="Подписать" Visible="false" OnClick="btnApproved_Click" EnableViewState="false" />
-                    <asp:Button runat="server" ID="btnEnd" Text="Ввод данных завершен" Visible="false" OnClick="btnEnd_Click" EnableViewState="false" />
-                </div>
-                <ajaxToolkit:TabContainer runat="server" CssClass="tcCRF" ID="tcCRF" OnClientActiveTabChanged="setActiveTab" AutoPostBack="true">
-                </ajaxToolkit:TabContainer>
-                <asp:Button runat="server" ID="btnNextSubject" Text="Следующий субъект" CssClass="nextSubject" CausesValidation="false" />
-            </div>
-
-            <asp:Button runat="server" ID="btnNextCRFInEvent" CssClass="nextEvent" CausesValidation="false" />
-
->>>>>>> refs/remotes/origin/master
             <asp:Panel runat="server" ID="pnlModalPopup" Style="display: none">
                 <asp:GridView runat="server" ID="gvNotes" CellPadding="4" ForeColor="#333333" GridLines="Both" AutoGenerateColumns="False" OnRowDataBound="gvNotes_RowDataBound">
                     <AlternatingRowStyle BackColor="White" />

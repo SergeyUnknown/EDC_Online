@@ -48,7 +48,8 @@
                     $mainBorder.css('left', '0px');
                     $mainElem.css('max-width', '100%');
                     $mainElem.css('margin-left', '0px');
-                    $navigating.css('margin-left', '0px');
+                    $navigating.css('padding-left', '0px');
+                    $navigating.css('width', 'calc(100%)');
                     $.cookie('LeftMenuVisible', 'false', { expires: 365, path: '/' });
                 }
                 else {
@@ -56,7 +57,8 @@
                     $mainElem.css('max-width', 'calc(100% - 200px)');
                     $mainElem.css('margin-left', '190px');
                     $mainBorder.css('left', '189px');
-                    $navigating.css('margin-left', '190px');
+                    $navigating.css('padding-left', '176px');
+                    $navigating.css('width', 'calc(100% - 176px)');
                     $.cookie('LeftMenuVisible', 'true', { expires: 365, path: '/' });
                 }
             }
@@ -66,8 +68,6 @@
                     showHideLeftMenu();
             }
 
-<<<<<<< HEAD
-=======
             $(document).ready(function () {
                 var $leftMenu = $("#<%: sectionLeftMenu.ClientID %>");
                 if ($leftMenu.children().length == 1 && $("#<%: sectionLeftMenu.ClientID %>").css('display') == 'block') {
@@ -75,13 +75,14 @@
                 }
             });
 
->>>>>>> refs/remotes/origin/master
         </script>
         <header>
             <div class="MainHeader">
                 <div class="float-left logo">
                     <p class="site-title">
-                        <a runat="server" href="~/">Logo here</a>
+                        <a runat="server" href="~/">
+                            <asp:Image runat="server" ImageUrl="~/Images/mdplogo2.png" CssClass="logoImg" />
+                        </a>
                     </p>
                 </div>
                 <div class="rightHeader">
@@ -89,6 +90,7 @@
                         <h2><%: StudyName %>/</h2>
                         <asp:DropDownList runat="server" ID="ddlCurrentCenter" /><h2>/</h2>
                     </div>
+                
                     <asp:ContentPlaceHolder runat="server" ID="FeaturedContent" />
                     <div class="loginView float-right">
                         <section id="login">
@@ -103,89 +105,25 @@
                                         <asp:LoginName runat="server" CssClass="username" />
                                     </a>!</br>
                                 <asp:LoginStatus runat="server" LogoutAction="Redirect" CssClass="logout" LogoutText="Выйти из системы" LogoutPageUrl="~/" />
-<<<<<<< HEAD
-                            </LoggedInTemplate>
-                        </asp:LoginView>
-                    </section>
-                </div>
-                <nav class="navBlock" id="navigationMenu">
-                    <ul class="menu">
-                        <li>
-                            <a runat="server" href="~/">Главная</a>
-                        </li>
-                        <li>
-                            <a runat="server" href="~/SubjectsMatrix">Матрица субъектов</a>
-                            <ul class="submenu">
-                                <li>
-                                    <a runat="server" href="~/Subjects">Субъекты</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li runat="server" visible="false" id="liMonitor">
-                            <a runat="server" href="#">Мониторинг данных</a>
-                            <ul class="submenu">
-                                <li>
-                                    <a runat="server" href="#">Сверка с первичными данными</a>
-                                </li>
-                                <li>
-                                    <a runat="server" href="~/Audits">Аудит данных исследования</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li runat="server" visible="false" id="liData">
-                            <a runat="server" href="#">Управление данными</a>
-                            <ul class="submenu">
-                                <li>
-                                    <a runat="server" href="#">Выгрузка данных</a>
-                                </li>
-                                <li>
-                                    <a runat="server" href="#">Импорт данных</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li runat="server" visible="false" id="liQueryAndNotes">
-                            <a runat="server" href="~/NotesAndQuery">Заметки и замечания</a>
-                        </li>
-                        <li runat="server" visible="false" id="liAdmin">
-                            <a runat="server" href="#">Администрирование/Дизайн</a>
-                            <ul class="submenu">
-                                <li>
-                                    <a runat="server" href="~/ConfigurationTrials">Настройка исследования</a>
-                                </li>
-                                <li>
-                                    <a runat="server" href="~/Events">События</a>
-                                </li>
-                                <li>
-                                    <a runat="server" href="~/CRFs">ИРК</a>
-                                </li>
-                                <li>
-                                    <a runat="server" href="#">Валидация данных</a>
-                                </li>
-                                <li>
-                                    <a runat="server" href="~/MedicalCenters">Центры исследования</a>
-                                </li>
-                                <li>
-                                    <a runat="server" href="~/Administration/Users">Пользователи</a>
-                                </li>
-                            </ul>
-                        </li>
-=======
                                 </LoggedInTemplate>
                             </asp:LoginView>
                         </section>
                     </div>
-                    <nav class="navBlock">
+                    </div>
+                    <nav runat="server" class="navBlock" id="navigationMenu">
                         <ul class="menu">
                             <li>
                                 <a runat="server" href="~/">Главная</a>
                             </li>
                             <li>
                                 <a runat="server" href="~/SubjectsMatrix">Матрица субъектов</a>
-                                <ul class="submenu">
-                                    <li>
-                                        <a runat="server" href="~/Subjects">Субъекты</a>
-                                    </li>
-                                </ul>
+                                
+                                    <ul class="submenu">
+                                        <li>
+                                            <a runat="server" href="~/Subjects">Субъекты</a>
+                                        </li>
+                                    </ul>
+                                
                             </li>
                             <li runat="server" visible="false" id="liMonitor">
                                 <a runat="server" href="#">Мониторинг данных</a>
@@ -214,29 +152,27 @@
                             </li>
                             <li runat="server" visible="false" id="liAdmin">
                                 <a runat="server" href="#">Администрирование/Дизайн</a>
-                                <ul class="submenu">
-                                    <li>
-                                        <a runat="server" href="~/ConfigurationTrials">Настройка исследования</a>
-                                    </li>
-                                    <li>
-                                        <a runat="server" href="~/Events">События</a>
-                                    </li>
-                                    <li>
-                                        <a runat="server" href="~/CRFs">ИРК</a>
-                                    </li>
-                                    <li>
-                                        <a runat="server" href="#">Валидация данных</a>
-                                    </li>
-                                    <li>
-                                        <a runat="server" href="~/MedicalCenters">Центры исследования</a>
-                                    </li>
-                                    <li>
-                                        <a runat="server" href="~/Administration/Users">Пользователи</a>
-                                    </li>
-                                </ul>
+                                    <ul class="submenu">
+                                        <li>
+                                            <a runat="server" href="~/ConfigurationTrials">Настройка исследования</a>
+                                        </li>
+                                        <li>
+                                            <a runat="server" href="~/Events">События</a>
+                                        </li>
+                                        <li>
+                                            <a runat="server" href="~/CRFs">ИРК</a>
+                                        </li>
+                                        <li>
+                                            <a runat="server" href="#">Валидация данных</a>
+                                        </li>
+                                        <li>
+                                            <a runat="server" href="~/MedicalCenters">Центры исследования</a>
+                                        </li>
+                                        <li>
+                                            <a runat="server" href="~/Administration/Users">Пользователи</a>
+                                        </li>
+                                    </ul>
                             </li>
->>>>>>> refs/remotes/origin/master
-
                             <li>
                                 <a runat="server" href="#">Иное</a>
                                 <ul class="submenu">
@@ -256,7 +192,7 @@
                             </li>
                         </ul>
                     </nav>
-                </div>
+                
             </div>
         </header>
 
