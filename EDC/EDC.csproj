@@ -245,6 +245,7 @@
     <Content Include="Images\step-backward.png" />
     <Content Include="Images\step-forward-2.png" />
     <Content Include="Images\step-forward.png" />
+    <Content Include="Images\svg\mdplogo22.svg" />
     <Content Include="Images\table-edit.png" />
     <Content Include="Images\table-row-plus-after.png" />
     <Content Include="Images\tag-text-outline %281%29.png" />

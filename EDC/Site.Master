@@ -81,7 +81,7 @@
                 <div class="float-left logo">
                     <p class="site-title">
                         <a runat="server" href="~/">
-                            <asp:Image runat="server" ImageUrl="~/Images/mdplogo2.png" CssClass="logoImg" />
+                            <asp:Image runat="server" ImageUrl="~/Images/svg/mdplogo22.svg" CssClass="logoImg" />
                         </a>
                     </p>
                 </div>
