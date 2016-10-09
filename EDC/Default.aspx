@@ -4,7 +4,7 @@
     <section class="featured">
         <div class="content-wrapper">
             <hgroup class="title">
-                <h2><%: Title %>.</h2>
+                <h2><%: Title %></h2>
             </hgroup>
         </div>
     </section>

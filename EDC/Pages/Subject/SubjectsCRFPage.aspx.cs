@@ -23,21 +23,86 @@ namespace EDC.Pages.Subject
         Models.Repository.AppSettingRepository ASR = new Models.Repository.AppSettingRepository();
         Models.Repository.AuditsRepository AR = new Models.Repository.AuditsRepository();
 
-        static Models.CRF _crf;
-        static Models.Subject _subject;
-        static Models.SubjectsCRF _sCRF;
-        static long _subjectID;
-        static long _eventID;
-        static long _crfID;
-        static Dictionary<string, int> RowCountInSection = new Dictionary<string, int>();
+        Models.CRF _crf
+        {
+            get { return (Models.CRF)Session["_crf"]; }
+            set { Session["_crf"] = value; }
+        }
+        
+        Models.Subject _subject
+        {
+            get { return (Models.Subject)Session["_subject"]; }
+            set { Session["_subject"] = value; }
+        }
+        AjaxControlToolkit.ModalPopupExtender _mpe
+        {
+            get { return (AjaxControlToolkit.ModalPopupExtender)Session["_mpe"]; }
+            set { Session["_mpe"] = value; }
+        }
+        Models.SubjectsCRF _sCRF
+        {
+            get { return (Models.SubjectsCRF)Session["_sCRF"]; }
+            set { Session["_sCRF"] = value; }
+        }
+        Dictionary<string, int> RowCountInSection
+        {
+            get
+            {
+                if (Session["RowCountInSection"] == null)
+                {
+                    Session["RowCountInSection"] = new Dictionary<string, int>();
+                    return new Dictionary<string, int>();
+                }
+                else
+                    return (Dictionary<string, int>)Session["RowCountInSection"];
+            }
+            set
+            {
+                Session["RowCountInSection"] = value; 
+            }
+        }
+        Models.SubjectsItem _si
+        {
+            get { return (Models.SubjectsItem)Session["_si"]; }
+            set { Session["_si"] = value; }
+        }
+        long _subjectID
+        {
+            get 
+            {
+                long temp;
+                if (long.TryParse(Convert.ToString(Session["_subjectID"]), out temp))
+                    return temp;
+                else
+                    return 0;
+            }
+            set { Session["_subjectID"] = value; }
+        }
+        long _eventID
+        {
+            get { return Session["_eventID"] == null ? 0 : (long)Session["_eventID"]; }
+            set { Session["_eventID"] = value; }
+        }
+        long _crfID
+        {
+            get { return Session["_crfID"] == null ? 0 : (long)Session["_crfID"]; }
+            set { Session["_crfID"] = value; }
+        }
 
-        static AjaxControlToolkit.ModalPopupExtender _mpe;
+        int answerRowIndex
+        {
+            get { return Session["answerRowIndex"] == null ? 0 : (int)Session["answerRowIndex"]; }
+            set { Session["answerRowIndex"] = value; }
+        }
 
-        static Models.SubjectsItem _si;
-
-        static int answerRowIndex;
-
-        static bool readOnly = false;
+        bool readOnly
+        {
+            get
+            {
+                return Session["readOnly"] == null ? false : (bool)Session["readOnly"];
+            }
+            set { Session["readOnly"] = value; }
+        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -56,7 +121,7 @@ namespace EDC.Pages.Subject
                 if (Request.Cookies["activeTabIndex"] != null)
                     Request.Cookies["activeTabIndex"].Value = "0";
             }
-            if (_subject.IsDeleted || ASR.SelectByID(Core.APP_STATUS).Value == Core.AppStatus.Disable.ToString() || User.IsInRole(Core.Roles.Monitor.ToString()) || User.IsInRole(Core.Roles.Auditor.ToString()))
+            if (_subject.IsDeleted || ASR.SelectByID(Core.APP_STATUS).Value == Core.AppStatus.Disable.ToString() || User.IsInRole(Core.Roles.Monitor.ToString()) || User.IsInRole(Core.Roles.Auditor.ToString()) || (_sCRF != null && _sCRF.IsCheckAll))
             {
                 readOnly = true;
             }
@@ -179,9 +244,12 @@ namespace EDC.Pages.Subject
             {
                 if ((User.IsInRole(Core.Roles.Investigator.ToString()) || User.IsInRole(Core.Roles.Principal_Investigator.ToString())) && !_sCRF.IsEnd)
                     btnEnd.Visible = true;
-                else if (User.IsInRole(Core.Roles.Principal_Investigator.ToString()) && _sCRF.IsEnd && !_sCRF.IsApprove)
+                else if (User.IsInRole(Core.Roles.Principal_Investigator.ToString()))
                 {
-                    btnApproved.Visible = true;
+                    if (_sCRF.IsEnd && !_sCRF.IsApprove)
+                        btnApproved.Visible = true;
+                    else if (_sCRF.IsCheckAll)
+                        btnEdit.Visible = true;
                 }
                 else if (User.IsInRole(Core.Roles.Monitor.ToString()) && _sCRF.IsApprove && !_sCRF.IsCheckAll)
                 {
@@ -879,6 +947,8 @@ namespace EDC.Pages.Subject
             {
                 _sCRF.IsStart = true;
                 _sCRF.IsStartBy = User.Identity.Name;
+                _sCRF.IsApprove = _sCRF.IsCheckAll = _sCRF.IsEnd = false;
+                _sCRF.IsApprovedBy = _sCRF.IsCheckAllBy = _sCRF.IsEndBy = User.Identity.Name;
                 SCR.Update(_sCRF);
                 SCR.Save();
 
@@ -1158,6 +1228,13 @@ namespace EDC.Pages.Subject
             btnEnd.Visible = false;
             if (User.IsInRole(Core.Roles.Principal_Investigator.ToString()))
                 btnApproved.Visible = true;
+        }
+
+        protected void btnEdit_Click(object sender, EventArgs e)
+        {
+            btnEdit.Visible = false;
+            readOnly = false;
+            LoadForm(_crf);
         }
 
     }

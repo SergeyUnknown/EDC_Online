@@ -20,7 +20,7 @@ namespace EDC.Models
         public string Phone { get; set; }
         public string PrincipalInvestigator { get; set; }
         public virtual List<Subject> Subjects { get; set; }
-
         public virtual List<Note> Notes { get; set; }
+        public virtual List<AccessToCenter> HaveAccess { get; set; }
     }
 }

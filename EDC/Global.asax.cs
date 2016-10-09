@@ -66,6 +66,7 @@ namespace EDC
 
             Models.Repository.AppSettingRepository ASR = new Models.Repository.AppSettingRepository();
             ASR.SelectByID(Core.STUDY_NAME);
+            ASR.SelectByID(Core.STUDY_PROTOCOL);
         }
 
         void Application_End(object sender, EventArgs e)

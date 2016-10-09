@@ -39,7 +39,7 @@ namespace EDC.Account
 
                 UserProfileRepository pr = new UserProfileRepository();
                 List<UserProfile> profiles = pr.SelectAll().ToList();
-                UserProfile userProfile = profiles.FirstOrDefault(x => x.UserID == (Guid)user.ProviderUserKey);
+                UserProfile userProfile = profiles.FirstOrDefault(x => x.UserProfileID == (Guid)user.ProviderUserKey);
                 if (userProfile != null)
                 {
                     tbName.Text = userProfile.Name;
@@ -104,14 +104,14 @@ namespace EDC.Account
             {
                 UserProfileRepository pr = new UserProfileRepository();
 
-                UserProfile userProfile = pr.GetManyByFilter(x => x.UserID == (Guid)user.ProviderUserKey).FirstOrDefault();
+                UserProfile userProfile = pr.GetManyByFilter(x => x.UserProfileID == (Guid)user.ProviderUserKey).FirstOrDefault();
                 if(userProfile == null)
                 {
                     userProfile = new UserProfile();
                     userProfile.Name = tbName.Text;
                     userProfile.LastName = tbLastname.Text;
                     userProfile.Phone = tbPhone.Text;
-                    userProfile.UserID = (Guid)user.ProviderUserKey;
+                    userProfile.UserProfileID = (Guid)user.ProviderUserKey;
                     pr.Create(userProfile);
                 }
                 else

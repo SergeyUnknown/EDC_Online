@@ -347,6 +347,7 @@
     </Compile>
     <Compile Include="Controls\DownTable\DownTableInfo.cs" />
     <Compile Include="Core\Localization.cs" />
+    <Compile Include="Models\Repository\AccessToCenterRepository.cs" />
     <Compile Include="Models\Repository\AppSettingRepository.cs" />
     <Compile Include="Models\Repository\AuditsRepository.cs" />
     <Compile Include="Models\Repository\CRF\CRFGroupRepository.cs" />
@@ -375,6 +376,7 @@
     <Compile Include="Models\Tables\Note.cs" />
     <Compile Include="Models\Tables\Subject.cs" />
     <Compile Include="Models\Tables\SubjectsItem.cs" />
+    <Compile Include="Models\Tables\AccessToCenter.cs" />
     <Compile Include="Pages\Account\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

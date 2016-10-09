@@ -61,14 +61,16 @@ namespace EDC.Pages.Subject
         {
             get
             {
-                return (int)Math.Ceiling((decimal)SR.SelectAll().Count() / pageSize);
+
+                return (int)Math.Ceiling((decimal)SR.SelectAllForUser(User).Count() / pageSize);
             }
         } 
 
         void LoadSubjects()
         {
+
             if (User.IsInRole(Core.Roles.Administrator.ToString()) || User.IsInRole(Core.Roles.Data_Manager.ToString()))
-                _subjects = SR.SelectAll().ToList();
+                _subjects = SR.SelectAllForUser(User).ToList();
             else
                 _subjects = SR.GetManyByFilter(x=>!x.IsDeleted).ToList();
             gvSubjects.DataSource = _subjects;
