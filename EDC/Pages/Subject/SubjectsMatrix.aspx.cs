@@ -14,24 +14,20 @@ namespace EDC.Pages.Subject
         Models.Repository.EventRepository ER = new Models.Repository.EventRepository();
         Models.Repository.CRFInEventRepository CIER = new Models.Repository.CRFInEventRepository();
 
-        static int pageSize = 50;
+        int pageSize = 50;
         static int recordCount = 0;
         static List<Models.Subject> _subjects;
         static List<Models.Event> _events;
         List<Models.CRFInEvent> _eventCRFs = new List<Models.CRFInEvent>();
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
-            {
-                _subjects = SR.SelectAll().Skip((CurrentPage - 1) * pageSize).Take(pageSize).ToList();
-                _events = ER.SelectAll().OrderBy(x => x.Position).ToList();
-                LoadMatrix();
-                LoadDTDataItem();
-            }
             if (User.IsInRole(Core.Roles.Administrator.ToString()) || User.IsInRole(Core.Roles.Investigator.ToString()) || User.IsInRole(Core.Roles.Principal_Investigator.ToString()))
             {
                 dtInfo.ViewButton = true;
             }
+            _subjects = SR.SelectAllForUser(User).Skip((CurrentPage - 1) * pageSize).Take(pageSize).ToList();
+            _events = ER.SelectAll().OrderBy(x => x.Position).ToList();
+            LoadMatrix();
             LoadDTDataItem();
 
         }
@@ -59,7 +55,7 @@ namespace EDC.Pages.Subject
         {
             get
             {
-                return (int)Math.Ceiling((decimal)SR.SelectAll().Count() / pageSize);
+                return (int)Math.Ceiling((decimal)SR.SelectAllForUser(User).Count() / pageSize);
             }
         }
 
@@ -93,6 +89,7 @@ namespace EDC.Pages.Subject
         }
         void LoadMatrix()
         {
+            tMatrix.Rows.Clear();
             TableRow tr = new TableRow();
             TableCell tc = new TableCell();
             //////////////////////////Head///////////////////////

@@ -98,7 +98,7 @@ namespace EDC.Pages.Administration
             foreach (MembershipUser user in muc)
             {
                 Models.Repository.UserProfileRepository pr = new Models.Repository.UserProfileRepository();
-                var u = pr.SelectByUserID((Guid)user.ProviderUserKey);
+                var u = pr.SelectByID((Guid)user.ProviderUserKey);
                 DataRow dr = dt.NewRow();
 
                     dr["UserName"] = user.UserName;
@@ -145,7 +145,7 @@ namespace EDC.Pages.Administration
                 MembershipUser user = Membership.GetUser(userName);
                 if (Membership.DeleteUser(userName))
                 {
-                    Models.UserProfile up = PR.GetManyByFilter(x => x.UserID == (Guid)user.ProviderUserKey).FirstOrDefault();
+                    Models.UserProfile up = PR.SelectByID((Guid)user.ProviderUserKey);
                     if(up!=null)
                     {
                         PR.Delete(up.UserProfileID);

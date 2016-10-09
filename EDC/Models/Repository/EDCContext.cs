@@ -25,6 +25,7 @@ namespace EDC.Models
         public DbSet<SubjectsEvent> SubjectsEvents { get; set; } //Связующая таблица
         public DbSet<SubjectsCRF> SubjectsCRFs { get; set; }
         public DbSet<SubjectsItem> SubjectsItems { get; set; }
+        public DbSet<AccessToCenter> AccessToCenter { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -100,6 +101,8 @@ namespace EDC.Models
                 .HasForeignKey(t => new { t.SubjectID, t.EventID, t.CRFID, t.ItemID,t.IndexID })
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<AccessToCenter>()
+                .HasKey(t => new { t.UserID, t.MedicalCenterID });
 
         }
     }

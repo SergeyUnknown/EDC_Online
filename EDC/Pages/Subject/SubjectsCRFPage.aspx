@@ -54,17 +54,19 @@
                         <th class="EventArrow"></th>
                     </tr>
                     <tr>
+                        <td></td>
+                        <td>
+                            <asp:Button runat="server" ID="btnPrevSubject" Text="Предыдущий субъект" CssClass="prevSubject" CausesValidation="false" />
+                            <%-- располагаться выше таблицы в правом углу--%>
+                            <div style="text-align:right">
+                                <asp:Button runat="server" ID="btnEdit" Text="Изменить" Visible="false" OnClick="btnEdit_Click" EnableViewState="false" />
+                                <asp:Button runat="server" ID="btnCheckAll" Text="Сверить" Visible="false" OnClick="btnCheckAll_Click" EnableViewState="false" />
+                                <asp:Button runat="server" ID="btnApproved" Text="Подписать" Visible="false" OnClick="btnApproved_Click" EnableViewState="false" />
+                                <asp:Button runat="server" ID="btnEnd" Text="Ввод данных завершен" Visible="false" OnClick="btnEnd_Click" EnableViewState="false" />
+                            </div>
+                        </td>
                         <td>
 
-                        </td>
-                        <td >
-                            <asp:Button runat="server" ID="btnPrevSubject" Text="Предыдущий субъект" CssClass="prevSubject" CausesValidation="false" />
-                        </td>
-                        <td>
-                            <%-- располагаться выше таблицы в правом углу--%>
-                            <asp:Button runat="server" ID="btnCheckAll" Text="Сверить" Visible="false" OnClick="btnCheckAll_Click" EnableViewState="false" />
-                            <asp:Button runat="server" ID="btnApproved" Text="Подписать" Visible="false" OnClick="btnApproved_Click" EnableViewState="false" />
-                            <asp:Button runat="server" ID="btnEnd" Text="Ввод данных завершен" Visible="false" OnClick="btnEnd_Click" EnableViewState="false" />
                         </td>
                     </tr>
                     <tr>

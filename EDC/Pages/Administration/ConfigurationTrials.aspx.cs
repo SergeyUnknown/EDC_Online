@@ -21,7 +21,7 @@ namespace EDC.Pages.Administration
                 item = ASR.SelectByID(Core.STUDY_NAME);
                 tbStudyName.Text = item.Value;
 
-                item = ASR.SelectByID(Core.PROTOCOLID);
+                item = ASR.SelectByID(Core.STUDY_PROTOCOL);
                 tbProtocolID.Text = item.Value;
             }
         }
@@ -29,25 +29,22 @@ namespace EDC.Pages.Administration
         protected void btnSave_Click(object sender, EventArgs e)
         {
             var item = ASR.SelectByID(Core.APP_STATUS);
-            if (item != null)
-            {
-                item.Value = rbStatus.SelectedValue;
-                ASR.Update(item);
-            }
+
+            item.Value = rbStatus.SelectedValue;
+            ASR.Update(item);
+
 
             item = ASR.SelectByID(Core.STUDY_NAME);
-            if (item != null)
-            {
-                item.Value = tbStudyName.Text;
-                ASR.Update(item);
-            }
 
-            item = ASR.SelectByID(Core.PROTOCOLID);
-            if (item != null)
-            {
-                item.Value = tbProtocolID.Text;
-                ASR.Update(item);
-            }
+            item.Value = tbStudyName.Text;
+            ASR.Update(item);
+
+
+            item = ASR.SelectByID(Core.STUDY_PROTOCOL);
+
+            item.Value = tbProtocolID.Text;
+            ASR.Update(item);
+            
 
             ASR.Save();
         }

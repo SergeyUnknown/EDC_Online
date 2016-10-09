@@ -143,7 +143,7 @@ namespace EDC
         /// <summary>
         /// Номер протокола
         /// </summary>
-        public const string PROTOCOLID = "protocolID";
+        public const string STUDY_PROTOCOL = "protocolID";
 
         public enum AuditActionType
         {

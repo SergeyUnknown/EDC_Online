@@ -51,9 +51,9 @@
                         </asp:CheckBoxList>
                     </li>
                     <li runat="server" visible="false" id="liCenters">
-                        <asp:Label runat="server" AssociatedControlID="ddlCenters">Доступ к центру</asp:Label>
-                        <asp:DropDownList runat="server" ID="ddlCenters" Width="232px">
-                        </asp:DropDownList>
+                        <asp:Label runat="server" AssociatedControlID="cblCenters">Доступ к центрам</asp:Label>
+                        <asp:CheckBoxList runat="server" CssClass="rolesCheck" ID="cblCenters">
+                        </asp:CheckBoxList>
                     </li>
 
                 </ol>

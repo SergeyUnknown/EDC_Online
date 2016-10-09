@@ -13,22 +13,28 @@ namespace EDC.Pages.Administration
     {
         static bool Editing = false;
         Models.Repository.UserProfileRepository pr = new Models.Repository.UserProfileRepository();
+        Models.Repository.MedicalCenterRepository MCR = new Models.Repository.MedicalCenterRepository();
+        Models.Repository.AccessToCenterRepository ATCR = new Models.Repository.AccessToCenterRepository();
         static Models.UserProfile userProfile;
         static MembershipUser user;
+        static List<Models.MedicalCenter> MedicalCenters;
         protected void Page_Load(object sender, EventArgs e)
         {
 
             if (!IsPostBack)
             {
+                user = null;
                 cblUserRole.Items.Clear();
+                cblCenters.Items.Clear();
+                liCenters.Visible = true;
+                MedicalCenters = MCR.SelectAll().OrderBy(x=>x.MedialCenterID).ToList();
                 foreach (string role in Enum.GetNames(typeof(Core.Roles)))
                 {
                     Core.GetRoleRusName(role);
                     ListItem item = new ListItem(Core.GetRoleRusName(role), role);
                     cblUserRole.Items.Add(item);
                 }
-
-
+                MedicalCenters.ForEach(x=> cblCenters.Items.Add(x.Name));
 
                 if (Request.Url.ToString().IndexOf("Edit") > 0)
                 {
@@ -37,7 +43,7 @@ namespace EDC.Pages.Administration
                     Title = "Редактирование аккаунта";
 
                     user = Membership.GetUser(GetUserGuidFromRequest());
-                    userProfile = pr.SelectByUserID((Guid)user.ProviderUserKey);
+                    userProfile = pr.SelectByID((Guid)user.ProviderUserKey);
 
                     tbEmail.Text = user.Email;
                     tbUserName.Text = user.UserName;
@@ -46,12 +52,15 @@ namespace EDC.Pages.Administration
                     string[] rolesUser = Roles.GetRolesForUser(user.UserName);
 
                     rolesUser.ToList().ForEach(x => cblUserRole.Items.FindByValue(x).Selected = true);
-
                     if (userProfile != null)
                     {
                         tbName.Text = userProfile.Name;
                         tbLastname.Text = userProfile.LastName;
                         tbPhone.Text = userProfile.Phone;
+                        if(userProfile.MedicalCenters!=null)
+                        {
+                            userProfile.MedicalCenters.ForEach(x=> cblCenters.Items.FindByText(x.MedicalCenter.Name).Selected = true);
+                        }
                     }
 
                 }
@@ -59,6 +68,7 @@ namespace EDC.Pages.Administration
                 {
                     btnOk.Text = "Создать аккаунт";
                     Title = "Создание аккаунта";
+                    Editing = false;
 
                 }
 
@@ -83,16 +93,17 @@ namespace EDC.Pages.Administration
             if(Editing)
             {
                 user.Email = tbEmail.Text;
-
+                Membership.UpdateUser(user);
                 if(userProfile == null)
                 {
                     Models.UserProfile up = new Models.UserProfile();
                     up.Name = tbName.Text;
                     up.Phone = tbPhone.Text;
                     up.LastName = tbLastname.Text;
-                    up.UserID = (Guid)user.ProviderUserKey;
+                    up.UserProfileID = (Guid)user.ProviderUserKey;
                     pr.Create(up);
                     pr.Save();
+                    pr = new Models.Repository.UserProfileRepository();
                 }
 
                 foreach(ListItem item in cblUserRole.Items)
@@ -102,11 +113,56 @@ namespace EDC.Pages.Administration
                         Roles.AddUserToRole(user.UserName, item.Value);
                         continue;
                     }
-                    if (!item.Selected && Roles.IsUserInRole(user.UserName, item.Value))
+                    else
+                        if (!item.Selected && Roles.IsUserInRole(user.UserName, item.Value))
+                        {
+                            Roles.RemoveUserFromRole(user.UserName, item.Value);
+                            continue;
+                        }
+                }
+                userProfile = pr.SelectByID((Guid)user.ProviderUserKey);
+
+                if(userProfile.MedicalCenters.Count == 0)
+                {
+                    foreach(ListItem item in cblCenters.Items)
                     {
-                        Roles.RemoveUserFromRole(user.UserName, item.Value);
-                        continue;
+                        if(item.Selected)
+                        {
+                            Models.AccessToCenter access = new Models.AccessToCenter();
+                            access.MedicalCenterID = MedicalCenters.First(x => x.Name == item.Text).MedialCenterID;
+                            access.UserID = (Guid)user.ProviderUserKey;
+                            access.CreatedBy = User.Identity.Name;
+                            ATCR.Create(access);
+                        }
                     }
+                    ATCR.Save();
+                }
+                else
+                {
+                    foreach (ListItem item in cblCenters.Items)
+                    {
+                        Models.MedicalCenter mc = MedicalCenters.First(x => x.Name == item.Text);
+                        if (item.Selected && userProfile.MedicalCenters.FirstOrDefault(x=>x.MedicalCenterID == mc.MedialCenterID) == null)
+                        {
+                            Models.AccessToCenter access = new Models.AccessToCenter();
+                            access.MedicalCenterID = mc.MedialCenterID;
+                            access.UserID = (Guid)user.ProviderUserKey;
+                            access.CreatedBy = User.Identity.Name;
+                            ATCR.Create(access);
+                        }
+                        else if(!item.Selected && userProfile.MedicalCenters.FirstOrDefault(x=>x.MedicalCenterID == mc.MedialCenterID) != null)
+                        {
+                            if (userProfile.CurrentCenterID == mc.MedialCenterID)
+                            {
+                                userProfile.CurrentCenterID = null;
+                                pr.Update(userProfile);
+                                pr.Save();
+                            }
+                            ATCR.Delete(userProfile.UserProfileID, mc.MedialCenterID);
+                        }
+                    }
+                    ATCR.Save();
+
                 }
             }
             else
@@ -117,10 +173,10 @@ namespace EDC.Pages.Administration
                 up.Name = tbName.Text;
                 up.Phone = tbPhone.Text;
                 up.LastName = tbLastname.Text;
-                up.UserID = (Guid)newUser.ProviderUserKey;
+                up.UserProfileID = (Guid)newUser.ProviderUserKey;
                 pr.Create(up);
                 pr.Save();
-
+                ATCR = new Models.Repository.AccessToCenterRepository();
                 foreach (ListItem item in cblUserRole.Items)
                 {
                     if (item.Selected)
@@ -129,6 +185,19 @@ namespace EDC.Pages.Administration
                         continue;
                     }
                 }
+
+                foreach (ListItem item in cblCenters.Items)
+                {
+                    if (item.Selected)
+                    {
+                        Models.AccessToCenter access = new Models.AccessToCenter();
+                        access.MedicalCenterID = MedicalCenters.First(x => x.Name == item.Text).MedialCenterID;
+                        access.UserID = (Guid)newUser.ProviderUserKey;
+                        access.CreatedBy = User.Identity.Name;
+                        ATCR.Create(access);
+                    }
+                }
+                ATCR.Save();
 
                 labelStatus.Text = "Аккаунт успешно создан! Пароль: " + password;
                 labelStatus.ForeColor = System.Drawing.Color.Green;

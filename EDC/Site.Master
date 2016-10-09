@@ -87,10 +87,10 @@
                 </div>
                 <div class="rightHeader">
                     <div class="StudyCenterInfo">
-                        <h2><%: StudyName %>/</h2>
-                        <asp:DropDownList runat="server" ID="ddlCurrentCenter" /><h2>/</h2>
+                        <h2><%: StudyProtocol %>/</h2>
+                        <asp:DropDownList runat="server" ID="ddlCurrentCenter" AutoPostBack="true" OnSelectedIndexChanged="ddlCurrentCenter_SelectedIndexChanged" /><h2>/</h2>
                     </div>
-                
+
                     <asp:ContentPlaceHolder runat="server" ID="FeaturedContent" />
                     <div class="loginView float-right">
                         <section id="login">
@@ -109,90 +109,90 @@
                             </asp:LoginView>
                         </section>
                     </div>
-                    </div>
-                    <nav runat="server" class="navBlock" id="navigationMenu">
-                        <ul class="menu">
-                            <li>
-                                <a runat="server" href="~/">Главная</a>
-                            </li>
-                            <li>
-                                <a runat="server" href="~/SubjectsMatrix">Матрица субъектов</a>
-                                
-                                    <ul class="submenu">
-                                        <li>
-                                            <a runat="server" href="~/Subjects">Субъекты</a>
-                                        </li>
-                                    </ul>
-                                
-                            </li>
-                            <li runat="server" visible="false" id="liMonitor">
-                                <a runat="server" href="#">Мониторинг данных</a>
-                                <ul class="submenu">
-                                    <li>
-                                        <a runat="server" href="~/SDV">Сверка с первичными данными</a>
-                                    </li>
-                                    <li>
-                                        <a runat="server" href="~/Audits">Аудит данных исследования</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li runat="server" visible="false" id="liData">
-                                <a runat="server" href="#">Управление данными</a>
-                                <ul class="submenu">
-                                    <li>
-                                        <a runat="server" href="#">Выгрузка данных</a>
-                                    </li>
-                                    <li>
-                                        <a runat="server" href="#">Импорт данных</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li runat="server" visible="false" id="liQueryAndNotes">
-                                <a runat="server" href="~/NotesAndQuery">Заметки и замечания</a>
-                            </li>
-                            <li runat="server" visible="false" id="liAdmin">
-                                <a runat="server" href="#">Администрирование/Дизайн</a>
-                                    <ul class="submenu">
-                                        <li>
-                                            <a runat="server" href="~/ConfigurationTrials">Настройка исследования</a>
-                                        </li>
-                                        <li>
-                                            <a runat="server" href="~/Events">События</a>
-                                        </li>
-                                        <li>
-                                            <a runat="server" href="~/CRFs">ИРК</a>
-                                        </li>
-                                        <li>
-                                            <a runat="server" href="#">Валидация данных</a>
-                                        </li>
-                                        <li>
-                                            <a runat="server" href="~/MedicalCenters">Центры исследования</a>
-                                        </li>
-                                        <li>
-                                            <a runat="server" href="~/Administration/Users">Пользователи</a>
-                                        </li>
-                                    </ul>
-                            </li>
-                            <li>
-                                <a runat="server" href="#">Иное</a>
-                                <ul class="submenu">
-                                    <li>
-                                        <a runat="server" href="~/Account/Manage">Профиль</a>
-                                    </li>
-                                    <li>
-                                        <a runat="server" href="#">Помощь</a>
-                                    </li>
-                                    <li>
-                                        <a runat="server" href="#">Поддержка</a>
-                                    </li>
-                                    <li>
-                                        <a runat="server" href="#">О продукте</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </nav>
-                
+                </div>
+                <nav runat="server" class="navBlock" id="navigationMenu">
+                    <ul class="menu">
+                        <li>
+                            <a runat="server" href="~/">Главная</a>
+                        </li>
+                        <li>
+                            <a runat="server" href="~/SubjectsMatrix">Матрица субъектов</a>
+
+                            <ul class="submenu">
+                                <li>
+                                    <a runat="server" href="~/Subjects">Субъекты</a>
+                                </li>
+                            </ul>
+
+                        </li>
+                        <li runat="server" visible="false" id="liMonitor">
+                            <a runat="server" href="#">Мониторинг данных</a>
+                            <ul class="submenu">
+                                <li>
+                                    <a runat="server" href="~/SDV">Сверка с первичными данными</a>
+                                </li>
+                                <li>
+                                    <a runat="server" href="~/Audits">Аудит данных исследования</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li runat="server" visible="false" id="liData">
+                            <a runat="server" href="#">Управление данными</a>
+                            <ul class="submenu">
+                                <li>
+                                    <a runat="server" href="#">Выгрузка данных</a>
+                                </li>
+                                <li>
+                                    <a runat="server" href="#">Импорт данных</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li runat="server" visible="false" id="liQueryAndNotes">
+                            <a runat="server" href="~/NotesAndQuery">Заметки и замечания</a>
+                        </li>
+                        <li runat="server" visible="false" id="liAdmin">
+                            <a runat="server" href="#">Администрирование/Дизайн</a>
+                            <ul class="submenu">
+                                <li>
+                                    <a runat="server" href="~/ConfigurationTrials">Настройка исследования</a>
+                                </li>
+                                <li>
+                                    <a runat="server" href="~/Events">События</a>
+                                </li>
+                                <li>
+                                    <a runat="server" href="~/CRFs">ИРК</a>
+                                </li>
+                                <li>
+                                    <a runat="server" href="#">Валидация данных</a>
+                                </li>
+                                <li>
+                                    <a runat="server" href="~/MedicalCenters">Центры исследования</a>
+                                </li>
+                                <li>
+                                    <a runat="server" href="~/Administration/Users">Пользователи</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a runat="server" href="#">Иное</a>
+                            <ul class="submenu">
+                                <li>
+                                    <a runat="server" href="~/Account/Manage">Профиль</a>
+                                </li>
+                                <li>
+                                    <a runat="server" href="#">Помощь</a>
+                                </li>
+                                <li>
+                                    <a runat="server" href="#">Поддержка</a>
+                                </li>
+                                <li>
+                                    <a runat="server" href="#">О продукте</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+
             </div>
         </header>
 
