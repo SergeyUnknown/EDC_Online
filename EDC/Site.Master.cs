@@ -15,6 +15,7 @@ namespace EDC
         private string _antiXsrfTokenValue;
 
         Models.Repository.AppSettingRepository ASR = new Models.Repository.AppSettingRepository();
+        Models.Repository.UserProfileRepository UPR = new Models.Repository.UserProfileRepository();
 
         protected void Page_Init(object sender, EventArgs e)
         {
@@ -98,13 +99,57 @@ namespace EDC
                     navigationMenu.Style.Add("width", "calc(100% - 14px)");
                 }
             }
-            ddlCurrentCenter.Items.Add("...");
+            if(!IsPostBack)
+            if (Membership.GetUser(HttpContext.Current.User.Identity.Name) != null)
+            {
+                Models.UserProfile up = UPR.SelectByID
+                        (Membership.GetUser(HttpContext.Current.User.Identity.Name).ProviderUserKey);
+                if (up != null)
+                {
+                    ddlCurrentCenter.DataSource = up.MedicalCenters.Select(x => x.MedicalCenter.Name);
+                    ddlCurrentCenter.DataBind();
+                    long? cu = up.GetCurrentCenterID();
+                    if (cu != null)
+                        ddlCurrentCenter.SelectedValue = up.MedicalCenters.First(x => x.MedicalCenterID == cu).MedicalCenter.Name;
+                }
+            }
         }
 
-        protected string StudyName
+        protected string StudyProtocol
         {
-            get { return ASR.SelectByID(Core.STUDY_NAME).Value; }
+            get { return ASR.SelectByID(Core.STUDY_PROTOCOL).Value; }
             set { }
+        }
+
+        protected string CurrentCenter
+        {
+            get
+            {
+                Models.UserProfile up = UPR.SelectByID
+                    (Membership.GetUser(HttpContext.Current.User.Identity.Name).ProviderUserKey);
+                if(up!=null)
+                {
+                    long? ccid = up.GetCurrentCenterID();
+                    if (ccid != null)
+                    {
+                        return up.MedicalCenters.First(x => x.MedicalCenterID == ccid).MedicalCenter.Name;
+                    }
+                }
+                return "";
+            }
+            set { }
+        }
+
+        protected void ddlCurrentCenter_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Models.UserProfile up = UPR.SelectByID
+                    (Membership.GetUser(HttpContext.Current.User.Identity.Name).ProviderUserKey);
+            if (up == null)
+                return;
+            up.CurrentCenterID = up.MedicalCenters.ToList().First(x => x.MedicalCenter.Name == ddlCurrentCenter.Text).MedicalCenterID;
+            UPR.Update(up);
+            UPR.Save();
+            Response.Redirect(Request.Path);
         }
     }
 }

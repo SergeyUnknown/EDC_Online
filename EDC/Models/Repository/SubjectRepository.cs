@@ -19,6 +19,15 @@ namespace EDC.Models.Repository
         {
             return db.Subjects;
         }
+        public IEnumerable<Subject> SelectAllForUser(System.Security.Principal.IPrincipal User)
+        {
+            var up = db.UsersProfiles.Find(Membership.GetUser(User.Identity.Name).ProviderUserKey);
+            long? centerID = up != null ? up.GetCurrentCenterID() : null; 
+            if (centerID != null)
+                return db.Subjects.Where(x => x.MedicalCenterID == centerID);
+            else
+                return new List<Subject>();
+        }
         public Subject SelectByID(params object[] id)
         {
             return db.Subjects.Find(id);

@@ -121,13 +121,13 @@ namespace EDC.Pages.Administration {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl liCenters;
         
         /// <summary>
-        /// ddlCenters элемент управления.
+        /// cblCenters элемент управления.
         /// </summary>
         /// <remarks>
         /// Автоматически создаваемое поле.
         /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlCenters;
+        protected global::System.Web.UI.WebControls.CheckBoxList cblCenters;
         
         /// <summary>
         /// btnOk элемент управления.
