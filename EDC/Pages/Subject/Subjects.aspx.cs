@@ -145,11 +145,11 @@ namespace EDC.Pages.Subject
             if(e.Row.RowType == DataControlRowType.DataRow)
             {
                 //Редактировать
-                Control _control = e.Row.Cells[6].Controls[0];
+                Control _control = e.Row.Cells[5].Controls[0];
                 _control.Visible = canEdit;
 
                 //Удалять
-                _control = e.Row.Cells[7].Controls[0];
+                _control = e.Row.Cells[6].Controls[0];
                 if (_subjects[e.Row.RowIndex].IsDeleted)
                     _control.Visible = false;
                 else
