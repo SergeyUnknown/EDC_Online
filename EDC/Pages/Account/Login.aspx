@@ -18,8 +18,8 @@
 
         <div class="LoginWindow">
             <hgroup>
-                <h2 style="text-align: center">MDP-Group</h2>
             </hgroup>
+            <asp:Image runat="server" ImageUrl="~/Images/mdplogo2.png" CssClass="logoImgLogin" />
             <asp:Login runat="server" ID="LoginControl" ViewStateMode="Disabled" DisplayRememberMe="false" RenderOuterTable="false" OnLoggingIn="Unnamed_LoggingIn">
                 <LayoutTemplate>
                     <p class="validation-summary-errors loginError">

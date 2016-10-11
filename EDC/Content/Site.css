@@ -105,7 +105,7 @@ h1 {
 }
 
 h2 {
-    font-family:sans-serif;
+    font-family:Tahoma, sans-serif;
     font-size: 1.6em;
 }
 
@@ -200,7 +200,13 @@ footer {
     text-decoration: none;
 }
 
-
+.logoImgLogin
+{
+    width:200px;
+    display:flex;
+    margin: 0px auto;
+    margin-top: 15px;
+}
 /* page elements
 ----------------------------------------------------------*/
 /* featured */
@@ -258,7 +264,9 @@ section.feature {
 }
 
 /* content */
-
+#MainContent_ctl00 > div{
+    overflow-x:scroll;
+}
 /*----сворачивание табличных столбцов------*/
 #MainContent_gvCRFs
 {
@@ -616,7 +624,7 @@ input[title="Следующая CRF"], input[title="Предыдущая CRF"]
 
 .LoginWindow
 {
-    width: 322px;
+    width: 300px;
     border: solid 1px #aaa;
     background-color:white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.26);
@@ -1108,6 +1116,10 @@ tr.pager td {
 {
     border-right:solid 1px #c8c8c8;
 }
+.bigTable > tbody > tr > td:only-child
+{
+    background-color:#fff;
+}
 /*header big table*/
 .bigHeight > td
 {
@@ -1206,13 +1218,13 @@ tr.pager td {
 }
 .EventArrow
 {
-    width:12px;
+    width:15px;
     overflow-x:visible;
 }
 
 .nextEvent {
     display: inline-block;
-    width: 10px;
+    width: 18px;
     height: 48px;
     float:right;
 
@@ -1238,7 +1250,7 @@ tr.pager td {
 }
 .prevEvent {
     display: inline-block;
-    width:10px;
+    width:18px;
     height:48px;
     padding-left:10px !important;
     color:rgba(0, 0, 0, 0.00) !important;
@@ -1294,6 +1306,29 @@ tr.pager td {
     width: 1px;
 }
 */
+#btnShowHideLeftMenu{
+    padding:0px;
+    position:fixed;
+    top:50%;
+    width:30px;
+    height:30px;
+    left:155px;
+    margin-left:14px;
+    border:20px solid transparent;
+    border-left:20px solid #5f89da;
+    background-color:transparent;
+    box-shadow:none;
+    transform:scaleX(-1);
+    transition:all cubic-bezier(0.02, 0.46, 0.54, 1.02) 0.2s;
+}
+#btnShowHideLeftMenu:hover
+{
+
+    border:25px solid transparent;
+    border-left:25px solid #5f89da;
+    margin-left:0px;
+    left:141px;
+}
 .Legend
 {
     margin-top:0px;

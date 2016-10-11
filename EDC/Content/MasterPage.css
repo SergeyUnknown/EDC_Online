@@ -175,6 +175,9 @@ ul.submenu li:hover {
 {
     width:180px;
     padding-right:10px;
+    position: absolute;
+    z-index: 50;
+    width: 180px;
 }
 .logoImg
 {
@@ -197,16 +200,18 @@ ul.submenu li:hover {
 }
 .StudyCenterInfo select{
     border:none;
-    background-color:inherit;
     color:#fff;
     text-decoration:underline;
-    font-size:1.4em;
+    font-size:1.6em;
+    font-family:Tahoma, sans-serif;
     font-weight:normal;
+    background-color:#7ac0da;
+
 }
 
 .StudyCenterInfo option[selected]{
-    background-color:#fff;
-    color:#7ac0da;
+    background-color:#5f89da;
+    color:#fff;
 }
 
 
