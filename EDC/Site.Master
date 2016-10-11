@@ -43,6 +43,7 @@
                 var $mainElem = $("#<%: sectionMainMenu.ClientID %>");
                 var $mainBorder = $("#mainBorder");
                 var $navigating = $("#navigationMenu");
+                var $showButton = $("#btnShowHideLeftMenu");
                 if ($leftElem.css('display') == 'block') {
                     $leftElem.css('display', 'none');
                     $mainBorder.css('left', '0px');
@@ -50,6 +51,8 @@
                     $mainElem.css('margin-left', '0px');
                     $navigating.css('padding-left', '0px');
                     $navigating.css('width', 'calc(100%)');
+                    $showButton.css('left', '-15px');
+                    $showButton.css('transform', 'scaleX(1)');
                     $.cookie('LeftMenuVisible', 'false', { expires: 365, path: '/' });
                 }
                 else {
@@ -59,6 +62,8 @@
                     $mainBorder.css('left', '189px');
                     $navigating.css('padding-left', '176px');
                     $navigating.css('width', 'calc(100% - 176px)');
+                    $showButton.css('left', '141px');
+                    $showButton.css('transform', 'scaleX(-1)');
                     $.cookie('LeftMenuVisible', 'true', { expires: 365, path: '/' });
                 }
             }
@@ -87,8 +92,8 @@
                 </div>
                 <div class="rightHeader">
                     <div class="StudyCenterInfo">
-                        <h2><%: StudyProtocol %>/</h2>
-                        <asp:DropDownList runat="server" ID="ddlCurrentCenter" AutoPostBack="true" OnSelectedIndexChanged="ddlCurrentCenter_SelectedIndexChanged" /><h2>/</h2>
+                        <h2><%: StudyProtocol %> > </h2>
+                        <asp:DropDownList runat="server" ID="ddlCurrentCenter" AutoPostBack="true" OnSelectedIndexChanged="ddlCurrentCenter_SelectedIndexChanged" CssClass="SelectList"/><h2> > </h2>
                     </div>
 
                     <asp:ContentPlaceHolder runat="server" ID="FeaturedContent" />
@@ -199,8 +204,9 @@
         <div id="body" onmousemove="mouseOnLeftBorder(event)">
             <section runat="server" id="sectionLeftMenu" class="leftMenu ">
                 <asp:ContentPlaceHolder runat="server" ID="LegendPlace" />
-                <input type="button" id="btnShowHideLeftMenu" value="Скрыть" onclick="showHideLeftMenu()" style="width: 100%">
+                <input type="button" id="btnShowHideLeftMenu" onclick="showHideLeftMenu()">
             </section>
+            
             <section runat="server" id="sectionMainMenu" class="content-wrapper main-content clear-fix">
                 <asp:ContentPlaceHolder runat="server" ID="MainContent" />
             </section>
