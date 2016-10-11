@@ -6,25 +6,31 @@
             var $username = $("#<%: tbUserName.ClientID  %>").val();
             var $dateMin = $("#<%: tbDateMin.ClientID  %>").val();
             var $dateMax = $("#<%: tbDateMax.ClientID  %>").val();
+            var $page = $("#<%: tbPage.ClientID %>").val();
             var urlParams = "";
             if ($username != "")
-                urlParams = 'userName=' + $username;
+                urlParams = '&userName=' + $username;
+
             if ($dateMin != "")
-                if (urlParams != "")
-                    urlParams = urlParams.concat('&dateMin=' + $dateMin);
-                else
-                    urlParams = 'dateMin=' + $dateMin;
+                urlParams = urlParams.concat('&dateMin=' + $dateMin);
+
             if ($dateMax != "")
-                if (urlParams != "")
-                    urlParams = urlParams.concat('&dateMax=' + $dateMax);
-                else
-                    urlParams = 'dateMax=' + $dateMax;
+                urlParams = urlParams.concat('&dateMax=' + $dateMax);
+
+            if ($page != "")
+                urlParams = urlParams.concat('&page=' + $page);
 
             if (urlParams != "")
-                if (window.location.href.indexOf('\?') >=0)
-                    window.history.pushState(null, null, window.location.href.slice(0, window.location.href.indexOf('\?')) + '?' + urlParams);
+            {
+                urlParams = urlParams.slice(1, urlParams.length);
+                urlParams = "?" + urlParams;
+            }
+
+            if (urlParams != "")
+                if (window.location.href.indexOf('\?') >= 0)
+                    window.history.pushState(null, null, window.location.href.slice(0, window.location.href.indexOf('\?')) + urlParams);
                 else
-                    window.history.pushState(null, null, window.location.href + '?' + urlParams);
+                    window.history.pushState(null, null, window.location.href + urlParams);
             else
                 if (window.location.href.indexOf('\?') >= 0)
                     window.history.pushState(null, null, window.location.href.slice(0, window.location.href.indexOf('\?')));
@@ -59,6 +65,9 @@
             <asp:TextBox runat="server" ID="tbDateMax" />
             <ajaxToolkit:CalendarExtender runat="server" TargetControlID="tbDateMax" Format="dd.MM.yyyy" TodaysDateFormat="dd.MM.yyyy" />
 
+            <asp:Label runat="server" ID="lblPage" AssociatedControlID="tbPage" Text="Страница:" />
+            <asp:TextBox runat="server" ID="tbPage"/>
+            <ajaxToolkit:NumericUpDownExtender ID="nudPage" runat="server" TargetControlID ="tbPage" Minimum="1" Width="141" />
             <asp:Button runat="server" ID="btnSearch" OnClientClick="filter()" OnClick="btnSearch_Click" Text="Поиск" />
         </ContentTemplate>
     </asp:UpdatePanel>
@@ -84,9 +93,9 @@
                     <asp:TemplateField HeaderText="ИРК">
                         <ItemTemplate><%# GetCRFName((EDC.Models.SubjectsCRF)Eval("SubjectCRF")) %></ItemTemplate>
                     </asp:TemplateField>
+                    <asp:BoundField DataField="FieldName" HeaderText="Поле" />
                     <asp:BoundField DataField="OldValue" HeaderText="Старое значение" />
                     <asp:BoundField DataField="NewValue" HeaderText="Новое значение" />
-                    <asp:BoundField DataField="FieldName" HeaderText="Поле" />
                 </Columns>
                 <EditRowStyle BackColor="#2461BF" />
                 <FooterStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />

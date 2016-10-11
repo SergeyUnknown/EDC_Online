@@ -21,10 +21,15 @@ namespace EDC.Pages.Audit
                 if (!string.IsNullOrEmpty(dateMin))
                     tbDateMin.Text = dateMin;
                 string dateMax = Request.QueryString["dateMax"];
-                if (!string.IsNullOrEmpty(userName))
+                if (!string.IsNullOrEmpty(dateMax))
                     tbDateMin.Text = dateMax;
+                int page = GetPageFromRequest();
+                tbPage.Text = page.ToString();
 
-                LoadAudits(userName, dateMin, dateMax);
+                nudPage.Maximum = MaxPage();
+                tbPage.Text = page.ToString();
+                LoadAudits(userName, dateMin, dateMax,page);
+
             }
         }
 
@@ -43,7 +48,7 @@ namespace EDC.Pages.Audit
             return (int)Math.Ceiling(AR.SelectAll().Count()/15.0);
         }
 
-        void LoadAudits(string userName, string dateMin, string dateMax)
+        void LoadAudits(string userName, string dateMin, string dateMax,int page)
         {
             lblMessage.Visible = false;
             DateTime tempDate;
@@ -61,13 +66,13 @@ namespace EDC.Pages.Audit
             }
 
             if (!string.IsNullOrEmpty(userName))
-                audits = audits.FindAll(x => x.UserName == userName);
+                audits = audits.FindAll(x => x.UserName.ToLower().IndexOf(userName.ToLower())>=0);
             if (dateMin != null && DateTime.TryParse(dateMin, out tempDate))
                 audits = audits.FindAll(x => x.ActionDate >= tempDate);
             if (dateMax != null && DateTime.TryParse(dateMax, out tempDate))
                 audits = audits.FindAll(x => x.ActionDate <= tempDate);
 
-            audits = audits.Skip((GetPageFromRequest() - 1) * 15).Take(15).ToList();
+            audits = audits.Skip((page - 1) * 15).Take(15).ToList();
             if (audits.Count == 0)
             {
                 lblMessage.Text = "Данные удовлетворяющие заданным условиям не найдены";
@@ -82,7 +87,18 @@ namespace EDC.Pages.Audit
 
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            LoadAudits(tbUserName.Text, tbDateMin.Text, tbDateMax.Text);
+            int page = 1;
+            if (!string.IsNullOrWhiteSpace(tbPage.Text))
+            { 
+                if (!(int.TryParse(tbPage.Text, out page) && page > 0 && page <= MaxPage()))
+                {
+                    page = 1;
+                }
+            }
+            else
+                page = 1;
+
+            LoadAudits(tbUserName.Text, tbDateMin.Text, tbDateMax.Text,page);
         }
 
         protected string GetCRFName(Models.SubjectsCRF sCRF)
