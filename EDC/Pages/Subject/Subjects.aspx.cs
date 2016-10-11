@@ -33,7 +33,18 @@ namespace EDC.Pages.Subject
 
             if(!IsPostBack)
             {
-                LoadSubjects();
+                string createdBy = Request.QueryString["createdBy"];
+                if (!string.IsNullOrEmpty(createdBy))
+                    tbCreatedBy.Text = createdBy;
+                string dateMin = Request.QueryString["dateMin"];
+                if (!string.IsNullOrEmpty(dateMin))
+                    tbDateMin.Text = dateMin;
+                string dateMax = Request.QueryString["dateMax"];
+                int page = GetPageFromRequest();
+                tbPage.Text = page.ToString();
+                
+                LoadSubjects(dateMin,dateMax,createdBy,page);
+                nudPage.Maximum = MaxPageCount;
             }
 
         }
@@ -42,7 +53,7 @@ namespace EDC.Pages.Subject
         {
             int page;
             string reqValue = (string)RouteData.Values["page"] ?? Request.QueryString["page"];
-            return reqValue != null && int.TryParse(reqValue, out page) && page > 0 ? page : 1;
+            return reqValue != null && int.TryParse(reqValue, out page) && page > 0 && page < MaxPageCount ? page : 1;
         }
 
         //номер текущей страницы
@@ -66,13 +77,26 @@ namespace EDC.Pages.Subject
             }
         } 
 
-        void LoadSubjects()
+        void LoadSubjects(string dateMin, string dateMax, string createdBy, int page)
         {
 
             if (User.IsInRole(Core.Roles.Administrator.ToString()) || User.IsInRole(Core.Roles.Data_Manager.ToString()))
                 _subjects = SR.SelectAllForUser(User).ToList();
             else
-                _subjects = SR.GetManyByFilter(x=>!x.IsDeleted).ToList();
+                _subjects = SR.SelectAllForUser(User).Where(x=>!x.IsDeleted).ToList();
+
+            DateTime tempDate;
+            if (dateMin != null && DateTime.TryParse(dateMin, out tempDate))
+                _subjects = _subjects.FindAll(x => x.InclusionDate >= tempDate);
+            if (dateMax != null && DateTime.TryParse(dateMax, out tempDate))
+                _subjects = _subjects.FindAll(x => x.InclusionDate <= tempDate);
+
+            if(!string.IsNullOrEmpty(createdBy))
+            {
+                _subjects = _subjects.FindAll(x=>x.CreatedBy.ToLower().IndexOf(createdBy.ToLower()) >=0);
+            }
+            _subjects = _subjects.Skip((page - 1) * 15).Take(15).ToList();
+
             gvSubjects.DataSource = _subjects;
             gvSubjects.DataBind();
         }
@@ -104,7 +128,8 @@ namespace EDC.Pages.Subject
 
             SR.Delete(_subjects[e.RowIndex].SubjectID,User);
             SR.Save();
-            LoadSubjects();
+            _subjects.RemoveAt(e.RowIndex);
+            //LoadSubjects();
         }
 
         protected void dtInfo_SelectedIndexChanged(object sender, EventArgs e)
@@ -138,6 +163,17 @@ namespace EDC.Pages.Subject
                 return number + " - Удалён";
             else
                 return number;
+        }
+
+        protected void btnSearch_Click(object sender, EventArgs e)
+        {
+            int page = 1;
+            if(tbPage.Text != "")
+            {
+                page = int.TryParse(tbPage.Text,out page) && page>0 && page< MaxPageCount ? page : 1;
+            }
+            
+            LoadSubjects(tbDateMin.Text, tbDateMax.Text,tbCreatedBy.Text,page);
         }
     }
 }

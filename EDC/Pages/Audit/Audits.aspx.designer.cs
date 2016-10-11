@@ -67,6 +67,33 @@ namespace EDC.Pages.Audit {
         protected global::System.Web.UI.WebControls.TextBox tbDateMax;
         
         /// <summary>
+        /// lblPage элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPage;
+        
+        /// <summary>
+        /// tbPage элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox tbPage;
+        
+        /// <summary>
+        /// nudPage элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::AjaxControlToolkit.NumericUpDownExtender nudPage;
+        
+        /// <summary>
         /// btnSearch элемент управления.
         /// </summary>
         /// <remarks>
