@@ -966,22 +966,24 @@ namespace EDC.Pages.Subject
                 _sCRF.EventID = _eventID;
                 _sCRF.CRFID = _crfID;
                 SCR.Create(_sCRF);
-
             }
+            SCR.Save();
+            _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
             if (!_sCRF.IsStart)
             {
                 _sCRF.IsStart = true;
                 _sCRF.IsStartBy = User.Identity.Name;
                 SCR.Update(_sCRF);
                 SCR.Save();
+                _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
             }
             if(_sCRF.IsEnd)
             {
                 _sCRF.IsApprove = _sCRF.IsCheckAll = _sCRF.IsEnd = false;
                 _sCRF.IsApprovedBy = _sCRF.IsCheckAllBy = _sCRF.IsEndBy = User.Identity.Name;
                 SCR.Update(_sCRF);
+                SCR.Save();
             }
-            SCR.Save();
             _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
             ///////////////////////////////////
             var se = SER.SelectByID(_subjectID,_eventID);
@@ -999,7 +1001,16 @@ namespace EDC.Pages.Subject
             
             GetInfo(tempControl, section); //считывание информации из полей и запись в БД.
             LoadForm(_crf);
-            if (User.IsInRole(Core.Roles.Investigator.ToString()) || User.IsInRole(Core.Roles.Principal_Investigator.ToString()))
+
+            HttpCookie cookie = Request.Cookies["activeTabIndex"];
+            int tabIndex = 0;
+            if (cookie != null)
+            {
+                string sTabIndex = cookie.Value;
+                if (!int.TryParse(sTabIndex, out tabIndex))
+                    tabIndex = 0;
+            }
+            if (_sCRF != null && (tcCRF.Tabs.Count == 1 || tabIndex == tcCRF.Tabs.Count - 1) && ( User.IsInRole(Core.Roles.Investigator.ToString()) || User.IsInRole(Core.Roles.Principal_Investigator.ToString())))
                 btnEnd.Visible = true;
         }
 

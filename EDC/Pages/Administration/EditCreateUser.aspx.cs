@@ -164,6 +164,9 @@ namespace EDC.Pages.Administration
                     ATCR.Save();
 
                 }
+                labelStatus.Text = "Пользователь успешно изменён!";
+                labelStatus.ForeColor = System.Drawing.Color.Green;
+                labelStatus.Visible = true;
             }
             else
             {
