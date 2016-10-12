@@ -85,9 +85,9 @@
             <div class="MainHeader">
                 <div class="float-left logo">
                     <p class="site-title">
-                        <a runat="server" href="~/">
-                            <asp:Image runat="server" ImageUrl="~/Images/mdplogo2.png" CssClass="logoImg" />
-                        </a>
+                        <asp:HyperLink runat="server" NavigateUrl="~/">
+                                <asp:Image runat="server" ImageUrl="~/Images/mdplogo2.png" CssClass="logoImg" />
+                        </asp:HyperLink>
                     </p>
                 </div>
                 <div class="rightHeader">
@@ -206,9 +206,9 @@
         <div id="body" onmousemove="mouseOnLeftBorder(event)">
             <section runat="server" id="sectionLeftMenu" class="leftMenu ">
                 <asp:ContentPlaceHolder runat="server" ID="LegendPlace" />
-                <input type="button" id="btnShowHideLeftMenu" onclick="showHideLeftMenu()">
+                <input type="button" id="btnShowHideLeftMenu" onclick="showHideLeftMenu()" title="Свернуть">
             </section>
-            
+
             <section runat="server" id="sectionMainMenu" class="content-wrapper main-content clear-fix">
                 <asp:ContentPlaceHolder runat="server" ID="MainContent" />
             </section>

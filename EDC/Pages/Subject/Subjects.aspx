@@ -80,7 +80,6 @@
     <asp:GridView runat="server" ID="gvSubjects" CellPadding="4" ForeColor="#333333" GridLines="Both" AutoGenerateColumns="False" OnRowDeleting="gvSubjects_RowDeleting" OnRowEditing="gvSubjects_RowEditing" OnRowDataBound="gvSubjects_RowDataBound">
         <AlternatingRowStyle BackColor="White" />
         <Columns>
-            <asp:BoundField DataField="SubjectID" HeaderText="ID" />
             <asp:TemplateField HeaderText="Номер">
                 <ItemTemplate><%# IsDeleted((string)Eval("Number"),(bool)Eval("IsDeleted")) %></ItemTemplate>
             </asp:TemplateField>
