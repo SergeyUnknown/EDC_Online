@@ -92,9 +92,9 @@
                 </div>
                 <div class="rightHeader">
                     <div class="StudyCenterInfo">
-                        <asp:Image runat="server" ImageUrl="~/Images/file-document (1).png"/>
+                        <asp:Image runat="server" ImageUrl="~/Images/file-document (2).png" CssClass="infImg"/>
                         <h2><%: StudyProtocol %></h2>
-                        <asp:Image runat="server" ImageUrl="~/Images/hospital-building.png"/>
+                        <asp:Image runat="server" ImageUrl="~/Images/hospital-building (1).png" CssClass="infImg"/>
                         <asp:DropDownList runat="server" ID="ddlCurrentCenter" AutoPostBack="true" OnSelectedIndexChanged="ddlCurrentCenter_SelectedIndexChanged" CssClass="SelectList"/>
                     </div>
 
