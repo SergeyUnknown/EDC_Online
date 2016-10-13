@@ -12,11 +12,43 @@ namespace EDC.Pages.Subject
         Models.Repository.SubjectRepository SR = new Models.Repository.SubjectRepository();
         Models.Repository.MedicalCenterRepository MCR = new Models.Repository.MedicalCenterRepository();
         Models.Repository.AuditsRepository AR = new Models.Repository.AuditsRepository();
+        Models.Repository.UserProfileRepository UPR = new Models.Repository.UserProfileRepository();
 
-        static Models.Subject _subject = new Models.Subject();
-        static bool Editing = true;
+        Models.Subject _subject
+        {
+            get 
+            {
+                if (Session["ces_subject"] == null)
+                    Session["ces_subject"] = new Models.Subject();
+                return (Models.Subject)Session["ces_subject"];
+            }
+            set { Session["ces_subject"] = value; }
+        }
+        bool Editing
+        {
+            get 
+            {
+                if(Session["ces_Editing"] == null)
+                    Session["ces_Editing"] = true;
+                return (bool)Session["ces_Editing"];
+            }
+            set { Session["ces_Editing"] = value; }
+        }
 
-        static List<Models.MedicalCenter> _MCs;
+        List<Models.MedicalCenter> _MCs
+        {
+            get 
+            {
+                if (Session["ces_MCs"] == null)
+                    Session["ces_MCs"] = new List<Models.MedicalCenter>();
+                return (List<Models.MedicalCenter>)Session["ces_MCs"];
+            }
+            set 
+            {
+                Session["ces_MCs"] = value;
+
+            }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -49,12 +81,19 @@ namespace EDC.Pages.Subject
 
         void LoadMC()
         {
-            _MCs = MCR.SelectAll().ToList();
-            ddlCenters.Items.Add(new ListItem("Выберите.."));
-            for (int i = 0; i < _MCs.Count; i++)
+            Models.UserProfile up = UPR.SelectByID(System.Web.Security.Membership.GetUser(User.Identity.Name).ProviderUserKey);
+            if (up != null)
+                _MCs = up.MedicalCenters.Select(x => x.MedicalCenter).ToList();
+            if (_MCs.Count != 0)
             {
-                ddlCenters.Items.Add(new ListItem(_MCs[i].Name));
+                ddlCenters.Items.Add(new ListItem("Выберите.."));
+                for (int i = 0; i < _MCs.Count; i++)
+                {
+                    ddlCenters.Items.Add(new ListItem(_MCs[i].Name));
+                }
             }
+            else
+                ddlCenters.Items.Add(new ListItem("Вы не состоите не в одном центре"));
         }
         long GetIDFromRequest()
         {
