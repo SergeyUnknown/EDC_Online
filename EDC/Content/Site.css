@@ -965,14 +965,14 @@ tr.pager td {
 .vertical > tbody {
     display:inline-block;
 }
-.response-Item > tbody > tr > td > label
+.response-Item > tbody > tr > td > label, .aspNetDisabled > label, .response-Item > tbody > tr > td > span > label
 {
     font-weight:500;
     font-size:0.8em;
     display:inline-flex;
 }
 
-.response-Item > tbody > tr > td > input
+.response-Item > tbody > tr > td > input, .aspNetDisabled > input
 {
     width:auto;
     margin:0px;
@@ -1074,27 +1074,27 @@ tr.pager td {
     color:white;
 }
 
-.horizontal > tbody
+.Horizontal > tbody, .horizontal > tbody
 {
     display:inline-flex;
     flex-direction:row;
     white-space:nowrap;
     min-width:100px;
 }
-.horizontal > tbody > tr
+.Horizontal > tbody > tr, .horizontal > tbody > tr
 {
     display:inline-flex;
     
 }
 
-.vertical > tbody
+.Vertical > tbody, .vertical > tbody
 {
     display:inline-flex;
     flex-direction:column;
     min-width:160px;
     white-space:nowrap;
 }
-.horizontal > tbody > tr
+.Horizontal > tbody > tr, .horizontal > tbody > tr
 {
     display:inline-flex;
 }
