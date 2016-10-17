@@ -106,7 +106,7 @@ h1 {
 
 h2 {
     font-family:Tahoma, sans-serif;
-    font-size: 1.6em;
+    font-size: 1.5em;
 }
 
 h3 {
@@ -238,7 +238,7 @@ footer {
         }
         .featured hgroup.title h2
         {
-            font-size:2em;
+            font-size:1.8em;
         }
         .featured p {
             font-size: 1.1em;
