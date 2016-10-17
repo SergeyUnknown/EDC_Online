@@ -23,6 +23,8 @@ namespace EDC.Pages.Subject
         Models.Repository.AppSettingRepository ASR = new Models.Repository.AppSettingRepository();
         Models.Repository.AuditsRepository AR = new Models.Repository.AuditsRepository();
 
+        Models.Repository.AuditsEditReasonsRepository AERR = new Models.Repository.AuditsEditReasonsRepository();
+
         Models.CRF _crf
         {
             get { return (Models.CRF)Session["_crf"]; }
@@ -150,6 +152,8 @@ namespace EDC.Pages.Subject
             LoadForm(_crf);
 
             ConfigActionButtons();
+
+            _mpe.Show();
         }
 
         /// <summary>
@@ -257,6 +261,7 @@ namespace EDC.Pages.Subject
         /// </summary>
         void ConfigActionButtons()
         {
+            btnEnd.Visible = btnEdit.Visible = btnApproved.Visible = btnCheckAll.Visible = false;
             HttpCookie cookie = Request.Cookies["activeTabIndex"];
             int tabIndex = 0;
             if (cookie != null)
@@ -277,10 +282,30 @@ namespace EDC.Pages.Subject
                     
                     btnEdit.Visible = true;
                 }
+                else if (userRoles.Contains(Core.Roles.Investigator.ToString()))
+                {
+                    if (_sCRF.IsEnd && !_sCRF.IsApprove)
+                        btnEdit.Visible = true;
+                }
                 else if (userRoles.Contains(Core.Roles.Monitor.ToString()) && _sCRF.IsApprove && !_sCRF.IsCheckAll)
                 {
                     btnCheckAll.Visible = true;
                 }
+            }
+            if(btnEdit.Visible)
+            {
+                LinkButton btnUnvisible = new LinkButton();
+                btnUnvisible.ID = "btnUnvisibleEdit";
+                btnUnvisible.CssClass = "buttonHide";
+                var p = btnEdit.Parent;
+                p.Controls.AddAt(p.Controls.IndexOf(btnEdit), btnUnvisible);
+
+                AjaxControlToolkit.ModalPopupExtender mpe = new AjaxControlToolkit.ModalPopupExtender();
+                mpe.TargetControlID = btnUnvisible.ID;
+                mpe.PopupControlID = "pnlEditReason";
+                mpe.CancelControlID = "btnCloseEditReason";
+                mpe.ID = "mpeEditReason";
+                p.Controls.Add(mpe);
             }
         }
 
@@ -513,7 +538,8 @@ namespace EDC.Pages.Subject
                         ////////////////////Поле ввода данных/////////////////
                         tc = new TableCell();
                         GetAddedControl(item, ref tc, groupedIndex, null);
-                        trsGroupedValues.Cells.Add(tc);
+                        if(!readOnly)
+                            trsGroupedValues.Cells.Add(tc);
                         //////////////////////////////////////////////////
                     }
 
@@ -549,13 +575,16 @@ namespace EDC.Pages.Subject
                     ////////////////////////////////////////////////////
 
                     ////////////////кнопка Добавить/////////////////////
-                    TableCell tcg = new TableCell();
-                    trGroupedHeaders = new TableRow();
-                    tcg.Controls.Add(btnAdd);
-                    trGroupedHeaders.Cells.Add(tcg);
-                    tableGrouped.Rows.Add(trGroupedHeaders);
-                    tableGrouped.CssClass = "bigTable";
-                    ScriptManager.GetCurrent(this).RegisterAsyncPostBackControl(btnAdd);
+                    if (!readOnly)
+                    {
+                        TableCell tcg = new TableCell();
+                        trGroupedHeaders = new TableRow();
+                        tcg.Controls.Add(btnAdd);
+                        trGroupedHeaders.Cells.Add(tcg);
+                        tableGrouped.Rows.Add(trGroupedHeaders);
+                        tableGrouped.CssClass = "bigTable";
+                        ScriptManager.GetCurrent(this).RegisterAsyncPostBackControl(btnAdd);
+                    }
                     ///////////////////////////////////////////////////
                 }
                 #endregion
@@ -1002,16 +1031,20 @@ namespace EDC.Pages.Subject
             GetInfo(tempControl, section); //считывание информации из полей и запись в БД.
             LoadForm(_crf);
 
-            HttpCookie cookie = Request.Cookies["activeTabIndex"];
-            int tabIndex = 0;
-            if (cookie != null)
-            {
-                string sTabIndex = cookie.Value;
-                if (!int.TryParse(sTabIndex, out tabIndex))
-                    tabIndex = 0;
-            }
-            if (_sCRF != null && (tcCRF.Tabs.Count == 1 || tabIndex == tcCRF.Tabs.Count - 1) && ( User.IsInRole(Core.Roles.Investigator.ToString()) || User.IsInRole(Core.Roles.Principal_Investigator.ToString())))
-                btnEnd.Visible = true;
+            ConfigActionButtons();
+
+            //HttpCookie cookie = Request.Cookies["activeTabIndex"];
+            //int tabIndex = 0;
+            //if (cookie != null)
+            //{
+            //    string sTabIndex = cookie.Value;
+            //    if (!int.TryParse(sTabIndex, out tabIndex))
+            //        tabIndex = 0;
+            //}
+            //if (_sCRF != null && (tcCRF.Tabs.Count == 1 || tabIndex == tcCRF.Tabs.Count - 1) && (User.IsInRole(Core.Roles.Investigator.ToString()) || User.IsInRole(Core.Roles.Principal_Investigator.ToString())))
+            //{
+            //    btnEnd.Visible = true;
+            //}
         }
 
         protected void btnAdd_Click(object sender, EventArgs e)
@@ -1096,7 +1129,12 @@ namespace EDC.Pages.Subject
             else
                 _si = si;
             List<Models.Note> Notes = NR
-                .GetManyByFilter(x => x.SubjectID == _subjectID && x.EventID == _eventID && x.CRFID == _crfID && x.ItemID == si.ItemID && x.IndexID == si.IndexID).ToList();
+                .GetManyByFilter(x =>
+                    x.SubjectID == _subjectID && 
+                    x.EventID == _eventID && 
+                    x.CRFID == _crfID && 
+                    x.ItemID == si.ItemID && 
+                    x.IndexID == si.IndexID).ToList();
             gvNotes.DataSource = Notes;
             gvNotes.DataBind();
 
@@ -1161,12 +1199,12 @@ namespace EDC.Pages.Subject
         protected void btnSaveWindow_Click(object sender, EventArgs e)
         {
             Models.Note note = new Models.Note();
-            note.Status = Core.QueryStatus.New;
 
             if (answerRowIndex == -1)
             {
                 note.ForUser = _si.CreatedBy;
                 note.Header = tbHeader.Text;
+                note.Status = Core.QueryStatus.New;
             }
             else
             {
@@ -1176,6 +1214,7 @@ namespace EDC.Pages.Subject
                 answeringNote.Status = Core.QueryStatus.Updated;
                 note.ForUser = answeringNote.FromUser;
                 note.PreviousNoteID = answeringNote.PreviousNoteID == null ? answeringNote.NoteID : answeringNote.PreviousNoteID;
+                note.Status = Core.QueryStatus.Closed;
                 NR.Update(answeringNote);
             }
 
@@ -1196,7 +1235,7 @@ namespace EDC.Pages.Subject
 
             tbHeader.Text = "";
             tbNoteText.Text = "";
-
+            answerRowIndex = -1;
             LoadMPE(_mpe.ID);
         }
 
@@ -1220,8 +1259,10 @@ namespace EDC.Pages.Subject
                     //закрыть
                     close = false;
 
-                    if(_note.PreviousNote.Status == Core.QueryStatus.Closed)
+                    if (_note.PreviousNote.Status == Core.QueryStatus.Closed)
                         answer = false;
+                    else
+                        answer = true;
                 }
 
                 //ответить
@@ -1231,7 +1272,31 @@ namespace EDC.Pages.Subject
                 (e.Row.Cells[7].Controls[1] as Button).Visible = close;
             }
         }
+        protected string NotesStatus(long? prevNodeID, Core.QueryStatus status)
+        {
+            if (prevNodeID != null)
+                return "";
+            else
+                return Core.GetQueryStatusRusName(status);
+        }
 
+
+        protected void btnEnd_Click(object sender, EventArgs e)
+        {
+            _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
+            _sCRF.IsEnd = true;
+            _sCRF.IsEndBy = User.Identity.Name;
+            SCR.Update(_sCRF);
+            SCR.Save();
+            //btnEnd.Visible = false;
+            //if (User.IsInRole(Core.Roles.Principal_Investigator.ToString()) || User.IsInRole(Core.Roles.Investigator.ToString()))
+            //    btnEdit.Visible = true;
+            //if (User.IsInRole(Core.Roles.Principal_Investigator.ToString()))
+            //    btnApproved.Visible = true;
+            readOnly = true;
+            LoadForm(_crf);
+            ConfigActionButtons();
+        }
         protected void btnApproved_Click(object sender, EventArgs e)
         {
             _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
@@ -1242,7 +1307,8 @@ namespace EDC.Pages.Subject
             SCR.Save();
 
             _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
-            btnApproved.Visible = false;
+            //btnApproved.Visible = false;
+            ConfigActionButtons();
         }
 
         protected void btnCheckAll_Click(object sender, EventArgs e)
@@ -1253,25 +1319,30 @@ namespace EDC.Pages.Subject
             _sCRF.IsCheckAllBy = User.Identity.Name;
             SCR.Update(_sCRF);
             SCR.Save();
-
             _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
-            btnCheckAll.Visible = false;
-        }
 
-        protected void btnEnd_Click(object sender, EventArgs e)
-        {
-            _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
-            _sCRF.IsEnd = true;
-            _sCRF.IsEndBy = User.Identity.Name;
-            SCR.Update(_sCRF);
-            SCR.Save();
-            btnEnd.Visible = false;
-            if (User.IsInRole(Core.Roles.Principal_Investigator.ToString()))
-                btnApproved.Visible = true;
+            //btnCheckAll.Visible = false;
+            ConfigActionButtons();
         }
 
         protected void btnEdit_Click(object sender, EventArgs e)
         {
+            AjaxControlToolkit.ModalPopupExtender mpe = btnEdit.Parent.FindControl("mpeEditReason") as AjaxControlToolkit.ModalPopupExtender;
+            mpe.Show();
+        }
+
+        protected void btnSaveEditReason_Click(object sender, EventArgs e)
+        {
+            Models.AuditEditReason aer = new AuditEditReason();
+            aer.ActionDate = DateTime.Now;
+            aer.CRFID = _crfID;
+            aer.EventID = _eventID;
+            aer.SubjectID = _subjectID;
+            aer.UserName = User.Identity.Name;
+            aer.UserID = (Guid)System.Web.Security.Membership.GetUser(User.Identity.Name).ProviderUserKey;
+            aer.EditReason = tbEditReason.Text;
+            AERR.Create(aer);
+            AERR.Save();
             editing = true;
             readOnly = false;
             LoadForm(_crf);

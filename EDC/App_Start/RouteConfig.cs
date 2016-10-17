@@ -10,8 +10,10 @@ namespace EDC
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
+
             routes.MapPageRoute(null, "SDV", "~/Pages/SDV/SDV.aspx");
 
+            routes.MapPageRoute(null, "Audits/EditReasons", "~/Pages/Audit/EditReasons.aspx");
             routes.MapPageRoute(null, "Audits", "~/Pages/Audit/Audits.aspx");
 
             routes.MapPageRoute(null, "NotesAndQuery", "~/Pages/Note/NotesAndQuery.aspx");
