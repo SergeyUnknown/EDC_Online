@@ -132,6 +132,7 @@ namespace EDC.Pages.Subject
                 if (Request.Cookies["activeTabIndex"] != null)
                     Request.Cookies["activeTabIndex"].Value = "0";
                 editing = false;
+                _mpe = null;
             }
             if (_subject.IsDeleted || ASR.SelectByID(Core.APP_STATUS).Value == Core.AppStatus.Disable.ToString() || !(User.IsInRole(Core.Roles.Investigator.ToString()) || User.IsInRole(Core.Roles.Principal_Investigator.ToString())) || (_sCRF != null && (_sCRF.IsEnd || _sCRF.IsApprove || _sCRF.IsCheckAll)))
             {
@@ -152,8 +153,6 @@ namespace EDC.Pages.Subject
             LoadForm(_crf);
 
             ConfigActionButtons();
-
-            _mpe.Show();
         }
 
         /// <summary>
