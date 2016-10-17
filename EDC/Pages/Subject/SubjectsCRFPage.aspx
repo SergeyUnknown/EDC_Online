@@ -42,7 +42,7 @@
             <asp:AsyncPostBackTrigger ControlID="btnCreateNote" />
         </Triggers>
         <ContentTemplate>
-            <table class="subjectCRFTable">
+            <table class="subjectCRFTable" runat="server">
                 <tbody>
                     <tr>
                         <th class="EventArrow"></th>
@@ -88,6 +88,8 @@
                     </tr>
                 </tbody>
             </table>
+
+            <%--ПопАп--%>
             <asp:Panel runat="server" ID="pnlModalPopup" Style="display: none">
                 <asp:GridView runat="server" ID="gvNotes" CellPadding="4" ForeColor="#333333" GridLines="Both" AutoGenerateColumns="False" OnRowDataBound="gvNotes_RowDataBound">
                     <AlternatingRowStyle BackColor="White" />
@@ -97,7 +99,12 @@
                         <asp:BoundField DataField="PreviousNote.Header" HeaderText="Ответ на" />
                         <asp:BoundField DataField="Header" HeaderText="Заголовок" />
                         <asp:BoundField DataField="Text" HeaderText="Текст" />
-                        <asp:BoundField DataField="Status" HeaderText="Статус" />
+                        <%--<asp:BoundField DataField="Status" HeaderText="Статус" />--%>
+                        <asp:TemplateField HeaderText="Статус">
+                            <ItemTemplate>
+                                <%# NotesStatus((long?)Eval("PreviousNoteID"),(EDC.Core.QueryStatus)Eval("Status"))  %>
+                            </ItemTemplate>
+                        </asp:TemplateField>
 
                         <%--Ответить--%>
                         <asp:TemplateField>
@@ -112,7 +119,6 @@
                                 <asp:Button runat="server" Text="Закрыть" OnClick="btnCloseNote_Click" />
                             </ItemTemplate>
                         </asp:TemplateField>
-
 
                     </Columns>
                     <EditRowStyle BackColor="#2461BF" />
@@ -139,6 +145,18 @@
                 </div>
                 <asp:Button runat="server" ID="btnSaveWindow" OnClick="btnSaveWindow_Click" Visible="false" Text="Сохранить" />
                 <asp:Button runat="server" ID="btnCloseWindow" Text="Закрыть" />
+            </asp:Panel>
+
+            <%--Причина редактирования--%>
+            <asp:Panel runat="server" ID="pnlEditReason" style="display:none" >
+                <div runat="server" id="divEditReason">
+                    <asp:Label runat="server" AssociatedControlID="tbEditReason" ID="Label2">Причина редактирования</asp:Label>
+                    <asp:TextBox runat="server" ID="tbEditReason" TextMode="MultiLine" />
+                    </br>
+                    <asp:RequiredFieldValidator runat="server" ControlToValidate="tbEditReason" ErrorMessage="Необходимо указать причину редактирования" Display="Dynamic" ValidationGroup="editReason" />
+                </div>
+                <asp:Button runat="server" ID="btnSaveEditReason" OnClick="btnSaveEditReason_Click" Text="Сохранить" ValidationGroup="editReason" />
+                <asp:Button runat="server" ID="btnCloseEditReason" Text="Закрыть" />
             </asp:Panel>
 
         </ContentTemplate>

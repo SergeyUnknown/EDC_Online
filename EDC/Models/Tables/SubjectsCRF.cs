@@ -54,5 +54,6 @@ namespace EDC.Models
         [DefaultValue(false)]
         public bool IsDeleted { get; set; } //удалено
         public virtual List<Audit> Audits { get; set; } //Аудит
+        public virtual List<AuditEditReason> EditReasons { get; set; } //Причины редактирования
     }
 }

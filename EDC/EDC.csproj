@@ -266,6 +266,7 @@
     <Content Include="Pages\Administration\EditCreateUser.aspx" />
     <Content Include="Pages\Administration\Web.config" />
     <Content Include="Pages\Audit\Audits.aspx" />
+    <Content Include="Pages\Audit\EditReasons.aspx" />
     <Content Include="Pages\CRF\Web.config" />
     <Content Include="Pages\Event\Web.config" />
     <Content Include="Pages\MedicalCenter\Web.config" />
@@ -350,6 +351,7 @@
     <Compile Include="Core\Localization.cs" />
     <Compile Include="Models\Repository\AccessToCenterRepository.cs" />
     <Compile Include="Models\Repository\AppSettingRepository.cs" />
+    <Compile Include="Models\Repository\AuditsEditReasonRepository.cs" />
     <Compile Include="Models\Repository\AuditsRepository.cs" />
     <Compile Include="Models\Repository\CRF\CRFGroupRepository.cs" />
     <Compile Include="Models\Repository\CRF\CRFItemRepository.cs" />
@@ -363,6 +365,7 @@
     <Compile Include="Models\Repository\SubjectsCRFRepository.cs" />
     <Compile Include="Models\Repository\SubjectsEventRepoitory.cs" />
     <Compile Include="Models\Repository\SubjectsItemRepoitory.cs" />
+    <Compile Include="Models\Tables\AuditEditReason.cs" />
     <Compile Include="Models\Tables\Audit.cs" />
     <Compile Include="Models\Tables\AppSetting.cs" />
     <Compile Include="Models\Tables\SubjectsCRF.cs" />
@@ -442,6 +445,13 @@
     </Compile>
     <Compile Include="Pages\Audit\Audits.aspx.designer.cs">
       <DependentUpon>Audits.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Audit\EditReasons.aspx.cs">
+      <DependentUpon>EditReasons.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Audit\EditReasons.aspx.designer.cs">
+      <DependentUpon>EditReasons.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\CRF\AddCRF.aspx.cs">
       <DependentUpon>AddCRF.aspx</DependentUpon>
@@ -568,6 +578,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Migrations\" />
+    <Folder Include="Pages\Query\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Pages\Account\Web.config" />

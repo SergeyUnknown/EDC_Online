@@ -6,7 +6,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <_PublishTargetUrl>C:\Users\Sergey Unknown\Desktop\EDC_v18</_PublishTargetUrl>
+    <_PublishTargetUrl>C:\Users\Sergey Unknown\Desktop\EDC_v20</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="About.aspx">
@@ -43,7 +43,7 @@
       <publishTime>04/19/2016 22:41:44</publishTime>
     </File>
     <File Include="bin/EDC.dll">
-      <publishTime>10/13/2016 00:16:17</publishTime>
+      <publishTime>10/18/2016 01:16:46</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>04/27/2016 15:46:05</publishTime>
@@ -112,7 +112,7 @@
       <publishTime>10/12/2016 23:48:18</publishTime>
     </File>
     <File Include="Content/Site.css">
-      <publishTime>10/12/2016 23:48:18</publishTime>
+      <publishTime>10/18/2016 00:45:50</publishTime>
     </File>
     <File Include="Content/themes/base/accordion.css">
       <publishTime>09/24/2016 15:16:17</publishTime>
@@ -550,7 +550,7 @@
       <publishTime>09/24/2016 20:51:28</publishTime>
     </File>
     <File Include="Pages/Account/Login.aspx">
-      <publishTime>10/11/2016 13:03:27</publishTime>
+      <publishTime>10/14/2016 12:17:53</publishTime>
     </File>
     <File Include="Pages/Account/Manage.aspx">
       <publishTime>09/13/2016 23:43:44</publishTime>
@@ -574,7 +574,10 @@
       <publishTime>09/08/2016 21:34:24</publishTime>
     </File>
     <File Include="Pages/Audit/Audits.aspx">
-      <publishTime>10/09/2016 22:46:58</publishTime>
+      <publishTime>10/15/2016 20:24:51</publishTime>
+    </File>
+    <File Include="Pages/Audit/EditReasons.aspx">
+      <publishTime>10/15/2016 20:24:21</publishTime>
     </File>
     <File Include="Pages/Audit/Web.config">
       <publishTime>09/28/2016 19:18:23</publishTime>
@@ -628,10 +631,10 @@
       <publishTime>10/05/2016 22:29:45</publishTime>
     </File>
     <File Include="Pages/Subject/Subjects.aspx">
-      <publishTime>10/11/2016 16:30:28</publishTime>
+      <publishTime>10/14/2016 10:56:09</publishTime>
     </File>
     <File Include="Pages/Subject/SubjectsCRFPage.aspx">
-      <publishTime>10/07/2016 20:46:33</publishTime>
+      <publishTime>10/16/2016 16:00:21</publishTime>
     </File>
     <File Include="Pages/Subject/SubjectsMatrix.aspx">
       <publishTime>10/07/2016 23:58:26</publishTime>
@@ -751,7 +754,7 @@
       <publishTime>09/24/2016 15:19:33</publishTime>
     </File>
     <File Include="Site.Master">
-      <publishTime>10/12/2016 23:50:14</publishTime>
+      <publishTime>10/15/2016 20:22:11</publishTime>
     </File>
     <File Include="Site.Mobile.Master">
       <publishTime>09/24/2016 15:22:14</publishTime>
@@ -760,7 +763,7 @@
       <publishTime>09/24/2016 15:22:14</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>10/13/2016 00:16:19</publishTime>
+      <publishTime>10/18/2016 01:16:48</publishTime>
     </File>
   </ItemGroup>
 </Project>

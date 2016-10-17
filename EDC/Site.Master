@@ -141,6 +141,9 @@
                                 <li>
                                     <a runat="server" href="~/Audits">Аудит данных исследования</a>
                                 </li>
+                                <li>
+                                    <a runat="server" href="~/Audits/EditReasons">Причины редактирования ИРК</a>
+                                </li>
                             </ul>
                         </li>
                         <li runat="server" visible="false" id="liData">

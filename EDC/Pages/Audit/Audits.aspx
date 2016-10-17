@@ -51,7 +51,6 @@
 <asp:Content ID="Content3" ContentPlaceHolderID="LegendPlace" runat="server">
     <asp:UpdatePanel runat="server" UpdateMode="Conditional">
         <Triggers>
-            <%--<asp:AsyncPostBackTrigger ControlID="btnSearch" EventName="Click" />--%>
         </Triggers>
         <ContentTemplate>
             <asp:Label runat="server" ID="lblUserName" AssociatedControlID="tbUserName" Text="Имя пользователя:" />
@@ -72,6 +71,7 @@
         </ContentTemplate>
     </asp:UpdatePanel>
 </asp:Content>
+
 <asp:Content ID="Content4" ContentPlaceHolderID="MainContent" runat="server">
     <asp:UpdatePanel runat="server">
         <ContentTemplate>
@@ -81,7 +81,7 @@
                 <Columns>
                     <asp:BoundField DataField="UserName" HeaderText="Пользователь" />
                     <asp:BoundField DataField="ActionDate" HeaderText="Дата" DataFormatString="{0:dd.MM.yyyy}" />
-                    <asp:BoundField DataField="ActionDate" HeaderText="Время" DataFormatString="{0:hh:mm:ss}" />
+                    <asp:BoundField DataField="ActionDate" HeaderText="Время" DataFormatString="{0:HH:mm:ss}" />
                     <asp:TemplateField HeaderText="Тип">
                         <ItemTemplate><%# EDC.Core.GetAuditActionTypeRusName((EDC.Core.AuditActionType)Eval("ActionType")) %></ItemTemplate>
                     </asp:TemplateField>
@@ -109,6 +109,7 @@
                 <SortedDescendingHeaderStyle BackColor="#4870BE" />
 
             </asp:GridView>
+
         </ContentTemplate>
     </asp:UpdatePanel>
 </asp:Content>

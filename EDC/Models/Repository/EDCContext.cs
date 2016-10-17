@@ -18,6 +18,7 @@ namespace EDC.Models
         public DbSet<CRF_Group> CRFGroups { get; set; } //Группы CRF
         public DbSet<CRF_Item> CRFItems { get; set; } //Итемы CRF
         public DbSet<Audit> Audits { get; set; } //Аудит
+        public DbSet<AuditEditReason> AuditsEditReason { get; set; } //Аудит
         public DbSet<Event> Events { get; set; } //События
         public DbSet<CRFInEvent> CRFInEvent { get; set; } //Связующая таблица
         public DbSet<Note> Notes { get; set; } // 
@@ -77,10 +78,11 @@ namespace EDC.Models
                 .HasForeignKey(t => new { t.SubjectID, t.EventID, t.CRFID, t.ItemID, t.IndexID })
                 .WillCascadeOnDelete(false);
 
+            /////////////////ForeingKey Аудит//////////
             modelBuilder.Entity<Audit>()
                 .HasOptional(x => x.Subject)
                 .WithMany(x => x.Audits)
-                .HasForeignKey(t => new {t.SubjectID })
+                .HasForeignKey(t => new { t.SubjectID })
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Audit>()
@@ -99,6 +101,13 @@ namespace EDC.Models
                 .HasOptional(x => x.SubjectItem)
                 .WithMany(x => x.Audits)
                 .HasForeignKey(t => new { t.SubjectID, t.EventID, t.CRFID, t.ItemID,t.IndexID })
+                .WillCascadeOnDelete(false);
+            ///////////////////////////////////////////
+
+            modelBuilder.Entity<AuditEditReason>()
+                .HasOptional(x => x.SubjectCRF)
+                .WithMany(x => x.EditReasons)
+                .HasForeignKey(t => new { t.SubjectID, t.EventID, t.CRFID })
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<AccessToCenter>()

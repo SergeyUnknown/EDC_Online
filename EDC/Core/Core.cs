@@ -119,6 +119,18 @@ namespace EDC
             Note
         }
 
+        public static string GetQueryStatusRusName(QueryStatus item)
+        {
+            switch(item)
+            {
+                case QueryStatus.Closed: return "Закрыта";
+                case QueryStatus.New: return "Новая";
+                case QueryStatus.Note: return "Заметка";
+                case QueryStatus.Updated: return "Обновлена";
+                default: return "";
+            }
+        }
+
         public enum NoteType
         {
             Query,
