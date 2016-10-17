@@ -106,7 +106,7 @@ h1 {
 
 h2 {
     font-family:Tahoma, sans-serif;
-    font-size: 1.5em;
+    font-size: 1.4em;
 }
 
 h3 {
@@ -238,7 +238,7 @@ footer {
         }
         .featured hgroup.title h2
         {
-            font-size:1.8em;
+            font-size:1.7em;
         }
         .featured p {
             font-size: 1.1em;
@@ -921,10 +921,15 @@ tr.pager td {
     justify-content:space-between;
         */
     
-    text-align:start;
+    text-align:right;
     width:100%;
     vertical-align:middle;    
     text-wrap:avoid;
+}
+
+.bigHeight > .CRFCellLeftItem
+{
+    text-align:start;
 }
 /*Текст правее input*/
 .CRFCellLeftItem > span
@@ -935,11 +940,12 @@ tr.pager td {
 
 .CRFLeftItem
 {
+    float:left;
     display:inline-block;
     font-size:0.8em;
     font-weight:500;
-    min-width:30%;
-    max-width:30%;
+    min-width:50%;
+    max-width:50%;
     /*vertical-align:middle;*/
     margin-top:auto;
     margin-bottom:auto;
@@ -947,7 +953,7 @@ tr.pager td {
 
 .response-Item
 {
-    display: inline-block;
+    display: inline-flex;
     box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.26);
     align-content:center;
     width:auto;
@@ -958,9 +964,17 @@ tr.pager td {
 }
 .response-Item > tbody > tr > td
 {
+    display:block;
     text-align:left;
     vertical-align:bottom;
-    justify-content:center;
+    flex-direction:row;
+}
+.vertical > tbody > tr > td, .horizontal > tbody > tr > td
+{
+    display:flex;
+    text-align:left;
+    vertical-align:bottom;
+    flex-direction:row;
 }
 .vertical > tbody {
     display:inline-block;
@@ -970,6 +984,7 @@ tr.pager td {
     font-weight:500;
     font-size:0.8em;
     display:inline-flex;
+    float:right;
 }
 
 .response-Item > tbody > tr > td > input, .aspNetDisabled > input
