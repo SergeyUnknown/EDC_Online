@@ -198,19 +198,19 @@ ul.submenu li:hover {
     color:#eeeeee;
     font-weight:normal;
     display:inline;
-    vertical-align: top;
+    vertical-align: super;
     margin-right:30px;
 }
 .StudyCenterInfo select{
     border:none;
     color:#eeeeee;
     text-decoration:underline;
-    font-size:1.6em;
+    font-size:1.4em;
     font-family:Tahoma, sans-serif;
     font-weight:normal;
     background-color:#7ac0da;
     vertical-align: top;
-    height: 28px;
+    height: 24px;
 }
 
 .StudyCenterInfo option[selected]{

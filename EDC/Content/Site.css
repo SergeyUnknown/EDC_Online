@@ -957,7 +957,6 @@ tr.pager td {
     box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.26);
     align-content:center;
     width:auto;
-    
     /*margin-left: auto;*/
     max-height:200px;
     margin-right: auto;
@@ -984,7 +983,8 @@ tr.pager td {
     font-weight:500;
     font-size:0.8em;
     display:inline-flex;
-    float:right;
+    margin-right: 15px;
+    /*float:left;*/
 }
 
 .response-Item > tbody > tr > td > input, .aspNetDisabled > input
@@ -993,6 +993,7 @@ tr.pager td {
     margin:0px;
     /*vertical-align:bottom;*/
     vertical-align: text-bottom;
+    float: left;
 }
 .ajax__tab_panel 
 {
