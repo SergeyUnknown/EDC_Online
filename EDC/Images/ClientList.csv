@@ -1,7 +1,0 @@
-Clients Name,Clients IP Address,Clients MAC Address,Interface,Tx Rate,Rx Rate,Access time
-android-eb4a187,192.168.1.36,4C:21:D0:68:8A:E8,2.4 GHz,-,-,00:00:00
-YQ601-kpblc,192.168.1.37,B4:0B:44:29:96:0C,2.4 GHz,-,-,00:00:00
-*,192.168.1.98,94:44:44:9B:BA:6D,2.4 GHz,-,-,00:00:00
-KPBLCKE-,192.168.1.140,00:24:1D:A3:A2:C0,Wired,-,-,-
-android-12b5e47,192.168.1.156,00:E3:B2:B7:AB:CC,2.4 GHz,-,-,00:00:00
-android-b7abe2a,192.168.1.160,1C:B7:2C:42:A3:3F,2.4 GHz,-,-,00:00:00

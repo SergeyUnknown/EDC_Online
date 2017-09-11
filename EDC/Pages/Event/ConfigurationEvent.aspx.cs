@@ -7,20 +7,76 @@ using System.Web.UI.WebControls;
 
 namespace EDC.Pages.Event
 {
-    public partial class ConfigurationEvent : System.Web.UI.Page
+    public partial class ConfigurationEvent : BasePage
     {
         Models.Repository.EventRepository ER = new Models.Repository.EventRepository();
         Models.Repository.CRFInEventRepository ECRFR = new Models.Repository.CRFInEventRepository();
         Models.Repository.CRFRepository CRFR = new Models.Repository.CRFRepository();
 
-        static Models.Event _event; //текущее событие
-        static List<Models.CRFInEvent> _eCRFs; //Добавленные CRF/Элементы связующей таблицы
-        static List<Models.CRF> _CRFs; //все CRF
+        //текущее событие
+        Models.Event _event
+        {
+            get
+            {
+                if (Session["ce_event"] == null)
+                    Session["ce_event"] = new Models.Event();
+                return (Models.Event)Session["ce_event"];
+            }
+            set
+            {
+                Session["ce_event"] = value;
+            }
+        }
 
-        static List<Models.CRF> _addingCRFs; //CRF которые нужно добавить 
+        //Добавленные CRF/Элементы связующей таблицы
+        List<Models.CRFInEvent> _eCRFs
+        {
+            get
+            {
+                if (Session["ce_eCRFs"] == null)
+                    Session["ce_eCRFs"] = new List<Models.CRFInEvent>();
+                return Session["ce_eCRFs"] as List<Models.CRFInEvent>;
+            }
+            set
+            {
+                Session["ce_eCRFs"] = value;
+            }
+        }
+
+        //все CRF
+        List<Models.CRF> _CRFs
+        {
+            get
+            {
+                if (Session["ce_CRFs"] == null)
+                    Session["ce_CRFs"] = new List<Models.CRF>();
+                return Session["ce_CRFs"] as List<Models.CRF>;
+            }
+            set
+            {
+                Session["ce_CRFs"] = value;
+            }
+        }
+
+        //CRF которые нужно добавить 
+        List<Models.CRF> _addingCRFs
+        {
+            get
+            {
+                if (Session["ce_addingCRFs"] == null)
+                    Session["ce_addingCRFs"] = new List<Models.CRF>();
+                return Session["ce_addingCRFs"] as List<Models.CRF>;
+            }
+            set
+            {
+                Session["ce_addingCRFs"] = value;
+            }
+        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!User.IsInRole(Core.Roles.Administrator.ToString()))
+                Response.Redirect("~/");
             if (!IsPostBack)
             {
                 _addingCRFs = new List<Models.CRF>();
@@ -29,10 +85,7 @@ namespace EDC.Pages.Event
                 if (_event == null)
                     throw new NullReferenceException();
                 Title = "Настройка События " + _event.Name;
-                if(_addingCRFs == null)
-                {
-                    _addingCRFs = new List<Models.CRF>();
-                }
+
                 LoadEventsCRFs();
             }
         }
@@ -41,9 +94,25 @@ namespace EDC.Pages.Event
         {
             long eventID = _event.EventID;
             _eCRFs = ECRFR.GetManyByFilter(x => x.EventID == eventID).OrderBy(x=>x.Position).ToList();
+            CheckCRFs();
             gvCRFs.DataSource = _eCRFs;
             gvCRFs.DataBind();
 
+        }
+
+        void CheckCRFs()
+        {
+            for(int i =0;i< _eCRFs.Count;i++)
+            {
+                if(_eCRFs[i].Position != i+1)
+                {
+                    _eCRFs[i].Position = i + 1;
+                    ECRFR.Update(_eCRFs[i]);
+                }
+            }
+            ECRFR.Save();
+            long eventID = _event.EventID;
+            _eCRFs = ECRFR.GetManyByFilter(x => x.EventID == eventID).OrderBy(x => x.Position).ToList();
         }
 
         long GetIDFromRequest()
@@ -97,9 +166,14 @@ namespace EDC.Pages.Event
 
             Models.CRFInEvent _eCRF = ECRFR.SelectByID(_eCRFs[row.RowIndex].CRFID, _eCRFs[row.RowIndex].EventID);
             int newPos = ddl.SelectedIndex + 1;
+
             if (newPos < _eCRF.Position)
             {
-                List<Models.CRFInEvent> editedEventsCRFs = ECRFR.GetManyByFilter(x => x.Position >= newPos && x.Position <= _event.Position).OrderBy(x => x.Position).ToList();
+                List<Models.CRFInEvent> editedEventsCRFs = 
+                    ECRFR.GetManyByFilter(
+                    x => x.EventID == _event.EventID && 
+                        x.Position >= newPos && 
+                        x.Position < _eCRF.Position).OrderBy(x => x.Position).ToList();
 
                 for (int i = 0; i < editedEventsCRFs.Count; i++)
                 {
@@ -109,14 +183,21 @@ namespace EDC.Pages.Event
             }
             else
             {
-                List<Models.CRFInEvent> editedEventsCRFs = ECRFR.GetManyByFilter(x => x.Position <= newPos && x.Position >= _event.Position).OrderBy(x => x.Position).ToList();
+
+                List<Models.CRFInEvent> editedEventsCRFs = 
+                    ECRFR.GetManyByFilter(x => 
+                        x.EventID == _event.EventID && 
+                        x.Position <= newPos && 
+                        x.Position > _eCRF.Position).OrderBy(x => x.Position).ToList();
 
                 for (int i = 0; i < editedEventsCRFs.Count; i++)
                 {
-                    editedEventsCRFs[editedEventsCRFs.Count - i - 1].Position = newPos - (i + 1);
-                    ECRFR.Update(editedEventsCRFs[editedEventsCRFs.Count - i - 1]);
+                    editedEventsCRFs[i].Position = newPos - editedEventsCRFs.Count + i;
+                    ECRFR.Update(editedEventsCRFs[i]);
                 }
             }
+
+            List<Models.CRFInEvent> allCrfInEvent = ECRFR.GetManyByFilter(x => x.EventID == _event.EventID).OrderBy(x => x.Position).ToList();
 
             _eCRF.Position = newPos;
             try
@@ -142,7 +223,7 @@ namespace EDC.Pages.Event
         private void LoadNewCRF()
         {
             _CRFs = CRFR.SelectAll().ToList();
-            _CRFs = _CRFs.FindAll(x=>!_eCRFs.Any(y=>y.CRFID== x.CRFID)).OrderBy(x=>x.Name).ToList();
+            _CRFs = _CRFs.FindAll(x=>!_eCRFs.Any(y=>y.CRFID== x.CRFID)).OrderBy(x=>x.RussianName).ThenBy(x=>x.Name).ToList();
             gvNewCRFs.DataSource = _CRFs;
             gvNewCRFs.DataBind();
 
@@ -170,7 +251,6 @@ namespace EDC.Pages.Event
         {
             divAddCRF.Visible = false;
             divAddedCRF.Visible = true;
-
         }
 
         protected void cbAdd_CheckedChanged(object sender, EventArgs e)
@@ -209,26 +289,32 @@ namespace EDC.Pages.Event
         {
             if(e.Row.RowType== DataControlRowType.DataRow)
             {
+                CheckBox cb = (CheckBox)e.Row.FindControl("cbAdd");
+                Label lblName = (Label)e.Row.FindControl("lblName");
+                lblName.Attributes.Add("onclick", string.Format("labelNameClick('#{0}');", cb.ClientID));
+
+
                 int pos = _addingCRFs.FindIndex(x=>x.Name==((Models.CRF)e.Row.DataItem).Name);
                 if(pos>=0)
                 {
-                    CheckBox cb = (CheckBox)e.Row.FindControl("cbAdd");
                     cb.Checked = true;
 
                     Label lbl = (Label)e.Row.FindControl("lblPosition");
-                    
+
                     if (_eCRFs != null)
                         pos += _eCRFs.Count;
                     pos += 1;
                     lbl.Text = pos.ToString();
-
                     
                 }
             }
         }
 
-
-
+        protected void gvCRFs_SelectedIndexChanging(object sender, GridViewSelectEventArgs e)
+        {
+            e.Cancel = true;
+            Response.Redirect("~/CRFs/View/" + _eCRFs[e.NewSelectedIndex].CRFID);
+        }
 
     }
 }

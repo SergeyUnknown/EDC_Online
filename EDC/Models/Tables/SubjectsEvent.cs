@@ -23,6 +23,12 @@ namespace EDC.Models
         [DefaultValue(false)]
         public bool IsDeleted { get; set; }
 
+        [DefaultValue(false)]
+        public bool IsStopped { get; set; }
+
+        [DefaultValue(false)]
+        public bool IsLock { get; set; }
+
 
     }
 }

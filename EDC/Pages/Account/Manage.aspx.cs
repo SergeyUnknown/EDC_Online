@@ -7,7 +7,7 @@ using EDC.Models.Repository;
 
 namespace EDC.Account
 {
-    public partial class Manage : System.Web.UI.Page
+    public partial class Manage : BasePage
     {
         protected string SuccessMessage
         {
@@ -35,7 +35,6 @@ namespace EDC.Account
                 tbUserName.Text = User.Identity.Name;
                 tbEmail.Text = user.Email;
                 tbQuestion.Text = user.PasswordQuestion;
-                
 
                 UserProfileRepository pr = new UserProfileRepository();
                 List<UserProfile> profiles = pr.SelectAll().ToList();
@@ -54,9 +53,9 @@ namespace EDC.Account
                 if (message != null)
                 {
                     SuccessMessage =
-                        message == "ChangePwdSuccess" ? "Пароль изменен."
+                        message == "ChangePwdSuccess" ? Resources.LocalizedText.PasswordWasChangedSuccessfully
                         : message == "ChangeQASuccess" ? "Контрольный вопрос и ответ изменены."
-                        : message == "ChangeInfo" ? "Данные успешно сохранены"
+                        : message == "ChangeInfo" ? Resources.LocalizedText.ProfileWasChangedSuccessfully
                         : String.Empty;
                     successMessage.Visible = !String.IsNullOrEmpty(SuccessMessage);
                 }

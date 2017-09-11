@@ -1,0 +1,253 @@
+﻿/* ------------------------Меню----------------*/
+.menu
+{
+    display:inline-flex;
+    flex-direction:row;
+    position:relative;
+    margin-top:2px;
+    margin-bottom: 2px;
+    
+    /*min-width:768px;*/
+    padding-left:14px;
+    float:none;
+    z-index:50;
+    text-align: justify;
+    justify-content:space-between;
+    border-radius:5px;
+}
+
+.menu > li{
+    display: block;
+    list-style:none;
+    position:relative;
+    vertical-align:central;
+    background-color: #7ac0da;
+    background: linear-gradient(to top, #7ea2d4, hsla(196,56%,70%,1));
+    /* border-right: solid 1px #808080; */
+    border: 1px solid;
+    margin: 0px;
+    margin-right: 10px;
+    height: 100%;
+    border-color: #739EB4;
+    border-top-color: #7cafcc;
+    transition:background-color 0.1s ease;
+    
+}
+
+.menu > li:first-child{
+    /*border-radius: 5px 0px 0px 5px;*/
+    padding-left:0px;
+}
+
+.menu > li:last-child
+{
+    padding-right:0px;
+    /*border-radius: 0px 5px 5px 0px;*/
+    
+}
+
+.menu > li:last-child > ul.submenu
+{
+    right:0px;
+    float:right;
+
+}
+.menu > li > a{
+    background:none;
+    color:#FFF;
+    text-decoration:none;
+    padding:3px;
+    display: block; 
+    position: relative;
+    text-align:center;
+}
+
+
+ul.menu > li:hover{
+    background-color:#7EA2D4;
+    background: linear-gradient(to top, #7EA2D4, hsla(196,58%,75%,1));
+    z-index:40;
+    box-shadow:0px 3px 6px 0 rgba(0, 0, 0, 0.6);
+}
+
+.menu li:hover .submenu{
+    display:block;
+    visibility: visible;
+    
+    max-height:400px;
+    transition:all ease-in 0.2s;
+    padding-top:5px;
+    /*
+    animation-name:showsubmenu;
+    animation-duration:0.2s;
+      */  
+}
+
+.submenu
+{
+    width: 200px;
+    font-size: 0.9em;
+    font-weight: 600;
+    text-align: center;
+    float:none;
+    z-index:1; 
+    
+    transition:all ease-in 0.5s;
+}
+
+
+ul.submenu {   /*подменю*/
+    /*display: none;
+    visibility:hidden;*/
+    max-height: 0;
+    transition: max-height 0.5s ease-out;
+    overflow: hidden;
+    /*background: #d5d5d5;*/
+    position: absolute;
+    top: 24px;
+    z-index:-1;
+    padding:0px;
+    padding-top:0px;
+    margin-top:0px;
+    box-shadow:4px 4px 5px 0 rgba(0, 0, 0, 0.26);
+    /*background-color:#97d7f8;
+    background-color:rgba(255, 255, 255, 1);
+      */  
+    transition:all ease-in 0.2s;
+    border-radius:3px;
+        
+}
+
+.submenu > li {
+    display:flex;
+    list-style: none;
+    z-index:-1;
+    padding: 5px;
+    background-color:#7cb3d7;
+    border-bottom:solid 1px #FFF;
+    /*margin:1px 0px 0px 0px;*/
+	transition:background-color 0.1s ease;
+}
+
+.submenu > li:first-child {
+    border-radius:3px 3px 0px 0px;
+    margin-top:0px;
+    
+}
+
+ul.submenu > li:last-child {
+    border-radius:0px 0px 3px 3px;
+    border-bottom:none;
+}
+ul.submenu > li:only-child 
+{
+    border-width:1px 1px 1px 1px;
+    border-radius:3px 3px 3px 3px !important;
+    margin-top:0px;
+}
+forSub
+{
+    overflow:hidden;
+}
+ul.submenu > li > a{
+    display:flex;
+    width:100%;
+    background:none;
+    color:#FFF;
+    text-decoration:none;
+    padding:1px;
+
+}
+ul.submenu li:hover {
+    background:#7EA2D4;
+}
+@keyframes showsubmenu
+{
+    from {
+        transform:scaleY(1);
+        /*transform-origin:top;*/
+    }
+    to {
+    }
+}
+
+.logo
+{
+    width:180px;
+    padding-right:10px;
+    position: absolute;
+    z-index: 50;
+    width: 180px;
+}
+.logoImg
+{
+    width:100%;
+    height:100%;
+}
+
+.rightHeader{
+    margin-left:190px;
+    height:100%;
+}
+
+.StudyCenterInfo{
+    float:left;
+    height: 28px;
+}
+.StudyCenterInfo h2{
+    color:#eeeeee;
+    font-weight:normal;
+    display:inline;
+    vertical-align: top;
+    margin-right:30px;
+}
+.StudyCenterInfo select{
+    border:none;
+    color:#eeeeee;
+    text-decoration:underline;
+    font-size:1.6em;
+    font-family:Tahoma, sans-serif;
+    font-weight:normal;
+    background-color:#7ac0da;
+    vertical-align: top;
+    height: 28px;
+}
+
+.StudyCenterInfo option[selected]{
+    background-color:#5f89da;
+    color:#fff;
+}
+
+
+
+
+/* login
+----------------------------------------------------------*/
+#login {
+    display: block;
+    font-size: .85em;
+    text-align: right;
+    height:32px;
+}
+
+    #login a {
+        color:white;
+    }
+
+    #login a:hover{
+        background-color:#739EB4;
+        border-radius:2px;
+    }
+    
+    #login a.logout{
+        text-decoration:underline;
+        color:white;
+    }
+    #login ul {
+        margin: 0;
+    }
+
+    #login li {
+        display: inline;
+        list-style: none;
+    }

@@ -19,6 +19,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -47,8 +48,8 @@
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="AspNet.ScriptManager.jQuery, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\AspNet.ScriptManager.jQuery.3.1.0\lib\net45\AspNet.ScriptManager.jQuery.dll</HintPath>
+    <Reference Include="AspNet.ScriptManager.jQuery, Version=3.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AspNet.ScriptManager.jQuery.3.1.1\lib\net45\AspNet.ScriptManager.jQuery.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="AspNet.ScriptManager.jQuery.UI.Combined, Version=1.12.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -80,6 +81,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.ScriptManager.MSAjax, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.ScriptManager.MSAjax.5.0.0\lib\net45\Microsoft.ScriptManager.MSAjax.dll</HintPath>
       <Private>True</Private>
@@ -92,11 +98,29 @@
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NPOI, Version=2.2.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.2.1\lib\net40\NPOI.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NPOI.OOXML, Version=2.2.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.2.1\lib\net40\NPOI.OOXML.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NPOI.OpenXml4Net, Version=2.2.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.2.1\lib\net40\NPOI.OpenXml4Net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NPOI.OpenXmlFormats, Version=2.2.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.2.1\lib\net40\NPOI.OpenXmlFormats.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Core" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
@@ -199,69 +223,43 @@
     <Content Include="Images\action\alert-octagon.png" />
     <Content Include="Images\action\calendar-clock.png" />
     <Content Include="Images\action\check-all.png" />
-    <Content Include="Images\action\check.png" />
     <Content Include="Images\action\clipboard-check.png" />
-    <Content Include="Images\action\clipboard-outline.png" />
     <Content Include="Images\action\clipboard-text.png" />
     <Content Include="Images\action\delete-forever.png" />
     <Content Include="Images\action\file-lock.png" />
-    <Content Include="Images\action\flask-empty-outline.png" />
-    <Content Include="Images\action\flask.png" />
     <Content Include="Images\action\message-draw.png" />
+    <Content Include="Images\add-subject.png" />
     <Content Include="Images\backward.png" />
-    <Content Include="Images\border-color %281%29.png" />
-    <Content Include="Images\border-color %282%29.png" />
-    <Content Include="Images\border-color.png" />
-    <Content Include="Images\calendar-check.png" />
-    <Content Include="Images\calendar-plus %282%29.png" />
-    <Content Include="Images\calendar-plus.png" />
-    <Content Include="Images\delete %283%29.png" />
     <Content Include="Images\delete.png" />
-    <Content Include="Images\down.png" />
-    <Content Include="Images\emoticon-poop.png" />
-    <Content Include="Images\file-document %282%29.png" />
-    <Content Include="Images\FirstPage.png" />
-    <Content Include="Images\forward %283%29.png" />
-    <Content Include="Images\hospital-building %281%29.png" />
-    <Content Include="Images\import.png" />
-    <Content Include="Images\LastPage.png" />
-    <Content Include="Images\lead-pencil.png" />
-    <Content Include="Images\login-variant %281%29.png" />
-    <Content Include="Images\logo.png" />
-    <Content Include="Images\magnify %281%29.png" />
+    <Content Include="Images\download.png" />
+    <Content Include="Images\protocol.png" />
+    <Content Include="Images\forward.png" />
+    <Content Include="Images\center.png" />
+    <Content Include="Images\magnify.png" />
     <Content Include="Images\mdplogo2.png" />
-    <Content Include="Images\NextPage.png" />
-    <Content Include="Images\note-multiple %281%29.png" />
-    <Content Include="Images\note-multiple-grey.png" />
-    <Content Include="Images\note-multiple-outline.png" />
-    <Content Include="Images\note-plus-outline.png" />
-    <Content Include="Images\pencil-box %281%29.png" />
-    <Content Include="Images\plus-circle.png" />
-    <Content Include="Images\plus.png" />
-    <Content Include="Images\PreviousPage.png" />
-    <Content Include="Images\rename-box.png" />
+    <Content Include="Images\queryClose.png" />
+    <Content Include="Images\queryEmpty.png" />
+    <Content Include="Images\queryNew.png" />
+    <Content Include="Images\queryUpdate.png" />
+    <Content Include="Images\records-count.png" />
+    <Content Include="Images\edit.png" />
     <Content Include="Images\settings.png" />
-    <Content Include="Images\skip-backward %283%29.png" />
-    <Content Include="Images\skip-forward %282%29.png" />
     <Content Include="Images\step-backward-2.png" />
     <Content Include="Images\step-backward.png" />
     <Content Include="Images\step-forward-2.png" />
     <Content Include="Images\step-forward.png" />
-    <Content Include="Images\table-edit.png" />
     <Content Include="Images\table-row-plus-after.png" />
-    <Content Include="Images\tag-text-outline %281%29.png" />
-    <Content Include="Images\tag-text-outline.png" />
-    <Content Include="Images\up.png" />
-    <Content Include="Images\wrench %281%29.png" />
+    <Content Include="Images\unloading.png" />
+    <Content Include="Pages\Account\ChangePassword.aspx" />
     <Content Include="Pages\Account\Login.aspx" />
     <Content Include="Pages\Account\Manage.aspx" />
     <Content Include="Content\MasterPage.css" />
     <Content Include="Content\Site.css" />
-    <Content Include="Images\bullet.png" />
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="packages.config" />
+    <Content Include="Pages\Account\PasswordRecovery.aspx" />
     <Content Include="Pages\Administration\ConfigurationTrials.aspx" />
     <Content Include="Pages\Administration\EditCreateUser.aspx" />
     <Content Include="Pages\Administration\Web.config" />
@@ -270,7 +268,9 @@
     <Content Include="Pages\CRF\Web.config" />
     <Content Include="Pages\Event\Web.config" />
     <Content Include="Pages\MedicalCenter\Web.config" />
-    <Content Include="Pages\Note\Web.config" />
+    <Content Include="Pages\Query\Web.config" />
+    <Content Include="Pages\Rule\AddRule.aspx" />
+    <Content Include="Pages\Rule\Rules.aspx" />
     <Content Include="Pages\SDV\SDV.aspx" />
     <Content Include="Pages\Subject\Web.config" />
     <Content Include="Pages\Audit\Web.config" />
@@ -286,16 +286,19 @@
     <Content Include="Pages\Event\Events.aspx" />
     <Content Include="Pages\MedicalCenter\CreateEditMC.aspx" />
     <Content Include="Pages\MedicalCenter\MedicalCenters.aspx" />
-    <Content Include="Pages\Note\NotesAndQuery.aspx" />
+    <Content Include="Pages\Query\Querys.aspx" />
     <Content Include="Pages\Subject\CreateEditSubject.aspx" />
     <Content Include="Pages\Subject\Subjects.aspx" />
     <Content Include="Pages\Subject\SubjectsCRFPage.aspx" />
     <Content Include="Pages\Subject\SubjectsMatrix.aspx" />
-    <None Include="Scripts\jquery-3.1.0.intellisense.js" />
-    <Content Include="Scripts\jquery-3.1.0.js" />
-    <Content Include="Scripts\jquery-3.1.0.min.js" />
-    <Content Include="Scripts\jquery-3.1.0.slim.js" />
-    <Content Include="Scripts\jquery-3.1.0.slim.min.js" />
+    <Content Include="Pages\Unloading\ProfileFiles.aspx" />
+    <Content Include="Pages\Unloading\Profiles.aspx" />
+    <Content Include="Pages\Unloading\AddProfile.aspx" />
+    <None Include="Scripts\jquery-3.1.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.1.1.js" />
+    <Content Include="Scripts\jquery-3.1.1.min.js" />
+    <Content Include="Scripts\jquery-3.1.1.slim.js" />
+    <Content Include="Scripts\jquery-3.1.1.slim.min.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
     <Content Include="Scripts\jquery.cookie-1.4.1.min.js" />
@@ -322,15 +325,30 @@
     <Content Include="Scripts\WebForms\WebForms.js" />
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
+    <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.1.1.min.map" />
+    <None Include="Service References\UnloadingServiceReference\UnloadingService.disco" />
+    <None Include="Service References\UnloadingServiceReference\configuration91.svcinfo" />
+    <None Include="Service References\UnloadingServiceReference\configuration.svcinfo" />
+    <None Include="Service References\UnloadingServiceReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <Content Include="UnloadingService.svc" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
     <Content Include="Bundle.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Scripts\jquery-3.1.0.slim.min.map" />
-    <Content Include="Scripts\jquery-3.1.0.min.map" />
     <None Include="Scripts\_references.js" />
     <Content Include="Site.Mobile.Master" />
+    <None Include="Service References\UnloadingServiceReference\UnloadingService.wsdl" />
+    <None Include="Service References\UnloadingServiceReference\UnloadingService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\UnloadingServiceReference\UnloadingService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -339,6 +357,21 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_GlobalResources\LocalizedText.ru-RU.designer.cs">
+      <DependentUpon>LocalizedText.ru-RU.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\LocalizedText.en-US.designer.cs">
+      <DependentUpon>LocalizedText.en-US.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\LocalizedText.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LocalizedText.resx</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="Controls\DownTable\DownTable.ascx.cs">
       <DependentUpon>DownTable.ascx</DependentUpon>
@@ -347,8 +380,24 @@
     <Compile Include="Controls\DownTable\DownTable.ascx.designer.cs">
       <DependentUpon>DownTable.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Controls\DownTable\DownTableInfo.cs" />
+    <Compile Include="Controls\DownTable\DownTableDataItem.cs" />
+    <Compile Include="Core\AuditChangesType.cs" />
+    <Compile Include="Core\AuditActionType.cs" />
+    <Compile Include="Core\DataType.cs" />
+    <Compile Include="Core\Export\ExportToExcel.cs" />
     <Compile Include="Core\Localization.cs" />
+    <Compile Include="Core\NoteType.cs" />
+    <Compile Include="Core\QueryStatus.cs" />
+    <Compile Include="Core\AppStatus.cs" />
+    <Compile Include="Core\ResponseType.cs" />
+    <Compile Include="Core\Roles.cs" />
+    <Compile Include="Core\RuleParse\IToken.cs" />
+    <Compile Include="Core\RuleParse\RuleParse.cs" />
+    <Compile Include="Core\RuleParse\Rule_Error.cs" />
+    <Compile Include="Core\RuleParse\Target.cs" />
+    <Compile Include="Core\RuleParse\Token.cs" />
+    <Compile Include="Core\RuleParse\TokenType.cs" />
+    <Compile Include="IUnloadingService.cs" />
     <Compile Include="Models\Repository\AccessToCenterRepository.cs" />
     <Compile Include="Models\Repository\AppSettingRepository.cs" />
     <Compile Include="Models\Repository\AuditsEditReasonRepository.cs" />
@@ -360,14 +409,20 @@
     <Compile Include="Models\Repository\CRFInEventRepository.cs" />
     <Compile Include="Models\Repository\EventRepository.cs" />
     <Compile Include="Models\Repository\MedicalCenterRepository.cs" />
-    <Compile Include="Models\Repository\NoteRepository.cs" />
+    <Compile Include="Models\Repository\QueryRepository.cs" />
+    <Compile Include="Models\Repository\RuleRepository.cs" />
     <Compile Include="Models\Repository\SubjectRepository.cs" />
     <Compile Include="Models\Repository\SubjectsCRFRepository.cs" />
     <Compile Include="Models\Repository\SubjectsEventRepoitory.cs" />
     <Compile Include="Models\Repository\SubjectsItemRepoitory.cs" />
+    <Compile Include="Models\Repository\UnloadingItemRepository.cs" />
+    <Compile Include="Models\Repository\UnloadingFileRepository.cs" />
+    <Compile Include="Models\Repository\UnloadingProfileRepository.cs" />
     <Compile Include="Models\Tables\AuditEditReason.cs" />
     <Compile Include="Models\Tables\Audit.cs" />
     <Compile Include="Models\Tables\AppSetting.cs" />
+    <Compile Include="Models\Tables\Query\QueryMessage.cs" />
+    <Compile Include="Models\Tables\Rule.cs" />
     <Compile Include="Models\Tables\SubjectsCRF.cs" />
     <Compile Include="Models\Tables\CRF\CRF.cs" />
     <Compile Include="Models\Tables\CRF\CRF_Group.cs" />
@@ -377,10 +432,22 @@
     <Compile Include="Models\Tables\CRFInEvent.cs" />
     <Compile Include="Models\Tables\SubjectsEvent.cs" />
     <Compile Include="Models\Tables\MedicalCenter.cs" />
-    <Compile Include="Models\Tables\Note.cs" />
+    <Compile Include="Models\Tables\Query\Query.cs" />
     <Compile Include="Models\Tables\Subject.cs" />
     <Compile Include="Models\Tables\SubjectsItem.cs" />
     <Compile Include="Models\Tables\AccessToCenter.cs" />
+    <Compile Include="Models\Tables\Token.cs" />
+    <Compile Include="Models\Tables\Unloading\UnloadingFile.cs" />
+    <Compile Include="Models\Tables\Unloading\UnloadingItem.cs" />
+    <Compile Include="Models\Tables\Unloading\UnloadingProfile.cs" />
+    <Compile Include="Models\Tables\Unloading\UnloadingProfileCenter.cs" />
+    <Compile Include="Pages\Account\ChangePassword.aspx.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Account\ChangePassword.aspx.designer.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Account\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -411,6 +478,13 @@
     <Compile Include="Models\Tables\UserProfile.cs" />
     <Compile Include="Models\Repository\EDCContext.cs" />
     <Compile Include="Models\Repository\IRepository.cs" />
+    <Compile Include="Pages\Account\PasswordRecovery.aspx.cs">
+      <DependentUpon>PasswordRecovery.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Account\PasswordRecovery.aspx.designer.cs">
+      <DependentUpon>PasswordRecovery.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Pages\Administration\ConfigurationTrials.aspx.cs">
       <DependentUpon>ConfigurationTrials.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -452,6 +526,9 @@
     </Compile>
     <Compile Include="Pages\Audit\EditReasons.aspx.designer.cs">
       <DependentUpon>EditReasons.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\BasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\CRF\AddCRF.aspx.cs">
       <DependentUpon>AddCRF.aspx</DependentUpon>
@@ -510,12 +587,26 @@
     <Compile Include="Pages\MedicalCenter\MedicalCenters.aspx.designer.cs">
       <DependentUpon>MedicalCenters.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Note\NotesAndQuery.aspx.cs">
-      <DependentUpon>NotesAndQuery.aspx</DependentUpon>
+    <Compile Include="Pages\Query\Querys.aspx.cs">
+      <DependentUpon>Querys.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Pages\Note\NotesAndQuery.aspx.designer.cs">
-      <DependentUpon>NotesAndQuery.aspx</DependentUpon>
+    <Compile Include="Pages\Query\Querys.aspx.designer.cs">
+      <DependentUpon>Querys.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Rule\AddRule.aspx.cs">
+      <DependentUpon>AddRule.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Rule\AddRule.aspx.designer.cs">
+      <DependentUpon>AddRule.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Rule\Rules.aspx.cs">
+      <DependentUpon>Rules.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Rule\Rules.aspx.designer.cs">
+      <DependentUpon>Rules.aspx</DependentUpon>
     </Compile>
     <Compile Include="Pages\SDV\SDV.aspx.cs">
       <DependentUpon>SDV.aspx</DependentUpon>
@@ -552,7 +643,33 @@
     <Compile Include="Pages\Subject\SubjectsMatrix.aspx.designer.cs">
       <DependentUpon>SubjectsMatrix.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Unloading\ProfileFiles.aspx.cs">
+      <DependentUpon>ProfileFiles.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Unloading\ProfileFiles.aspx.designer.cs">
+      <DependentUpon>ProfileFiles.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Unloading\Profiles.aspx.cs">
+      <DependentUpon>Profiles.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Unloading\Profiles.aspx.designer.cs">
+      <DependentUpon>Profiles.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\Unloading\AddProfile.aspx.cs">
+      <DependentUpon>AddProfile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Pages\Unloading\AddProfile.aspx.designer.cs">
+      <DependentUpon>AddProfile.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\UnloadingServiceReference\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -567,6 +684,9 @@
     <Compile Include="Site.Mobile.Master.designer.cs">
       <DependentUpon>Site.Mobile.Master</DependentUpon>
     </Compile>
+    <Compile Include="UnloadingService.svc.cs">
+      <DependentUpon>UnloadingService.svc</DependentUpon>
+    </Compile>
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -577,12 +697,39 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Data\CRFs\" />
+    <Folder Include="Data\Querys\" />
+    <Folder Include="Data\UnloadingFiles\" />
     <Folder Include="Migrations\" />
-    <Folder Include="Pages\Query\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Pages\Account\Web.config" />
     <Content Include="Site.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\UnloadingServiceReference\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\LocalizedText.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>LocalizedText.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\LocalizedText.en-US.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>LocalizedText.en-US.designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\LocalizedText.ru-RU.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>LocalizedText.ru-RU.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

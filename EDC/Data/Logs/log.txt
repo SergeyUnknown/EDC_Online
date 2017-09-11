@@ -1,0 +1,132 @@
+_________________________________________
+Индекс за пределами диапазона. Индекс должен быть положительным числом, а его размер не должен превышать размер коллекции.
+Имя параметра: index
+   в System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   в System.Collections.Generic.List`1.get_Item(Int32 index)
+   в EDC.Core.Export.ExportToExcel.CreateUnloadingFile(UnloadingProfile up, String userName) в d:\Repos\GitHub\EDC_Online\EDC\Core\Export\ExportToExcel.cs:строка 172
+   в EDC.UnloadingService.ExportToExcel(Int32 upID, String userName) в d:\Repos\GitHub\EDC_Online\EDC\UnloadingService.svc.cs:строка 26
+Строка: 0
+_________________________________________
+_________________________________________
+Индекс за пределами диапазона. Индекс должен быть положительным числом, а его размер не должен превышать размер коллекции.
+Имя параметра: index
+   в System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   в System.Collections.Generic.List`1.get_Item(Int32 index)
+   в EDC.Core.Export.ExportToExcel.CreateUnloadingFile(UnloadingProfile up, String userName) в d:\Repos\GitHub\EDC_Online\EDC\Core\Export\ExportToExcel.cs:строка 172
+   в EDC.UnloadingService.ExportToExcel(Int32 upID, String userName) в d:\Repos\GitHub\EDC_Online\EDC\UnloadingService.svc.cs:строка 26
+Строка: 0
+_________________________________________
+_________________________________________
+Индекс за пределами диапазона. Индекс должен быть положительным числом, а его размер не должен превышать размер коллекции.
+Имя параметра: index
+   в System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   в System.Collections.Generic.List`1.get_Item(Int32 index)
+   в EDC.Core.Export.ExportToExcel.CreateUnloadingFile(UnloadingProfile up, String userName) в d:\Repos\GitHub\EDC_Online\EDC\Core\Export\ExportToExcel.cs:строка 123
+   в EDC.UnloadingService.ExportToExcel(Int32 upID, String userName) в d:\Repos\GitHub\EDC_Online\EDC\UnloadingService.svc.cs:строка 26
+Строка: 0
+_________________________________________
+_________________________________________
+Индекс за пределами диапазона. Индекс должен быть положительным числом, а его размер не должен превышать размер коллекции.
+Имя параметра: index
+   в System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   в System.Collections.Generic.List`1.get_Item(Int32 index)
+   в EDC.Core.Export.ExportToExcel.CreateUnloadingFile(UnloadingProfile up, String userName) в d:\Repos\GitHub\EDC_Online\EDC\Core\Export\ExportToExcel.cs:строка 123
+   в EDC.UnloadingService.ExportToExcel(Int32 upID, String userName) в d:\Repos\GitHub\EDC_Online\EDC\UnloadingService.svc.cs:строка 26
+Строка: 0
+_________________________________________
+_________________________________________
+Индекс за пределами диапазона. Индекс должен быть положительным числом, а его размер не должен превышать размер коллекции.
+Имя параметра: index
+   в System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   в System.Collections.Generic.List`1.get_Item(Int32 index)
+   в EDC.Core.Export.ExportToExcel.CreateUnloadingFile(UnloadingProfile up, String userName) в d:\Repos\GitHub\EDC_Online\EDC\Core\Export\ExportToExcel.cs:строка 123
+   в EDC.UnloadingService.ExportToExcel(Int32 upID, String userName) в d:\Repos\GitHub\EDC_Online\EDC\UnloadingService.svc.cs:строка 26
+Строка: 0
+_________________________________________
+_________________________________________
+Индекс за пределами диапазона. Индекс должен быть положительным числом, а его размер не должен превышать размер коллекции.
+Имя параметра: index
+   в System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   в System.Collections.Generic.List`1.get_Item(Int32 index)
+   в EDC.Core.Export.ExportToExcel.CreateUnloadingFile(UnloadingProfile up, String userName) в d:\Repos\GitHub\EDC_Online\EDC\Core\Export\ExportToExcel.cs:строка 123
+   в EDC.UnloadingService.ExportToExcel(Int32 upID, String userName) в d:\Repos\GitHub\EDC_Online\EDC\UnloadingService.svc.cs:строка 26
+Строка: 0
+_________________________________________
+_________________________________________
+Индекс за пределами диапазона. Индекс должен быть положительным числом, а его размер не должен превышать размер коллекции.
+Имя параметра: index
+   в System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   в System.Collections.Generic.List`1.get_Item(Int32 index)
+   в EDC.Core.Export.ExportToExcel.CreateUnloadingFile(UnloadingProfile up, String userName) в d:\Repos\GitHub\EDC_Online\EDC\Core\Export\ExportToExcel.cs:строка 123
+   в EDC.UnloadingService.ExportToExcel(Int32 upID, String userName) в d:\Repos\GitHub\EDC_Online\EDC\UnloadingService.svc.cs:строка 26
+Строка: 0
+_________________________________________
+_________________________________________
+Индекс за пределами диапазона. Индекс должен быть положительным числом, а его размер не должен превышать размер коллекции.
+Имя параметра: index
+   в System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   в System.Collections.Generic.List`1.get_Item(Int32 index)
+   в EDC.Core.Export.ExportToExcel.CreateUnloadingFile(UnloadingProfile up, String userName) в d:\Repos\GitHub\EDC_Online\EDC\Core\Export\ExportToExcel.cs:строка 123
+   в EDC.UnloadingService.ExportToExcel(Int32 upID, String userName) в d:\Repos\GitHub\EDC_Online\EDC\UnloadingService.svc.cs:строка 26
+Строка: 0
+_________________________________________
+_________________________________________
+Индекс за пределами диапазона. Индекс должен быть положительным числом, а его размер не должен превышать размер коллекции.
+Имя параметра: index
+   в System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   в System.Collections.Generic.List`1.get_Item(Int32 index)
+   в EDC.Core.Export.ExportToExcel.CreateUnloadingFile(UnloadingProfile up, String userName) в d:\Repos\GitHub\EDC_Online\EDC\Core\Export\ExportToExcel.cs:строка 123
+   в EDC.UnloadingService.ExportToExcel(Int32 upID, String userName) в d:\Repos\GitHub\EDC_Online\EDC\UnloadingService.svc.cs:строка 26
+Строка: 0
+_________________________________________
+_________________________________________
+Индекс за пределами диапазона. Индекс должен быть положительным числом, а его размер не должен превышать размер коллекции.
+Имя параметра: index
+   в System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   в System.Collections.Generic.List`1.get_Item(Int32 index)
+   в EDC.Core.Export.ExportToExcel.CreateUnloadingFile(UnloadingProfile up, String userName) в d:\Repos\GitHub\EDC_Online\EDC\Core\Export\ExportToExcel.cs:строка 123
+   в EDC.UnloadingService.ExportToExcel(Int32 upID, String userName) в d:\Repos\GitHub\EDC_Online\EDC\UnloadingService.svc.cs:строка 26
+Строка: 0
+_________________________________________
+_________________________________________
+Индекс находился вне границ массива.
+   в EDC.Core.Export.ExportToExcel.CreateUnloadingFile(UnloadingProfile up, String userName) в d:\Repos\GitHub\EDC_Online\EDC\Core\Export\ExportToExcel.cs:строка 144
+   в EDC.UnloadingService.ExportToExcel(Int32 upID, String userName) в d:\Repos\GitHub\EDC_Online\EDC\UnloadingService.svc.cs:строка 26
+Строка: 0
+_________________________________________
+_________________________________________
+Индекс за пределами диапазона. Индекс должен быть положительным числом, а его размер не должен превышать размер коллекции.
+Имя параметра: index
+   в System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   в System.Collections.Generic.List`1.get_Item(Int32 index)
+   в EDC.Core.Export.ExportToExcel.CreateUnloadingFile(UnloadingProfile up, String userName) в d:\Repos\GitHub\EDC_Online\EDC\Core\Export\ExportToExcel.cs:строка 242
+   в EDC.UnloadingService.ExportToExcel(Int32 upID, String userName) в d:\Repos\GitHub\EDC_Online\EDC\UnloadingService.svc.cs:строка 26
+Строка: 0
+_________________________________________
+_________________________________________
+Индекс за пределами диапазона. Индекс должен быть положительным числом, а его размер не должен превышать размер коллекции.
+Имя параметра: index
+   в System.ThrowHelper.ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+   в System.Collections.Generic.List`1.get_Item(Int32 index)
+   в EDC.Core.Export.ExportToExcel.CreateUnloadingFile(UnloadingProfile up, String userName) в d:\Repos\GitHub\EDC_Online\EDC\Core\Export\ExportToExcel.cs:строка 242
+   в EDC.UnloadingService.ExportToExcel(Int32 upID, String userName) в d:\Repos\GitHub\EDC_Online\EDC\UnloadingService.svc.cs:строка 26
+Строка: 0
+_________________________________________
+_________________________________________
+Could not find a part of the path 'D:\Repos\GitHub\EDC_Online\EDC\Data\UnloadingFiles\EXCEL_1_7\27\2017-4-40-23-PM_60023.7638638.xlsx'.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access)
+   at EDC.Core.Export.ExportToExcel.CreateUnloadingFile(UnloadingProfile up, String userName)
+   at EDC.UnloadingService.ExportToExcel(Int32 upID, String userName)
+Строка: 0
+_________________________________________
+_________________________________________
+Could not find a part of the path 'D:\Repos\GitHub\EDC_Online\EDC\Data\UnloadingFiles\EXCEL_1_7\27\2017-4-59-41-PM_61181.2773207.xlsx'.
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access)
+   at EDC.Core.Export.ExportToExcel.CreateUnloadingFile(UnloadingProfile up, String userName) in d:\Repos\GitHub\EDC_Online\EDC\Core\Export\ExportToExcel.cs:line 253
+   at EDC.UnloadingService.ExportToExcel(Int32 upID, String userName) in d:\Repos\GitHub\EDC_Online\EDC\UnloadingService.svc.cs:line 26
+Строка: 0
+_________________________________________

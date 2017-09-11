@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace EDC.Pages.Audit
 {
-    public partial class Audits : System.Web.UI.Page
+    public partial class Audits : BasePage
     {
         Models.Repository.AuditsRepository AR = new Models.Repository.AuditsRepository();
         protected void Page_Load(object sender, EventArgs e)
@@ -27,7 +27,6 @@ namespace EDC.Pages.Audit
                 tbPage.Text = page.ToString();
 
                 nudPage.Maximum = MaxPage();
-                tbPage.Text = page.ToString();
                 LoadAudits(userName, dateMin, dateMax,page);
 
             }
@@ -38,7 +37,7 @@ namespace EDC.Pages.Audit
             string sPageNumber = Request.QueryString["page"];
             int number = 0;
             if (sPageNumber != null)
-                if (int.TryParse(sPageNumber, out number) && number>0 && number<MaxPage())
+                if (int.TryParse(sPageNumber, out number) && number>0 && number<=MaxPage())
                     return number;
             return 1;
         }

@@ -7,9 +7,11 @@ using System.Web.UI.WebControls;
 
 namespace EDC.Pages.SDV
 {
-    public partial class SDV : System.Web.UI.Page
+    public partial class SDV : BasePage
     {
         Models.Repository.SubjectsCRFRepository SCrfR = new Models.Repository.SubjectsCRFRepository();
+        Models.Repository.UserProfileRepository UPR = new Models.Repository.UserProfileRepository();
+
         protected void Page_Load(object sender, EventArgs e)
         {
             LoadTable();
@@ -17,7 +19,10 @@ namespace EDC.Pages.SDV
 
         void LoadTable()
         {
-            List<Models.SubjectsCRF> approvedSubjectsCRF = SCrfR.GetManyByFilter(x => x.IsApprove && !x.IsCheckAll).ToList();
+            var up = UPR.SelectByID(System.Web.Security.Membership.GetUser(User.Identity.Name).ProviderUserKey);
+            if (up == null || up.CurrentCenterID == null)
+                return;
+            List<Models.SubjectsCRF> approvedSubjectsCRF = SCrfR.GetManyByFilter(x => x.Subject.MedicalCenterID == up.CurrentCenterID && x.IsEnd && !x.IsCheckAll).ToList();
             if (approvedSubjectsCRF.Count == 0)
                 lblInfo.Visible = true;
             else

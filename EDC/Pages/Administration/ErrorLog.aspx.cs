@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace EDC.Pages.Administration
 {
-    public partial class ErrorLog : System.Web.UI.Page
+    public partial class ErrorLog : BasePage
     {
         protected void Page_Load(object sender, EventArgs e)
         {

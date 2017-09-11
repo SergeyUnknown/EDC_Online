@@ -8,7 +8,7 @@ using EDC.Models.Repository;
 
 namespace EDC.Pages.Event
 {
-    public partial class Events : System.Web.UI.Page
+    public partial class Events : BasePage
     {
         EventRepository ER = new EventRepository();
         static int pageSize = 50;
@@ -17,6 +17,13 @@ namespace EDC.Pages.Event
         static List<EDC.Models.Event> events = new List<Models.Event>();
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!(User.IsInRole(Core.Roles.Administrator.ToString()) || User.IsInRole(Core.Roles.Data_Manager.ToString())))
+                Response.Redirect("~/");
+            if (User.IsInRole(Core.Roles.Data_Manager.ToString()))
+            {
+                dtInfo.ViewButton = false;
+                gvEvents.Columns[gvEvents.Columns.Count - 1].Visible = false;
+            }
             if(!IsPostBack)
             {
                 LoadEvents();
@@ -53,15 +60,14 @@ namespace EDC.Pages.Event
 
         void LoadDTDataItem()
         {
-            string pageInfo = String.Format(Localization.Page, CurrentPage, MaxPageCount);
             DownTableDataItem dtDataItem = new DownTableDataItem(
-                "Добавить событие",
+                Resources.LocalizedText.Add,
                 "~/Events/Add",
                 CurrentPage,
                 MaxPageCount,
-                "~/Events",
-                Core.DropDownListItems25,
-                pageSize, pageInfo);
+                "~/Events/",
+                Core.Core.DropDownListItems25,
+                pageSize);
 
             dtInfo.DataItem = dtDataItem;
             dtInfo.DataBind();

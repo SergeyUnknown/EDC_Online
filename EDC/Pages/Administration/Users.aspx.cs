@@ -9,7 +9,7 @@ using System.Data;
 
 namespace EDC.Pages.Administration
 {
-    public partial class Users : System.Web.UI.Page
+    public partial class Users : BasePage
     {
         static MembershipUserCollection users;
         static int pageSize = 50;
@@ -117,11 +117,11 @@ namespace EDC.Pages.Administration
                 {
                     if (i == rolesCountForUser - 1)
                     {
-                        roles += Core.GetRoleRusName(arrRolesForUser[i]);
+                        roles += Core.Core.GetRoleRusName(arrRolesForUser[i]);
                     }
                     else
                     {
-                        roles += Core.GetRoleRusName(arrRolesForUser[i]) + ", ";
+                        roles += Core.Core.GetRoleRusName(arrRolesForUser[i]) + ", ";
                     }
                 }
                 dr["Role"] = roles;
@@ -185,15 +185,14 @@ namespace EDC.Pages.Administration
 
         void LoadDTDataItem()
         {
-            string pageInfo = String.Format(Localization.Page, CurrentPage, MaxPageCount);
             DownTableDataItem dtDataItem = new DownTableDataItem(
-                "Добавить пользователя",
+                Resources.LocalizedText.Add,
                 "~/Administration/CreateUser",
                 CurrentPage,
                 MaxPageCount,
                 "~/Administration/Users/",
-                Core.DropDownListItems25,
-                pageSize, pageInfo);
+                Core.Core.DropDownListItems25,
+                pageSize);
 
             dtInfo.DataItem = dtDataItem;
             dtInfo.DataBind();

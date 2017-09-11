@@ -23,5 +23,7 @@ namespace EDC.Models
 
         public virtual List<SubjectsItem> Values { get; set; }
 
+        public virtual List<Rule> Rules { get; set; }
+
     }
 }

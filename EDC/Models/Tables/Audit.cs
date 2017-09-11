@@ -11,7 +11,13 @@ namespace EDC.Models
         public Guid UserID { get; set; }//ID пользователя
         public string UserName { get; set; } //Логин пользователя
         public DateTime ActionDate { get; set; }//Дата и время
+        /// <summary>
+        /// Тип записи
+        /// </summary>
         public Core.AuditActionType ActionType { get; set; }//Тип записи 
+        /// <summary>
+        /// Тип изменений
+        /// </summary>
         public Core.AuditChangesType ChangesType { get; set; }//тип изменений
         public string ChangedUserName { get; set; } //логин изменяемого пользователя
         public string FieldName { get; set; } //название изменяемого поля

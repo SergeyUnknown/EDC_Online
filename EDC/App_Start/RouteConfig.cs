@@ -10,13 +10,22 @@ namespace EDC
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
+            routes.MapPageRoute(null, "Unloading/Files", "~/Pages/Unloading/ProfileFiles.aspx");
+            routes.MapPageRoute(null, "Unloading/Add", "~/Pages/Unloading/AddProfile.aspx");
+            routes.MapPageRoute(null, "Unloading", "~/Pages/Unloading/Profiles.aspx");
 
+            routes.MapPageRoute(null, "Rules/Add", "~/Pages/Rule/AddRule.aspx");
+            routes.MapPageRoute(null, "Rules/{page}", "~/Pages/Rule/Rules.aspx");
+            routes.MapPageRoute(null, "Rules", "~/Pages/Rule/Rules.aspx");
+
+            routes.MapPageRoute(null, "SDV/{page}", "~/Pages/SDV/SDV.aspx");
             routes.MapPageRoute(null, "SDV", "~/Pages/SDV/SDV.aspx");
 
             routes.MapPageRoute(null, "Audits/EditReasons", "~/Pages/Audit/EditReasons.aspx");
             routes.MapPageRoute(null, "Audits", "~/Pages/Audit/Audits.aspx");
 
-            routes.MapPageRoute(null, "NotesAndQuery", "~/Pages/Note/NotesAndQuery.aspx");
+            routes.MapPageRoute(null, "Querys/{page}", "~/Pages/Query/Querys.aspx");
+            routes.MapPageRoute(null, "Querys", "~/Pages/Query/Querys.aspx");
 
             routes.MapPageRoute(null, "ConfigurationTrials", "~/Pages/Administration/ConfigurationTrials.aspx");
 
@@ -45,6 +54,8 @@ namespace EDC
             routes.MapPageRoute(null, "MedicalCenters/Create", "~/Pages/MedicalCenter/CreateEditMC.aspx");
             routes.MapPageRoute(null, "MedicalCenters", "~/Pages/MedicalCenter/MedicalCenters.aspx");
 
+            routes.MapPageRoute(null, "Account/PasswordRecovery", "~/Pages/Account/PasswordRecovery.aspx");
+            routes.MapPageRoute(null, "Account/ChangePassword", "~/Pages/Account/ChangePassword.aspx");
             routes.MapPageRoute(null, "Account/Login", "~/Pages/Account/Login.aspx");
             routes.MapPageRoute(null, "Account/Manage", "~/Pages/Account/Manage.aspx");
 

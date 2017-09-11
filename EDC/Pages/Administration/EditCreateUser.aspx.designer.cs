@@ -22,6 +22,15 @@ namespace EDC.Pages.Administration {
         protected global::System.Web.UI.WebControls.Label labelStatus;
         
         /// <summary>
+        /// labelError элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label labelError;
+        
+        /// <summary>
         /// tbUserName элемент управления.
         /// </summary>
         /// <remarks>
@@ -128,6 +137,24 @@ namespace EDC.Pages.Administration {
         /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBoxList cblCenters;
+        
+        /// <summary>
+        /// cbLock элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbLock;
+        
+        /// <summary>
+        /// btnReCreatePass элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnReCreatePass;
         
         /// <summary>
         /// btnOk элемент управления.

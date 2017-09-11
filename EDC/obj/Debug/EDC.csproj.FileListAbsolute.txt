@@ -22,6 +22,10 @@ D:\Repos\GitHub\EDC_Online\EDC\bin\Microsoft.ScriptManager.MSAjax.dll
 D:\Repos\GitHub\EDC_Online\EDC\bin\Microsoft.ScriptManager.WebForms.dll
 D:\Repos\GitHub\EDC_Online\EDC\bin\Microsoft.Web.Infrastructure.dll
 D:\Repos\GitHub\EDC_Online\EDC\bin\Newtonsoft.Json.dll
+D:\Repos\GitHub\EDC_Online\EDC\bin\NPOI.dll
+D:\Repos\GitHub\EDC_Online\EDC\bin\NPOI.OOXML.dll
+D:\Repos\GitHub\EDC_Online\EDC\bin\NPOI.OpenXml4Net.dll
+D:\Repos\GitHub\EDC_Online\EDC\bin\NPOI.OpenXmlFormats.dll
 D:\Repos\GitHub\EDC_Online\EDC\bin\System.Web.Optimization.dll
 D:\Repos\GitHub\EDC_Online\EDC\bin\System.Web.Providers.dll
 D:\Repos\GitHub\EDC_Online\EDC\bin\WebGrease.dll
@@ -31,6 +35,7 @@ D:\Repos\GitHub\EDC_Online\EDC\bin\EntityFramework.SqlServer.xml
 D:\Repos\GitHub\EDC_Online\EDC\bin\Excel.pdb
 D:\Repos\GitHub\EDC_Online\EDC\bin\Microsoft.AspNet.FriendlyUrls.xml
 D:\Repos\GitHub\EDC_Online\EDC\bin\Newtonsoft.Json.xml
+D:\Repos\GitHub\EDC_Online\EDC\bin\NPOI.xml
 D:\Repos\GitHub\EDC_Online\EDC\bin\System.Web.Optimization.xml
 D:\Repos\GitHub\EDC_Online\EDC\bin\System.Web.Providers.xml
 D:\Repos\GitHub\EDC_Online\EDC\bin\DotNetOpenAuth.Core.xml
@@ -45,6 +50,6 @@ D:\Repos\GitHub\EDC_Online\EDC\bin\ru\EntityFramework.SqlServer.resources.dll
 D:\Repos\GitHub\EDC_Online\EDC\bin\ru\Microsoft.AspNet.FriendlyUrls.resources.dll
 D:\Repos\GitHub\EDC_Online\EDC\bin\ru\System.Web.Optimization.resources.dll
 D:\Repos\GitHub\EDC_Online\EDC\bin\ru\Microsoft.AspNet.Membership.OpenAuth.resources.dll
-D:\Repos\GitHub\EDC_Online\EDC\obj\Debug\EDC.csprojResolveAssemblyReference.cache
 D:\Repos\GitHub\EDC_Online\EDC\obj\Debug\EDC.dll
 D:\Repos\GitHub\EDC_Online\EDC\obj\Debug\EDC.pdb
+D:\Repos\GitHub\EDC_Online\EDC\obj\Debug\EDC.csprojResolveAssemblyReference.cache

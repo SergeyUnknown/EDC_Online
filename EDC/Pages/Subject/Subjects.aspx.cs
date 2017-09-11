@@ -4,31 +4,47 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using EDC.Core;
 
 namespace EDC.Pages.Subject
 {
-    public partial class Subjects : System.Web.UI.Page
+    public partial class Subjects : BasePage
     {
 
         Models.Repository.SubjectRepository SR = new Models.Repository.SubjectRepository();
         static int pageSize = 50;
         static int recordCount = 0;
-        static List<Models.Subject> _subjects;
+        List<Models.Subject> _subjects
+        {
+            get
+            {
+                if (Session["sSubjects"] == null)
+                    Session["sSubjects"] = new List<Models.Subject>();
+                return Session["sSubjects"] as List<Models.Subject>;
+            }
+            set
+            {
+                Session["sSubjects"] = value;
+            }
+        }
         bool canEdit = false;
         bool canDelete = false;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             //если Администратор, Исследователь, Главный исследователь
-            if (User.IsInRole(Core.Roles.Administrator.ToString()) || User.IsInRole(Core.Roles.Investigator.ToString()) || User.IsInRole(Core.Roles.Principal_Investigator.ToString()))
+            if (User.IsInRole(Core.Roles.Investigator.ToString()) || User.IsInRole(Core.Roles.Principal_Investigator.ToString()))
             {
                 canEdit = true;
-                dtInfo.ViewButton = true;
-                if(User.IsInRole(Core.Roles.Administrator.ToString()))
-                {
-                    canDelete = true;
-                }
             }
+            if(User.IsInRole(Core.Roles.Administrator.ToString()))
+            {
+                canDelete = true;
+            }
+
+            if (!(User.IsInRole(Core.Roles.Administrator.ToString()) || User.IsInRole(Core.Roles.Data_Manager.ToString()) || User.IsInRole(Core.Roles.Auditor.ToString()) || User.IsInRole(Core.Roles.Monitor.ToString())))
+                dtInfo.ViewButton = true;
+
             LoadDTDataItem(); 
 
             if(!IsPostBack)
@@ -44,6 +60,23 @@ namespace EDC.Pages.Subject
                 tbPage.Text = page.ToString();
                 
                 LoadSubjects(dateMin,dateMax,createdBy,page);
+                if(!(User.IsInRole(Core.Roles.Investigator.ToString()) || User.IsInRole(Core.Roles.Principal_Investigator.ToString())))
+                {
+                    //колонка редактировать
+                    gvSubjects.Columns[gvSubjects.Columns.Count - 4].Visible = false;
+                }
+                if (!User.IsInRole(Core.Roles.Administrator.ToString()))
+                    //колонка удалить
+                    gvSubjects.Columns[gvSubjects.Columns.Count-3].Visible = false;
+
+                if (!(User.IsInRole(Core.Roles.Monitor.ToString()) || User.IsInRole(Core.Roles.Data_Manager.ToString())))
+                {
+                    //колонка остановить
+                    gvSubjects.Columns[gvSubjects.Columns.Count - 1].Visible =
+                        //колонка заблокировать
+                        gvSubjects.Columns[gvSubjects.Columns.Count - 2].Visible = false;
+                }
+
                 nudPage.Maximum = MaxPageCount;
             }
 
@@ -95,7 +128,7 @@ namespace EDC.Pages.Subject
             {
                 _subjects = _subjects.FindAll(x=>x.CreatedBy.ToLower().IndexOf(createdBy.ToLower()) >=0);
             }
-            _subjects = _subjects.Skip((page - 1) * 15).Take(15).ToList();
+            _subjects = _subjects.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
             gvSubjects.DataSource = _subjects;
             gvSubjects.DataBind();
@@ -105,13 +138,13 @@ namespace EDC.Pages.Subject
         {
             string pageInfo = String.Format(Localization.Page, CurrentPage, MaxPageCount);
             DownTableDataItem dtDataItem = new DownTableDataItem(
-                "Добавить субъекта",
+                Resources.LocalizedText.Add,
                 "~/Subjects/Add",
                 CurrentPage,
                 MaxPageCount,
-                "~/Subjects",
-                Core.DropDownListItems25,
-                pageSize, pageInfo);
+                "~/Subjects/",
+                Core.Core.DropDownListItems25,
+                pageSize, buttonImageURL: "~/Images/add-subject.png");
 
             dtInfo.DataItem = dtDataItem;
             dtInfo.DataBind();
@@ -129,7 +162,6 @@ namespace EDC.Pages.Subject
             SR.Delete(_subjects[e.RowIndex].SubjectID,User);
             SR.Save();
             _subjects.RemoveAt(e.RowIndex);
-            //LoadSubjects();
         }
 
         protected void dtInfo_SelectedIndexChanged(object sender, EventArgs e)
@@ -154,6 +186,24 @@ namespace EDC.Pages.Subject
                     _control.Visible = false;
                 else
                     _control.Visible = canDelete;
+
+                if(_subjects[e.Row.RowIndex].IsStopped)
+                {
+                    e.Row.Cells[7].Controls[1].Visible = false;
+                    e.Row.Cells[7].Controls[3].Visible = true;
+                }
+                if (_subjects[e.Row.RowIndex].IsLock)
+                {
+                    e.Row.Cells[7].Controls[1].Visible =
+                        e.Row.Cells[7].Controls[3].Visible = false;
+
+                    e.Row.Cells[8].Controls[1].Visible = false;
+                    if(User.IsInRole(Core.Roles.Data_Manager.ToString()))
+                    {
+                        e.Row.Cells[8].Controls[3].Visible = true;
+                    }
+                }
+
             }
         }
 
@@ -175,5 +225,76 @@ namespace EDC.Pages.Subject
             
             LoadSubjects(tbDateMin.Text, tbDateMax.Text,tbCreatedBy.Text,page);
         }
+
+        protected void btnStopBlock_Command(object sender, CommandEventArgs e)
+        {
+            int subPos;
+            if (!int.TryParse((string)e.CommandArgument, out subPos) || subPos<0 || subPos > _subjects.Count )
+            {
+                return;
+            }
+            Models.Subject subject = SR.SelectByID(_subjects[subPos].SubjectID);
+            switch(e.CommandName)
+            {
+                case "Stop":
+                    {
+                        SR.StopStart(_subjects[subPos].SubjectID,User,tbEnterReason.Text,true);
+                        break;
+                    }
+                case "Start":
+                    {
+                        SR.StopStart(_subjects[subPos].SubjectID, User, tbEnterReason.Text, false);
+                        break;
+                    }
+                case "Lock":
+                    {
+                        SR.LockUnlock(_subjects[subPos].SubjectID, User, tbEnterReason.Text, true);
+                        break;
+                    }
+                case "Unlock":
+                    {
+                        SR.LockUnlock(_subjects[subPos].SubjectID, User, tbEnterReason.Text, false);
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
+            }
+            SR.Save();
+            LoadSubjects(tbDateMin.Text,tbDateMax.Text,tbCreatedBy.Text,GetPageFromRequest());
+        }
+
+        protected void btnStopBlock_Click(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            btnSaveEnterReason.CommandArgument = btn.CommandArgument;
+            btnSaveEnterReason.CommandName = btn.CommandName;
+            switch (btn.CommandName)
+            {
+                case "Stop":
+                    {
+                        lblEnterReason.Text = "Причина остановки:";
+                        break;
+                    }
+                case "Start":
+                    {
+                        lblEnterReason.Text = "Причина возобновление ввода данных:";
+                        break;
+                    }
+                case "Lock":
+                    {
+                        lblEnterReason.Text = "Причина блокировки:";
+                        break;
+                    }
+                case "Unlock":
+                    {
+                        lblEnterReason.Text = "Причина разблокировки:";
+                        break;
+                    }
+            }
+            mpeAll.Show();
+        }
+
     }
 }

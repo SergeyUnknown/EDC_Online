@@ -7,19 +7,44 @@ using System.Web.UI.WebControls;
 
 namespace EDC.Pages.MedicalCenter
 {
-    public partial class CreateEditMC : System.Web.UI.Page
+    public partial class CreateEditMC : BasePage
     {
-        Models.Repository.MedicalCenterRepository mcr = new Models.Repository.MedicalCenterRepository();
+        Models.Repository.MedicalCenterRepository mcr;
 
-        static Models.MedicalCenter _mc;
-        static bool Editing = true;
+         Models.MedicalCenter _mc
+         {
+             get
+             {
+                 if(Session["pageMC"] == null)
+                     Session["pageMC"] = new Models.MedicalCenter();
+                 return Session["pageMC"] as Models.MedicalCenter;
+             }
+             set
+             {
+                 Session["pageMC"] = value;
+             }
+         }
+        bool Editing
+        {
+            get
+            {
+                if (Session["pageMCEditing"] == null)
+                    Session["pageMCEditing"] = true;
+                return (bool)Session["pageMCEditing"];
+            }
+            set
+            {
+                Session["pageMCEditing"] = value;
+            }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
+            mcr = new Models.Repository.MedicalCenterRepository();
             if (!IsPostBack)
             {
                 if (Request.Url.ToString().IndexOf("Edit") == -1)
                 {
-                    btnOk.Text = "Добавить";
+                    btnOk.Text = Resources.LocalizedText.Add;
                     Title = "Добавление медицинского центра";
                     Editing = false;
                 }
@@ -28,7 +53,7 @@ namespace EDC.Pages.MedicalCenter
                     _mc = mcr.SelectByID(GetIDFromRequest());
                     if (_mc == null)
                         throw new NullReferenceException();
-                    btnOk.Text = "Изменить";
+                    btnOk.Text = Resources.LocalizedText.Edit;
                     Title = "Редактирование медицинского центра " + _mc.Name;
                     Editing = true;
 
@@ -71,6 +96,8 @@ namespace EDC.Pages.MedicalCenter
 
             if (!Editing)
                 _mc = new Models.MedicalCenter();
+            else
+                _mc = mcr.SelectByID(_mc.MedicalCenterID);
             _mc.City = tbCity.Text;
             _mc.Country = tbCountry.Text;
             _mc.House = tbHouse.Text;

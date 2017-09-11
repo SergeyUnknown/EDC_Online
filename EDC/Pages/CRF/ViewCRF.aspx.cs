@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace EDC.Pages.CRF
 {
-    public partial class ViewCRF : System.Web.UI.Page
+    public partial class ViewCRF : BasePage
     {
         Models.Repository.CRFRepository CR = new Models.Repository.CRFRepository();
         Models.Repository.CRFSectionRepository CSR = new Models.Repository.CRFSectionRepository();
@@ -25,6 +25,7 @@ namespace EDC.Pages.CRF
             {
                 CRFID = GetIDFromRequest();
                 string tableType = GetTableTypeFromRequest();
+                lblOID.Text = CR.SelectByID(CRFID).Identifier;
                 LoadTables();
             }
 

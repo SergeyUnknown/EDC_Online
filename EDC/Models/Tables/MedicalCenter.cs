@@ -9,7 +9,7 @@ namespace EDC.Models
     public class MedicalCenter
     {
         [Key]
-        public long MedialCenterID { get; set; }
+        public long MedicalCenterID { get; set; }
         public string Number { get; set; }
         public string Name { get; set; }
         public string Country { get; set; }
@@ -20,7 +20,8 @@ namespace EDC.Models
         public string Phone { get; set; }
         public string PrincipalInvestigator { get; set; }
         public virtual List<Subject> Subjects { get; set; }
-        public virtual List<Note> Notes { get; set; }
+        public virtual List<Query> Notes { get; set; }
         public virtual List<AccessToCenter> HaveAccess { get; set; }
+        public virtual List<UnloadingProfileCenter> UnloadingProfiles { get; set; }
     }
 }

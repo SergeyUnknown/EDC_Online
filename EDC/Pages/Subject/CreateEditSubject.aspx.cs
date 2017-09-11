@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace EDC.Pages.Subject
 {
-    public partial class CreateEditSubject : System.Web.UI.Page
+    public partial class CreateEditSubject : BasePage
     {
         Models.Repository.SubjectRepository SR = new Models.Repository.SubjectRepository();
         Models.Repository.MedicalCenterRepository MCR = new Models.Repository.MedicalCenterRepository();
@@ -51,14 +51,16 @@ namespace EDC.Pages.Subject
         }
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (User.IsInRole(Core.Roles.Administrator.ToString()) || User.IsInRole(Core.Roles.Data_Manager.ToString()) || User.IsInRole(Core.Roles.Data_Manager.ToString()) || User.IsInRole(Core.Roles.Auditor.ToString()) || User.IsInRole(Core.Roles.Monitor.ToString()))
+                Response.Redirect("~/");
             if (!IsPostBack)
             {
                 LoadMC();
 
                 if (Request.Url.ToString().IndexOf("Edit") == -1)
                 {
-                    btnOk.Text = "Добавить";
-                    Title = "Добавление Субъекта";
+                    btnOk.Text = Resources.LocalizedText.Add;
+                    Title = Resources.LocalizedText.AddSubject;
                     Editing = false;
                 }
                 else
@@ -66,12 +68,12 @@ namespace EDC.Pages.Subject
                     _subject = SR.SelectByID(GetIDFromRequest());
                     if (_subject == null)
                         throw new NullReferenceException();
-                    btnOk.Text = "Изменить";
-                    Title = "Редактирование Субъекта ";
+                    btnOk.Text = Resources.LocalizedText.Edit;
+                    Title = Resources.LocalizedText.EditSubject+" ";
                     tbDate.Text = _subject.InclusionDate.ToShortDateString();
                     tbNumber.Text = _subject.Number;
 
-                    ddlCenters.SelectedIndex = _MCs.FindIndex(x=>x.MedialCenterID == _subject.MedicalCenterID) + 1;
+                    ddlCenters.SelectedIndex = _MCs.FindIndex(x=>x.MedicalCenterID == _subject.MedicalCenterID) + 1;
                     Editing = true;
 
                 }
@@ -86,7 +88,7 @@ namespace EDC.Pages.Subject
                 _MCs = up.MedicalCenters.Select(x => x.MedicalCenter).ToList();
             if (_MCs.Count != 0)
             {
-                ddlCenters.Items.Add(new ListItem("Выберите.."));
+                ddlCenters.Items.Add(new ListItem(Resources.LocalizedText.Select + ".."));
                 for (int i = 0; i < _MCs.Count; i++)
                 {
                     ddlCenters.Items.Add(new ListItem(_MCs[i].Name));
@@ -121,7 +123,7 @@ namespace EDC.Pages.Subject
             {
                 labelStatus.Visible = true;
                 labelStatus.ForeColor = System.Drawing.Color.Red;
-                labelStatus.Text = "Не выбран Медицинский центр";
+                labelStatus.Text = Resources.LocalizedText.NoSiteWasSelected;
                 return;
             }
             if (!Editing)
@@ -138,12 +140,12 @@ namespace EDC.Pages.Subject
                     audit.OldValue = _subject.Number;
                     audit.NewValue = tbNumber.Text;
                     audit.ActionDate = DateTime.Now;
-                    audit.FieldName = "Номер субъекта";
+                    audit.FieldName = Resources.LocalizedText.SubjectNumber;
                     audit.ActionType = Core.AuditActionType.SubjectParam;
                     audit.ChangesType = Core.AuditChangesType.Update;
                     AR.Create(audit);
                 }
-                if (_subject.MedicalCenterID != _MCs[ddlCenters.SelectedIndex - 1].MedialCenterID)
+                if (_subject.MedicalCenterID != _MCs[ddlCenters.SelectedIndex - 1].MedicalCenterID)
                 {
                     Models.Audit audit = new Models.Audit();
                     audit.UserName = User.Identity.Name;
@@ -152,7 +154,7 @@ namespace EDC.Pages.Subject
                     audit.OldValue = _subject.MedicalCenter.Name;
                     audit.NewValue = _MCs[ddlCenters.SelectedIndex - 1].Name;
                     audit.ActionDate = DateTime.Now;
-                    audit.FieldName = "Мед. Центр";
+                    audit.FieldName = Resources.LocalizedText.Site;
                     audit.ActionType = Core.AuditActionType.SubjectParam;
                     audit.ChangesType = Core.AuditChangesType.Update;
                     AR.Create(audit);
@@ -166,18 +168,18 @@ namespace EDC.Pages.Subject
                     audit.OldValue = _subject.InclusionDate.ToShortDateString();
                     audit.NewValue = tbDate.Text;
                     audit.ActionDate = DateTime.Now;
-                    audit.FieldName = "Дата включения";
+                    audit.FieldName = Resources.LocalizedText.DateOfEnrollment;
                     audit.ActionType = Core.AuditActionType.SubjectParam;
                     audit.ChangesType = Core.AuditChangesType.Update;
                     AR.Create(audit);
                 }
             }
 
-            _subject.MedicalCenterID = _MCs[ddlCenters.SelectedIndex - 1].MedialCenterID;
+            _subject.MedicalCenterID = _MCs[ddlCenters.SelectedIndex - 1].MedicalCenterID;
             _subject.CreatedBy = User.Identity.Name;
             _subject.CreationDate = DateTime.Now;
             _subject.Number = tbNumber.Text;
-            _subject.InclusionDate = Convert.ToDateTime(tbDate.Text);
+            _subject.InclusionDate = Convert.ToDateTime(tbDate.Text,new System.Globalization.CultureInfo("ru-RU"));
 
             if (Editing)
             {
@@ -195,7 +197,7 @@ namespace EDC.Pages.Subject
                 audit.SubjectID = _subject.SubjectID;
                 audit.NewValue = tbNumber.Text;
                 audit.ActionDate = DateTime.Now;
-                audit.FieldName = "Номер субъекта";
+                audit.FieldName = Resources.LocalizedText.SubjectNumber;
                 audit.ActionType = Core.AuditActionType.SubjectParam;
                 audit.ChangesType = Core.AuditChangesType.Create;
                 AR.Create(audit);
@@ -206,7 +208,7 @@ namespace EDC.Pages.Subject
                 audit.SubjectID = _subject.SubjectID;
                 audit.NewValue = _MCs[ddlCenters.SelectedIndex - 1].Name;
                 audit.ActionDate = DateTime.Now;
-                audit.FieldName = "Мед. Центр";
+                audit.FieldName = Resources.LocalizedText.Site;
                 audit.ActionType = Core.AuditActionType.SubjectParam;
                 audit.ChangesType = Core.AuditChangesType.Create;
                 AR.Create(audit);
@@ -217,7 +219,7 @@ namespace EDC.Pages.Subject
                 audit.SubjectID = _subject.SubjectID;
                 audit.NewValue = tbDate.Text;
                 audit.ActionDate = DateTime.Now;
-                audit.FieldName = "Дата включения";
+                audit.FieldName = Resources.LocalizedText.DateOfEnrollment;
                 audit.ActionType = Core.AuditActionType.SubjectParam;
                 audit.ChangesType = Core.AuditChangesType.Create;
                 AR.Create(audit);

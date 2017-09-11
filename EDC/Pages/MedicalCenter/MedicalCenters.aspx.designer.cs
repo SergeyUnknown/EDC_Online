@@ -65,14 +65,5 @@ namespace EDC.Pages.MedicalCenter {
         /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvMedicalCenters;
-        
-        /// <summary>
-        /// hlAddMedicalCenter элемент управления.
-        /// </summary>
-        /// <remarks>
-        /// Автоматически создаваемое поле.
-        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink hlAddMedicalCenter;
     }
 }

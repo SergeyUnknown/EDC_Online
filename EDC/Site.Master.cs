@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Globalization;
+using System.Threading;
 
 namespace EDC
 {
@@ -70,7 +72,14 @@ namespace EDC
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!(HttpContext.Current.User.IsInRole(Core.Roles.Auditor.ToString()) || !HttpContext.Current.User.Identity.IsAuthenticated))
+            var mu = Membership.GetUser(HttpContext.Current.User.Identity.Name);
+
+            //Редирект на смену пароля
+            if (HttpContext.Current.User.Identity.IsAuthenticated &&  ((DateTime.Now - mu.LastPasswordChangedDate).TotalDays>=30 || mu.CreationDate == mu.LastPasswordChangedDate))
+            {
+                Response.Redirect("~/Account/ChangePassword?i="+mu.ProviderUserKey);
+            }
+            if (HttpContext.Current.User.Identity.IsAuthenticated)
             {
                 liQueryAndNotes.Visible = true;
             }
@@ -85,6 +94,8 @@ namespace EDC
             if (HttpContext.Current.User.IsInRole(Core.Roles.Monitor.ToString()))
             {
                 liMonitor.Visible = true;
+                liMonitorAudit.Visible = false;
+                liData.Visible = true;
             }
 
             HttpCookie cookie = Request.Cookies["LeftMenuVisible"];
@@ -99,26 +110,43 @@ namespace EDC
                     navigationMenu.Style.Add("width", "calc(100% - 14px)");
                 }
             }
+
+
             if(!IsPostBack)
             if (Membership.GetUser(HttpContext.Current.User.Identity.Name) != null)
             {
+                cookie = Request.Cookies["lang"];
+                if (cookie != null)
+                {
+                    ddlLang.SelectedValue = cookie.Value;
+                }
+
                 Models.UserProfile up = UPR.SelectByID
                         (Membership.GetUser(HttpContext.Current.User.Identity.Name).ProviderUserKey);
                 if (up != null)
                 {
                     ddlCurrentCenter.DataSource = up.MedicalCenters.Select(x => x.MedicalCenter.Name);
                     ddlCurrentCenter.DataBind();
-                    long? cu = up.GetCurrentCenterID();
-                    if (cu != null)
-                        ddlCurrentCenter.SelectedValue = up.MedicalCenters.First(x => x.MedicalCenterID == cu).MedicalCenter.Name;
+                    long? ccid = up.CurrentCenterID;
+                    if (ccid == null)
+                    {
+                        ccid = up.GetCurrentCenterID();
+                        if (ccid != null)
+                        {
+                            up.CurrentCenterID = ccid;
+                            UPR.Update(up);
+                            UPR.Save();
+                        }
+                    }
+                    else
+                        ddlCurrentCenter.SelectedValue = up.MedicalCenters.First(x => x.MedicalCenterID == ccid).MedicalCenter.Name;
                 }
             }
         }
 
         protected string StudyProtocol
         {
-            get { return ASR.SelectByID(Core.STUDY_PROTOCOL).Value; }
-            set { }
+            get { return ASR.SelectByID(Core.Core.STUDY_PROTOCOL).Value; }
         }
 
         protected string CurrentCenter
@@ -129,10 +157,17 @@ namespace EDC
                     (Membership.GetUser(HttpContext.Current.User.Identity.Name).ProviderUserKey);
                 if(up!=null)
                 {
-                    long? ccid = up.GetCurrentCenterID();
+                    long? ccid = up.CurrentCenterID;
                     if (ccid != null)
                     {
-                        return up.MedicalCenters.First(x => x.MedicalCenterID == ccid).MedicalCenter.Name;
+                        ccid = up.GetCurrentCenterID();
+                        if (ccid != null)
+                        {
+                            up.CurrentCenterID = ccid;
+                            UPR.Update(up);
+                            UPR.Save();
+                            return up.MedicalCenters.First(x => x.MedicalCenterID == ccid).MedicalCenter.Name;
+                        }
                     }
                 }
                 return "";
@@ -150,6 +185,13 @@ namespace EDC
             UPR.Update(up);
             UPR.Save();
             Response.Redirect(Request.Path);
+        }
+
+        protected void ddlLang_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            HttpCookie cookie = new HttpCookie("lang", ddlLang.SelectedValue);
+            Response.Cookies.Add(cookie);
+            Response.Redirect(Request.RawUrl);
         }
     }
 }

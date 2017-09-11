@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace EDC.Pages.Audit
 {
-    public partial class EditReasons : System.Web.UI.Page
+    public partial class EditReasons : BasePage
     {
         Models.Repository.AuditsEditReasonsRepository AERR = new Models.Repository.AuditsEditReasonsRepository();
         protected void Page_Load(object sender, EventArgs e)

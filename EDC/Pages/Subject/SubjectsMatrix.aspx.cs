@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace EDC.Pages.Subject
 {
-    public partial class SubjectsMatrix : System.Web.UI.Page
+    public partial class SubjectsMatrix : BasePage
     {
         Models.Repository.SubjectRepository SR = new Models.Repository.SubjectRepository();
         Models.Repository.SubjectsCRFRepository SCR = new Models.Repository.SubjectsCRFRepository();
@@ -21,9 +21,13 @@ namespace EDC.Pages.Subject
         List<Models.CRFInEvent> _eventCRFs = new List<Models.CRFInEvent>();
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (User.IsInRole(Core.Roles.Administrator.ToString()) || User.IsInRole(Core.Roles.Investigator.ToString()) || User.IsInRole(Core.Roles.Principal_Investigator.ToString()))
+            if (User.IsInRole(Core.Roles.Investigator.ToString()) || User.IsInRole(Core.Roles.Principal_Investigator.ToString()))
             {
                 dtInfo.ViewButton = true;
+            }
+            if (!(User.IsInRole(Core.Roles.Administrator.ToString()) || User.IsInRole(Core.Roles.Data_Manager.ToString())))
+            {
+                tcLegendDelete.Visible = false;
             }
             _subjects = SR.SelectAllForUser(User).Skip((CurrentPage - 1) * pageSize).Take(pageSize).ToList();
             _events = ER.SelectAll().OrderBy(x => x.Position).ToList();
@@ -61,15 +65,15 @@ namespace EDC.Pages.Subject
 
         void LoadDTDataItem()
         {
-            string pageInfo = String.Format(Localization.Page, CurrentPage, MaxPageCount);
+            string pageInfo = String.Format(Core.Localization.Page, CurrentPage, MaxPageCount);
             DownTableDataItem dtDataItem = new DownTableDataItem(
-                "Добавить субъекта",
+                Resources.LocalizedText.Add,
                 "~/Subjects/Add",
                 CurrentPage,
                 MaxPageCount,
-                "~/SubjectsMatrix",
-                Core.DropDownListItems25,
-                pageSize, pageInfo);
+                "~/SubjectsMatrix/",
+                Core.Core.DropDownListItems25,
+                pageSize, buttonImageURL: "~/Images/add-subject.png");
 
             dtInfo.DataItem = dtDataItem;
             dtInfo.DataBind();
@@ -89,20 +93,24 @@ namespace EDC.Pages.Subject
         }
         void LoadMatrix()
         {
-            tMatrix.Rows.Clear();
-            TableRow tr = new TableRow();
-            TableCell tc = new TableCell();
-            //////////////////////////Head///////////////////////
+            tMatrixFixColumns.Rows.Clear();
+            var tr = new TableRow();
+            var thc = new TableHeaderCell();
             Label lb = new Label();
-            lb.Text = "Номер субъекта";
-            tc.Controls.Add(lb);
-            tc.RowSpan = 2;
-            tr.Cells.Add(tc);
+            lb.Text = Resources.LocalizedText.SubjectNumber;
+            thc.Controls.Add(lb);
+            tr.Cells.Add(thc);
+            if(_events.Count>0)
+                tMatrixFixColumns.Rows.Add(tr);
+            
+            tMatrix.Rows.Clear();
+            var tc = new TableCell();
+            tr = new TableRow();
+            //////////////////////////Head///////////////////////
             TableRow eventsNameRow = new TableRow();
             TableRow crfNameRow = new TableRow();
             for(int i =0;i< _events.Count;i++)
             {
-                
                 tc = new TableCell();
                 lb = new Label();
                 lb.Text = _events[i].Name;
@@ -111,6 +119,7 @@ namespace EDC.Pages.Subject
                 List<Models.CRFInEvent> eventCRFs = CIER.GetManyByFilter(x=>x.EventID == eventId).OrderBy(x=>x.Position).ToList();
                 _eventCRFs.AddRange(eventCRFs);
                 tc.ColumnSpan = eventCRFs.Count;
+                tc.CssClass = "tableMatrixFixHeaders";
                 tr.Cells.Add(tc);
                 for(int y=0;y<eventCRFs.Count;y++)
                 {
@@ -118,6 +127,7 @@ namespace EDC.Pages.Subject
                     lb = new Label();
                     lb.Text = string.IsNullOrWhiteSpace(eventCRFs[y].CRF.RussianName) ? eventCRFs[y].CRF.Name : eventCRFs[y].CRF.RussianName;
                     tc.Controls.Add(lb);
+                    tc.CssClass = "tableMatrixFixHeaders";
                     crfNameRow.Cells.Add(tc);
                 }
             }
@@ -127,15 +137,20 @@ namespace EDC.Pages.Subject
 
             for(int i =0;i< _subjects.Count;i++)
             {
-                if (!ShowDeleted() && _subjects[i].IsDeleted)
+                if (_subjects[i].IsDeleted && !ShowDeleted())
                     continue;
                 tr = new TableRow();
                 tc = new TableCell();
                 lb = new Label();
+                thc = new TableHeaderCell();
 
                 lb.Text = _subjects[i].Number;
-                tc.Controls.Add(lb);
-                tr.Cells.Add(tc);
+                thc.Controls.Add(lb);
+                tr.Cells.Add(thc);
+                if(_events.Count>0)
+                    tMatrixFixColumns.Rows.Add(tr);
+
+                tr = new TableRow();
 
                 //////////////////Кнопки/////////////////////////////
                 for (int y = 0; y < _eventCRFs.Count; y++)
@@ -148,14 +163,14 @@ namespace EDC.Pages.Subject
                     {
                         if (_sc.IsDeleted)
                             btn.CssClass = "ActionIc Delete";
-                        else if (_sc.IsStopped)
+                        else if (_subjects[i].IsLock)
                             btn.CssClass = "ActionIc Lock";
-                        else if (_sc.IsStopped)
+                        else if (_subjects[i].IsStopped)
                             btn.CssClass = "ActionIc Stopped";
+                        else if (_sc.IsApproved)
+                            btn.CssClass = "ActionIc Approve";
                         else if (_sc.IsCheckAll)
                             btn.CssClass = "ActionIc CheckAll";
-                        else if (_sc.IsApprove)
-                            btn.CssClass = "ActionIc Approve";
                         else if (_sc.IsEnd)
                             btn.CssClass = "ActionIc End";
                         else if (_sc.IsStart)
@@ -166,6 +181,10 @@ namespace EDC.Pages.Subject
                     {
                         if (_subjects[i].IsDeleted)
                             btn.CssClass = "ActionIc Delete";
+                        else if (_subjects[i].IsLock)
+                            btn.CssClass = "ActionIc Lock";
+                        else if (_subjects[i].IsStopped)
+                            btn.CssClass = "ActionIc Stopped";
                         else
                             btn.CssClass = "ActionIc Unplaned";
                     }

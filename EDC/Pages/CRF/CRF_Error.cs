@@ -7,20 +7,23 @@ namespace EDC.Pages.CRF
 {
     public class CRF_Error
     {
+        public string FileName { get; set; }
         public string SectionName { get; set; }
-        public int Row { get; set; }
-        public int Column { get; set; }
+        public int? Row { get; set; }
+        public int? Column { get; set; }
         public string ErrorMessage { get; set; }
 
         public CRF_Error(string SectionName,
-            int Row,
-            int Column,
-            string ErrorMessage)
+            int? Row,
+            int? Column,
+            string ErrorMessage,
+            string FileName)
         {
             this.SectionName = SectionName;
             this.Row = Row;
             this.Column = Column;
             this.ErrorMessage = ErrorMessage;
+            this.FileName = FileName;
         }
     }
 }

@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="EDC.UnloadingService" CodeBehind="UnloadingService.svc.cs" %>

@@ -4,12 +4,15 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.Security;
 using EDC.Models;
+using EDC.Core.Rule;
 
 namespace EDC.Pages.Subject
 {
-    public partial class SubjectsCRFPage : System.Web.UI.Page
+    public partial class SubjectsCRFPage : BasePage
     {
+        #region Repositories
         Models.Repository.SubjectRepository SR = new Models.Repository.SubjectRepository();
         Models.Repository.SubjectsEventRepoitory SER = new Models.Repository.SubjectsEventRepoitory();
         Models.Repository.SubjectsCRFRepository SCR = new Models.Repository.SubjectsCRFRepository();
@@ -18,12 +21,13 @@ namespace EDC.Pages.Subject
         Models.Repository.CRFRepository CRFR = new Models.Repository.CRFRepository();
         Models.Repository.CRFInEventRepository CIER = new Models.Repository.CRFInEventRepository();
         Models.Repository.CRFItemRepository CIR = new Models.Repository.CRFItemRepository();
-        Models.Repository.NoteRepository NR = new Models.Repository.NoteRepository();
+        Models.Repository.QueryRepository NR = new Models.Repository.QueryRepository();
         Models.Repository.EventRepository ER = new Models.Repository.EventRepository();
         Models.Repository.AppSettingRepository ASR = new Models.Repository.AppSettingRepository();
         Models.Repository.AuditsRepository AR = new Models.Repository.AuditsRepository();
 
         Models.Repository.AuditsEditReasonsRepository AERR = new Models.Repository.AuditsEditReasonsRepository();
+        #endregion
 
         Models.CRF _crf
         {
@@ -93,10 +97,14 @@ namespace EDC.Pages.Subject
 
         int answerRowIndex
         {
-            get { return Session["answerRowIndex"] == null ? 0 : (int)Session["answerRowIndex"]; }
+            get { return Session["answerRowIndex"] == null ? -1 : (int)Session["answerRowIndex"]; }
             set { Session["answerRowIndex"] = value; }
         }
-
+        int closeRowIndex
+        {
+            get { return Session["closeRowIndex"] == null ? -1 : (int)Session["closeRowIndex"]; }
+            set { Session["closeRowIndex"] = value; }
+        }
         bool readOnly
         {
             get
@@ -115,29 +123,51 @@ namespace EDC.Pages.Subject
             set { Session["editing"] = value; }
         }
 
+        bool mpeFirstLoad
+        {
+            get
+            {
+                return Session["mpeFirstLoad"] == null ? true : (bool)Session["mpeFirstLoad"];
+            }
+            set { Session["mpeFirstLoad"] = value; }
+        }
+
+        int[] queryStatistic = new int[3];
+
+
         protected void Page_Load(object sender, EventArgs e)
         {
             
             if (!IsPostBack)
             {
+                mpeFirstLoad = true;
                 GetInfoFromRequest();
                 _crf = CRFR.SelectByID(_crfID);
                 _subject = SR.SelectByID(_subjectID);
                 _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
                 Models.Event _event = ER.SelectByID(_eventID);
                 ConfigRedirectButtons();
-                lbInfo.Text = string.Format("Пациент № {2}, {0}, Форма \"{1}\"",_event.Name, string.IsNullOrWhiteSpace(_crf.RussianName) ? _crf.Name : _crf.RussianName, _subject.Number);
+                lbInfo.Text = string.Format(Resources.LocalizedText.Subject_Title_CRF, _subject.Number, _event.Name, string.IsNullOrWhiteSpace(_crf.RussianName) ? _crf.Name : _crf.RussianName);
                 RowCountInSection = new Dictionary<string, int>();
                 answerRowIndex = -1;
+                closeRowIndex = -1;
                 if (Request.Cookies["activeTabIndex"] != null)
                     Request.Cookies["activeTabIndex"].Value = "0";
                 editing = false;
                 _mpe = null;
             }
-            if (_subject.IsDeleted || ASR.SelectByID(Core.APP_STATUS).Value == Core.AppStatus.Disable.ToString() || !(User.IsInRole(Core.Roles.Investigator.ToString()) || User.IsInRole(Core.Roles.Principal_Investigator.ToString())) || (_sCRF != null && (_sCRF.IsEnd || _sCRF.IsApprove || _sCRF.IsCheckAll)))
+            if (_subject.IsDeleted 
+                || _subject.IsLock
+                || _subject.IsStopped
+                || ASR.SelectByID(Core.Core.APP_STATUS).Value == Core.AppStatus.Disable.ToString() 
+                || !(User.IsInRole(Core.Roles.Investigator.ToString()) 
+                || User.IsInRole(Core.Roles.Principal_Investigator.ToString())) 
+                || (_sCRF != null && (_sCRF.IsEnd || _sCRF.IsApproved || _sCRF.IsCheckAll)))
             {
                 if (!editing)
+                {
                     readOnly = true;
+                }
                 else
                 {
                     readOnly = false;
@@ -148,9 +178,25 @@ namespace EDC.Pages.Subject
             {
                 readOnly = false;
             }
-            Title = string.Format("Заполнение ИРК пациента №{0}", _subject.Number);
+            Title = string.Format(Resources.LocalizedText.Subject_, _subject.Number);
 
             LoadForm(_crf);
+
+            string mpeName = GetMPENameFromRequest();
+            if (mpeName != null && mpeFirstLoad)
+            {
+                long? queryID = GetQueryIDFromRequest();
+                    if(queryID != null)
+                    {
+                        var query = NR.SelectByID(queryID);
+                        if(query!=null)
+                            LoadMessages(query);
+                    }
+
+                LoadMPE("mpe_" + mpeName);
+                divMessageLog.Style.Add("display","block");
+                mpeFirstLoad = false;
+            }
 
             ConfigActionButtons();
         }
@@ -261,6 +307,7 @@ namespace EDC.Pages.Subject
         void ConfigActionButtons()
         {
             btnEnd.Visible = btnEdit.Visible = btnApproved.Visible = btnCheckAll.Visible = false;
+            btnEdit.Text = Resources.LocalizedText.Edit;
             HttpCookie cookie = Request.Cookies["activeTabIndex"];
             int tabIndex = 0;
             if (cookie != null)
@@ -269,29 +316,42 @@ namespace EDC.Pages.Subject
                 if (!int.TryParse(sTabIndex, out tabIndex))
                     tabIndex = 0;
             }
-            if (_sCRF != null && (tcCRF.Tabs.Count==1 || tabIndex == tcCRF.Tabs.Count-1))
+            if (_sCRF != null && (tcCRF.Tabs.Count==1 || tabIndex == tcCRF.Tabs.Count-1) && !(_sCRF.IsDeleted || _sCRF.IsLock || _sCRF.IsStopped))
             {
                 string[] userRoles = System.Web.Security.Roles.GetRolesForUser();
                 if ((userRoles.Contains(Core.Roles.Investigator.ToString()) || userRoles.Contains(Core.Roles.Principal_Investigator.ToString())) && !_sCRF.IsEnd)
                     btnEnd.Visible = true;
+                else if (userRoles.Contains(Core.Roles.Investigator.ToString()))
+                {
+                    if (_sCRF.IsEnd && !_sCRF.IsApproved && !(_sCRF.IsLock ||  _sCRF.IsStopped || _sCRF.IsDeleted))
+                        btnEdit.Visible = true;
+                }
+                else if (userRoles.Contains(Core.Roles.Monitor.ToString()))
+                {
+                    if (_sCRF.IsEnd && !_sCRF.IsCheckAll)
+                    {
+                        List<SubjectsItem> sis = SIR.GetManyByFilter(x => x.EventID == _eventID && x.SubjectID == _subjectID && x.CRFID == _crfID).ToList();
+                        //Если есть не закрытые Query
+                        if (sis == null || sis.Count == 0 || sis.All(x => x.Queries.Count == 0 || x.Queries.All(y => y.Status == Core.QueryStatus.Closed)))
+                        {
+                            btnCheckAll.Visible = true;
+                        }
+                    }
+                    else if(_sCRF.IsCheckAll && !_sCRF.IsApproved)
+                    {
+                        btnEdit.Visible = true;
+                        btnEdit.Text = Resources.LocalizedText.CancelSDV;
+                    }
+                }
                 else if (userRoles.Contains(Core.Roles.Principal_Investigator.ToString()))
                 {
-                    if (_sCRF.IsEnd && !_sCRF.IsApprove)
+                    if (_sCRF.IsCheckAll && !_sCRF.IsApproved)
                         btnApproved.Visible = true;
                     
                     btnEdit.Visible = true;
                 }
-                else if (userRoles.Contains(Core.Roles.Investigator.ToString()))
-                {
-                    if (_sCRF.IsEnd && !_sCRF.IsApprove)
-                        btnEdit.Visible = true;
-                }
-                else if (userRoles.Contains(Core.Roles.Monitor.ToString()) && _sCRF.IsApprove && !_sCRF.IsCheckAll)
-                {
-                    btnCheckAll.Visible = true;
-                }
             }
-            if(btnEdit.Visible)
+            if (btnEdit.Visible && btnEdit.Parent.FindControl("btnUnvisibleEdit")==null)
             {
                 LinkButton btnUnvisible = new LinkButton();
                 btnUnvisible.ID = "btnUnvisibleEdit";
@@ -306,6 +366,56 @@ namespace EDC.Pages.Subject
                 mpe.ID = "mpeEditReason";
                 p.Controls.Add(mpe);
             }
+            if (btnApproved.Visible && btnEdit.Parent.FindControl("btnUnvisibleLogin") == null)
+            {
+                LinkButton btnUnvisible = new LinkButton();
+                btnUnvisible.ID = "btnUnvisibleLogin";
+                btnUnvisible.CssClass = "buttonHide";
+                var p = btnEdit.Parent;
+                p.Controls.AddAt(p.Controls.IndexOf(btnApproved), btnUnvisible);
+
+                AjaxControlToolkit.ModalPopupExtender mpe = new AjaxControlToolkit.ModalPopupExtender();
+                mpe.TargetControlID = btnUnvisible.ID;
+                mpe.PopupControlID = "pnlLogin";
+                mpe.CancelControlID = "btnCloseLogin";
+                mpe.ID = "mpeLogin";
+                p.Controls.Add(mpe);
+            }
+            if(_sCRF != null)
+                if (_sCRF.IsDeleted)
+                {
+                    lblStatus.Text = string.Format("{0}", Resources.LocalizedText.Removed);
+                    btnStatus.Attributes.Add("class", "ActionIc Delete");
+                }
+                else if (_subject.IsLock)
+                {
+                    lblStatus.Text = string.Format("{0}", Resources.LocalizedText.Locked);
+                    btnStatus.Attributes.Add("class", "ActionIc Lock");
+                }
+                else if (_sCRF.IsStopped)
+                {
+                    lblStatus.Text = string.Format("{0}", Resources.LocalizedText.Stopped);
+                    btnStatus.Attributes.Add("class", "ActionIc Stopped");
+                }
+                else if (_sCRF.IsApproved)
+                {
+                    lblStatus.Text = lblStatus.Text = string.Format("{0}", Resources.LocalizedText.Signed);
+                    btnStatus.Attributes.Add("class", "ActionIc Approve");
+                }
+                else if (_sCRF.IsCheckAll)
+                {
+                    lblStatus.Text = lblStatus.Text = string.Format("{0}", Resources.LocalizedText.SDVComplete);
+                    btnStatus.Attributes.Add("class", "ActionIc CheckAll");
+                }
+                else if (_sCRF.IsEnd)
+                {
+                    lblStatus.Text = lblStatus.Text = string.Format("{0}", Resources.LocalizedText.Completed);
+                    btnStatus.Attributes.Add("class", "ActionIc End");
+                }
+            if (lblStatus.Text == "")
+                btnStatus.Visible = false;
+            else
+                btnStatus.Visible = true;
         }
 
         #region GetInfoFromRequest
@@ -355,6 +465,22 @@ namespace EDC.Pages.Subject
                 throw new ArgumentNullException("Не указан ID события");
             }
         }
+        private string GetMPENameFromRequest()
+        {
+            return (string)RouteData.Values["mpename"] ?? Request.QueryString["mpename"];
+        }
+        private long? GetQueryIDFromRequest()
+        {
+            long queryID;
+            string reqValue = (string)RouteData.Values["q"] ?? Request.QueryString["q"];
+            if (reqValue != null && long.TryParse(reqValue, out queryID) && queryID > 0)
+            {
+                return queryID;
+            }
+            return null;
+            
+        }
+
         #endregion
 
         void LoadForm(Models.CRF _crf)
@@ -373,9 +499,11 @@ namespace EDC.Pages.Subject
                 int columnCount = section.Items.Max(x => x.ColumnNumber);
 
                 Table tableUngrouped = new Table(); //таблица итемов без группы
+                tableUngrouped.CssClass = "normTable";
                 TableRow trUngrouped = new TableRow(); //строка итемов
 
                 Table tableGrouped = new Table();           //широкая таблица
+                tableGrouped.CssClass = "bigTable";
                 TableRow trGroupedHeaders = new TableRow(); //заголовки
                 TableRow trsGroupedValues = new TableRow(); //значения
 
@@ -383,12 +511,13 @@ namespace EDC.Pages.Subject
                 Button btnSave = new Button();  //Кнопка сохранить
                 btnSave.ID = "btnSave";
                 btnSave.Click += btnSave_Click;
-                btnSave.Text = "Сохранить";
+                btnSave.Text = Resources.LocalizedText.Save;
+                btnSave.ValidationGroup = section.Label.Replace(" ","");
 
                 Button btnAdd = new Button();   //кнопка добавить
                 btnAdd.ID = "btnAdd";
                 btnAdd.Click +=btnAdd_Click;
-                btnAdd.Text = "Добавить";
+                btnAdd.Text = Resources.LocalizedText.Add;
                 
                 List<CRF_Item> ungroupedItems = section.Items
                     .Where(x => x.Ungrouped)
@@ -457,14 +586,15 @@ namespace EDC.Pages.Subject
                         RequiredFieldValidator RFV = new RequiredFieldValidator();
                         RFV.ControlToValidate = item.Identifier;
                         RFV.Display = ValidatorDisplay.Dynamic;
-                        RFV.ErrorMessage = "Данное поле обязательно для заполнения";
+                        RFV.ValidationGroup = section.Label.Replace(" ","");
+                        RFV.ErrorMessage = Resources.LocalizedText.RequiredField;
                         RFV.CssClass = "field-validation-error";
                         tc.Controls.Add(RFV);
                     }
 
                     trUngrouped.Cells.Add(tc);
 
-                    if (i < section.Items.Count - 1) //если элемент не последний
+                    if (i < ungroupedItems.Count - 1) //если элемент не последний
                     {
                         if (section.Items[i + 1].ColumnNumber <= section.Items[i].ColumnNumber)
                         {
@@ -554,20 +684,20 @@ namespace EDC.Pages.Subject
                         for (int i = 0; i < groupedItems.Count; i++)
                         {
                             TableCell tc = new TableCell();
-                            GetAddedControl(groupedItems[i], ref tc, j+2, null);
+                            GetAddedControl(groupedItems[i], ref tc, groupedIndex+j+1, null);
                             addingTR.Cells.Add(tc);
 
                             if (groupedItems[i].Required) //если обязательное
                             {
                                 RequiredFieldValidator RFV = new RequiredFieldValidator();
-                                RFV.ControlToValidate = groupedItems[i].Identifier + "_" + (j + 2).ToString();
+                                RFV.ControlToValidate = groupedItems[i].Identifier + "_" + (groupedIndex + j + 1).ToString();
                                 RFV.Display = ValidatorDisplay.Dynamic;
                                 RFV.ErrorMessage = "Данное поле обязательно для заполнения";
                                 RFV.CssClass = "field-validation-error";
                                 tc.Controls.Add(RFV);
                             }
                         }
-                        tableGrouped.Rows.AddAt(j + 2, addingTR);
+                        tableGrouped.Rows.AddAt(groupedIndex + j + 1, addingTR);
                         addingTR = new TableRow();
                     }
 
@@ -581,7 +711,6 @@ namespace EDC.Pages.Subject
                         tcg.Controls.Add(btnAdd);
                         trGroupedHeaders.Cells.Add(tcg);
                         tableGrouped.Rows.Add(trGroupedHeaders);
-                        tableGrouped.CssClass = "bigTable";
                         ScriptManager.GetCurrent(this).RegisterAsyncPostBackControl(btnAdd);
                     }
                     ///////////////////////////////////////////////////
@@ -598,15 +727,35 @@ namespace EDC.Pages.Subject
                     tp.Controls.Add(panel);
                 tcCRF.Tabs.Add(tp); //панель в tabConteiner
 
+                tQueryStatistic.Rows[2].Cells[0].InnerHtml = queryStatistic[0].ToString();
+                tQueryStatistic.Rows[2].Cells[1].InnerHtml = queryStatistic[1].ToString();
+                tQueryStatistic.Rows[2].Cells[2].InnerHtml = queryStatistic[2].ToString();
+                tQueryStatistic.Rows[2].Cells[3].InnerHtml = queryStatistic.Sum().ToString();
+
             }
         }
 
-        void GetModalPopup(ref TableCell tc, string id)
+        /// <summary>
+        /// Получение модального окна с Query для поля.
+        /// </summary>
+        void GetModalPopup(ref TableCell tc, string id,CRF_Item item, int index)
         {
+            var si = SIR.SelectByID(_subjectID, _eventID, _crfID, item.CRF_ItemID, index);
+            List<Models.Query> queries = GetQueries(si);
+            queryStatistic[0] += queries.Count(x => x.Status == Core.QueryStatus.New);
+            queryStatistic[1] += queries.Count(x => x.Status == Core.QueryStatus.Updated);
+            queryStatistic[2] += queries.Count(x => x.Status == Core.QueryStatus.Closed);
             Button btnNotes = new Button();
             btnNotes.ID = "btnNotes_" + id;
             btnNotes.Click += btnNotes_Click;
-            btnNotes.CssClass = "nodes";
+            if (queries.Count == 0)
+                btnNotes.CssClass = "notes";
+            else if(queries.Count>0 && queries.Any(x=> x.Status == Core.QueryStatus.New))
+                btnNotes.CssClass = "notes notesNew";
+            else if (queries.Count > 0 && queries.Any(x => x.Status == Core.QueryStatus.Updated))
+                btnNotes.CssClass = "notes notesUpdate";
+            else
+                btnNotes.CssClass = "notes notesClose";
             tc.Controls.Add(btnNotes);
 
             LinkButton btnUnvisible = new LinkButton();
@@ -622,10 +771,10 @@ namespace EDC.Pages.Subject
             tc.Controls.Add(mpe);
         }
 
+        //Получение уже добавленных контролов
         void GetAddedControl(CRF_Item item, ref TableCell tc, int index, string value)
         {
             Control addedControl = new Control();
-
             string id = index > 0 ? item.Identifier + "_" + index : item.Identifier;
 
             value = value == null ? ReadCRFItemValue(item, index) : value;
@@ -742,7 +891,7 @@ namespace EDC.Pages.Subject
             }
             if (value != null)
             {
-                GetModalPopup(ref tc, id);
+                GetModalPopup(ref tc, id,item,index);
             }
         }
 
@@ -915,6 +1064,289 @@ namespace EDC.Pages.Subject
             }
         }
 
+        #region AutoQuery
+        void GetQuery(CRF_Section section)
+        {
+            foreach(var crf_item in section.Items)
+            {
+                //список правил данного итема
+                List<Models.Rule> rulesForItem = crf_item.Rules.Where(x=> x.EventID == null || x.EventID == _eventID).ToList(); 
+                
+                //список созданных замечаний
+                List<Models.Query> itemNotes = crf_item.Notes
+                    .Where(x=> 
+                        x.EventID == _eventID
+                        && x.SubjectID == _subjectID
+                        && (x.Status== Core.QueryStatus.New || x.Status== Core.QueryStatus.Updated))
+                        .ToList();
+
+                rulesForItem = rulesForItem.Where(x => !itemNotes.Any(y => y.Messages[0].Text == x.ErrorMessage)).ToList();
+                //текущая цель (событие, ИРК, группа, итем)
+                var currentItemTarget = new Core.Rule.Target(){EventID= _eventID, CRFID=crf_item.CRFID, GroupID=(long)crf_item.GroupID, ItemID= crf_item.CRF_ItemID};
+                foreach(var rule in rulesForItem)
+                {
+                    List<Core.Rule.IToken> ruleTokens = new List<Core.Rule.IToken>();
+                    rule.Tokens.ForEach(x=> ruleTokens.Add((Core.Rule.IToken)x));
+                    List<Core.Rule.Rule_Error> errorList = new List<Core.Rule.Rule_Error>();
+                    //список токенов данного правила
+                    Core.Rule.RuleParse.UpdateCrfTokens(ruleTokens, currentItemTarget, errorList);
+
+                    //список итемов данного пациента
+                    List<SubjectsItem> subjectsItems = SIR.GetManyByFilter(x=> x.SubjectID==_subjectID && x.EventID==_eventID && x.CRFID==crf_item.CRFID && x.ItemID == crf_item.CRF_ItemID).ToList();
+
+                    foreach (SubjectsItem subjectItem in subjectsItems)
+                    {
+                        bool isEmpty = false;
+                        //////////////////////////////////////////////////////////////////
+                        Stack<Core.Rule.IToken> stack = new Stack<Core.Rule.IToken>();
+                        foreach (Core.Rule.IToken token in ruleTokens)
+                        {
+                            bool isError = false;
+
+                            if (token.Type == TokenType.Constant || token.Type == TokenType.Item)
+                            {
+                                stack.Push(token);
+                                continue;
+                            }
+                            if (token.Type == TokenType.Operation)
+                            {
+                                if (stack.Count < 2)
+                                    throw new ArgumentException("В стеке менее двух элементов. Квери не может быть установлено"+Environment.NewLine+
+                                    "Верхний элемент: "
+                                    +stack.Peek()== null?"Отсутствует":(stack.Peek().Type.ToString()+" "+stack.Peek().Value.ToString())
+                                    +Environment.NewLine
+                                    +rule.ErrorMessage 
+                                    +Environment.NewLine 
+                                    +rule.Expression);
+                                else
+                                {
+                                    IToken t2 = stack.Pop();
+                                    IToken t1 = stack.Pop();
+
+                                    bool comparing = TokenValueComparing(t1, t2, currentItemTarget, subjectItem, token.Value,out isError,out isEmpty);
+                                    if (isEmpty)
+                                        break;
+                                    if (isError)
+                                        throw new Exception("Ошибка при сравнение двух элементов. Квери не может быть установлено"
+                                            +Environment.NewLine
+                                            +rule.ErrorMessage 
+                                            +Environment.NewLine 
+                                            +rule.Expression);
+                                    else
+                                        stack.Push(new Core.Rule.Token(comparing.ToString(),TokenType.Constant));
+                                }
+                            }
+                        }
+                        if (isEmpty)
+                            continue;
+                        if (stack.Count != 1)
+                        {
+                            if(stack.Count == 0)
+                                throw new Exception("Нет элементов в стеке. Квери не может быть установлено" 
+                                            + Environment.NewLine
+                                            + rule.ErrorMessage
+                                            + Environment.NewLine
+                                            + rule.Expression);
+                            else
+                                throw new Exception("После всех операция в стеке осталось " + stack.Count + " элементов. Квери не может быть установлено" 
+                                            + Environment.NewLine
+                                            + rule.ErrorMessage
+                                            + Environment.NewLine
+                                            + rule.Expression);
+                        }
+
+                        IToken lastT = stack.Pop();
+                        if (lastT.Value == rule.IfExpressionEvaluates.ToString())
+                        {
+                            Models.Query newNote = new Models.Query();
+                            newNote.MedicalCenterID = SR.SelectByID(_subjectID).MedicalCenterID;
+                            newNote.CreationDate = DateTime.Now;
+                            newNote.SubjectID = _subjectID;
+                            newNote.EventID = _eventID;
+                            newNote.CRFID = rule.CRFID;
+                            newNote.ItemID = rule.ItemID;
+                            newNote.IndexID = subjectItem.IndexID; //TEST
+                            newNote.From = Resources.LocalizedText.System;
+                            newNote.To = subjectItem.CreatedBy;
+                            newNote.Type = Core.NoteType.Query;
+                            newNote.Header = "Автоматическая заметка №" + (NR.SelectAll().Count() + 1).ToString();
+                            newNote = NR.Create(newNote);
+                            NR.Save();
+                            NR = new Models.Repository.QueryRepository();
+
+                            var qm = new Models.QueryMessage();
+                            qm.Text = rule.ErrorMessage;
+                            qm.From = Resources.LocalizedText.System;
+                            qm.To = subjectItem.CreatedBy;
+                            NR.AddMessage(newNote.QueryID,qm,true);
+                            NR.Save();
+                        }
+
+
+                        ////////////////////////////////////////////////////////////////////
+                    }
+                }
+            }
+        }
+
+        bool TokenValueComparing(IToken t1, IToken t2, Target currentItemTarget, SubjectsItem subjectItem, string operation, out bool isError, out bool isEmpty)
+        {
+            isError = false;
+            isEmpty = false;
+
+            string sV1 = GetTokenRealyValue(t1, currentItemTarget, subjectItem);
+            string sV2 = GetTokenRealyValue(t2, currentItemTarget, subjectItem);
+
+            if(string.IsNullOrWhiteSpace(sV1) || string.IsNullOrWhiteSpace(sV2))
+            {
+                if (operation != "==" && operation != "!=")
+                {
+                    isEmpty = true;
+                    return false;
+                }
+                else
+                {
+
+                }
+            }
+
+            double dV1 = 0;
+            double dV2 = 0;
+
+            bool isDV1 = double.TryParse(sV1, out dV1);
+            bool isDV2 = double.TryParse(sV2, out dV2);
+
+            if(isDV1 ^ isDV2)
+            {
+                if(!isDV1)
+                {
+                    sV1 = sV1.Replace(".", ",");
+                    isDV1 = double.TryParse(sV1, out dV1);
+                }
+                else
+                {
+                    sV2 = sV2.Replace(".", ",");
+                    isDV2 = double.TryParse(sV2, out dV2);
+                }
+            }
+
+            DateTime dtV1 = new DateTime();
+            DateTime dtV2 = new DateTime();
+
+            bool isDTV1 = DateTime.TryParse(sV1, out dtV1);
+            bool isDTV2 = DateTime.TryParse(sV2, out dtV2);
+
+            switch (operation.ToUpper())
+            {
+                case "==":
+                    {
+                        return sV1 == sV2;
+                    }
+                case "!=":
+                    {
+                        return sV1 != sV2;
+                    }
+                case "<":
+                    {
+                        if (isDV1 && isDV2)
+                            return dV1 < dV2;
+                        else
+                            if (isDTV1 && isDTV2)
+                                return dtV1 < dtV2;
+                            else
+                                isError = true;
+                        break;
+                    }
+                case "<=":
+                    {
+                        if (isDV1 && isDV2)
+                            return dV1 <= dV2;
+                        else
+                            if (isDTV1 && isDTV2)
+                                return dtV1 <= dtV2;
+                            else
+                                isError = true;
+                        break;
+                    }
+                case ">":
+                    {
+                        if (isDV1 && isDV2)
+                            return dV1 > dV2;
+                        else
+                            if (isDTV1 && isDTV2)
+                                return dtV1 > dtV2;
+                            else
+                                isError = true;
+                        break;
+                    }
+                case ">=":
+                    {
+
+                        if (isDV1 && isDV2)
+                            return dV1 >= dV2;
+                        else
+                            if (isDTV1 && isDTV2)
+                                return dtV1 >= dtV2;
+                            else
+                                isError = true;
+                        break;
+                    }
+                case "OR":
+                case "AND":
+                    {
+                        bool bValue1;
+                        bool bValue2;
+                        bool isBValue1 = bool.TryParse(sV1, out bValue1);
+                        bool isBValue2 = bool.TryParse(sV2, out bValue2);
+                        if (!(isBValue1 && isBValue2))
+                        {
+                            isError = true;
+                            break;
+                        }
+                        else
+                            if(operation.ToUpper() == "OR")
+                                return bValue1 || bValue2;
+                            else if (operation.ToUpper() == "AND")
+                                return bValue1 && bValue2;
+                        break;
+                    }
+            }
+            return false;
+            
+        }
+
+        string GetTokenRealyValue(IToken token, Target currentItemTarget,SubjectsItem subjectItem)
+        {
+            if (token.Type == TokenType.Constant)
+                return token.Value;
+            else
+            {
+                CrfToken crfT = token as CrfToken;
+                List<SubjectsItem> sis;
+                if ((crfT.EventID == null || crfT.EventID == currentItemTarget.EventID) && crfT.CrfID == currentItemTarget.CRFID && crfT.GroupID == currentItemTarget.GroupID)
+                {
+                    if (crfT.EventID != null)
+                        sis = SIR.GetManyByFilter(x => x.EventID == crfT.EventID && x.SubjectID == subjectItem.SubjectID && x.CRFID == crfT.CrfID && x.ItemID == crfT.ItemID && x.IndexID == subjectItem.IndexID).ToList();
+                    else
+                        sis = SIR.GetManyByFilter(x => x.EventID == currentItemTarget.EventID && x.SubjectID == subjectItem.SubjectID && x.CRFID == crfT.CrfID && x.ItemID == crfT.ItemID && x.IndexID == subjectItem.IndexID).ToList();
+                }
+                else
+                {
+                    if (crfT.EventID != null)
+                        sis = SIR.GetManyByFilter(x => x.EventID == crfT.EventID && x.SubjectID == subjectItem.SubjectID && x.CRFID == crfT.CrfID && x.ItemID == crfT.ItemID).ToList();
+                    else
+                        sis = SIR.GetManyByFilter(x => x.EventID == currentItemTarget.EventID && x.SubjectID == subjectItem.SubjectID && x.CRFID == crfT.CrfID && x.ItemID == crfT.ItemID).ToList();
+                }
+
+                if (sis.Count == 0)
+                    return "";
+                else
+                    return sis[0].Value;
+            }
+        }
+
+        #endregion
+
         string GetValueFromControl(Control control)
         {
             Type type = control.GetType();
@@ -944,6 +1376,12 @@ namespace EDC.Pages.Subject
                             }
                         }
                         value = value.TrimStart(',');
+                        break;
+                    }
+                case "DropDownList":
+                    {
+                        DropDownList ddl = control as DropDownList;
+                        value = ddl.SelectedValue;
                         break;
                     }
             }
@@ -979,11 +1417,17 @@ namespace EDC.Pages.Subject
             RowCountInSection[section.Label] = RowCountInSection[section.Label] + 1;
         }
 
+        /// <summary>
+        /// Нажата кнопка сохранить
+        /// </summary>
         protected void btnSave_Click(object sender, EventArgs e)
         {
             Control tempControl = ((Button)sender).Parent.Parent;
             string panelName = (tempControl as AjaxControlToolkit.TabPanel).HeaderText;
             CRF_Section section = _crf.Sections.First(x => x.Title == panelName);
+
+            lblStatus.Text = "";
+            btnStatus.Visible = false;
 
             //обновления статуса Ввод начат////
             _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
@@ -994,28 +1438,13 @@ namespace EDC.Pages.Subject
                 _sCRF.EventID = _eventID;
                 _sCRF.CRFID = _crfID;
                 SCR.Create(_sCRF);
-            }
-            SCR.Save();
-            _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
-            if (!_sCRF.IsStart)
-            {
-                _sCRF.IsStart = true;
-                _sCRF.IsStartBy = User.Identity.Name;
-                SCR.Update(_sCRF);
                 SCR.Save();
                 _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
             }
-            if(_sCRF.IsEnd)
-            {
-                _sCRF.IsApprove = _sCRF.IsCheckAll = _sCRF.IsEnd = false;
-                _sCRF.IsApprovedBy = _sCRF.IsCheckAllBy = _sCRF.IsEndBy = User.Identity.Name;
-                SCR.Update(_sCRF);
-                SCR.Save();
-            }
-            _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
+
             ///////////////////////////////////
-            var se = SER.SelectByID(_subjectID,_eventID);
-            if(se==null)
+            var se = SER.SelectByID(_subjectID, _eventID);
+            if (se == null)
             {
                 se = new SubjectsEvent();
                 se.SubjectID = _subjectID;
@@ -1024,26 +1453,59 @@ namespace EDC.Pages.Subject
                 SER.Save();
             }
 
+            if (!_sCRF.IsStart)
+            {
+                _sCRF.IsStart = true;
+                _sCRF.IsStartBy = User.Identity.Name;
+                SCR.Update(_sCRF);
+
+                ChangeAuditCrfStatus(string.Empty,Resources.LocalizedText.DataEntryStarted);
+
+                SCR.Save();
+                _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
+            }
+            if(_sCRF.IsEnd)
+            {
+                ChangeAuditCrfStatus(Resources.LocalizedText.Completed,string.Empty);
+
+                _sCRF.IsEnd = false;
+                _sCRF.IsEndBy = "";
+                _sCRF.IsEndDate = null;
+
+                if (_sCRF.IsApproved)
+                {
+                    ChangeAuditCrfStatus(Resources.LocalizedText.Signed, string.Empty);
+
+                    _sCRF.IsApproved = false;
+                    _sCRF.IsApprovedBy = "";
+                    _sCRF.IsApprovedDate = null;
+
+                }
+                if (_sCRF.IsCheckAll)
+                {
+                    ChangeAuditCrfStatus(Resources.LocalizedText.SDVComplete, string.Empty);
+
+                    _sCRF.IsCheckAll = false;
+                    _sCRF.IsCheckAllBy = "";
+                    _sCRF.IsCheckAllDate = null;
+                }
+                
+
+                SCR.Update(_sCRF);
+                SCR.Save();
+            }
+            _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
+
+
 
             _crf = CRFR.SelectByID(_crf.CRFID); //не очень понятно зачем=(
             
             GetInfo(tempControl, section); //считывание информации из полей и запись в БД.
+            GetQuery(section);
             LoadForm(_crf);
 
             ConfigActionButtons();
 
-            //HttpCookie cookie = Request.Cookies["activeTabIndex"];
-            //int tabIndex = 0;
-            //if (cookie != null)
-            //{
-            //    string sTabIndex = cookie.Value;
-            //    if (!int.TryParse(sTabIndex, out tabIndex))
-            //        tabIndex = 0;
-            //}
-            //if (_sCRF != null && (tcCRF.Tabs.Count == 1 || tabIndex == tcCRF.Tabs.Count - 1) && (User.IsInRole(Core.Roles.Investigator.ToString()) || User.IsInRole(Core.Roles.Principal_Investigator.ToString())))
-            //{
-            //    btnEnd.Visible = true;
-            //}
         }
 
         protected void btnAdd_Click(object sender, EventArgs e)
@@ -1059,85 +1521,203 @@ namespace EDC.Pages.Subject
             Button btn = sender as Button;
             string mpeName ="mpe" + btn.ID.Replace("btnNotes", "");
             AjaxControlToolkit.ModalPopupExtender mpe = btn.Parent.FindControl(mpeName) as AjaxControlToolkit.ModalPopupExtender;
-            LoadMPE(mpe);
+            LoadMPE(mpeIn: mpe);
         }
 
-        void LoadMPE(string mpeName)
+        void SetDefaultBtnVisibleForMPE()
         {
-            AjaxControlToolkit.ModalPopupExtender mpe = tcCRF.ActiveTab.FindControl(mpeName) as AjaxControlToolkit.ModalPopupExtender;
-            _mpe = mpe;
-            ///////////default//////////////
             divCreate.Visible = false;
+            divMessageLog.Style.Add("display","none");
             btnSaveWindow.Visible = false;
-            btnCreateNote.Visible = true;
+            if ((!_sCRF.IsCheckAll) && (User.IsInRole(Core.Roles.Auditor.ToString()) || User.IsInRole(Core.Roles.Data_Manager.ToString()) || User.IsInRole(Core.Roles.Monitor.ToString())))
+            {
+                btnCreateNote.Visible = true;
+            }
+            else
+                btnCreateNote.Visible = false;
             tbHeader.Visible = true;
             lbHeader.Visible = true;
-
-
-            string strIndex = mpeName.Substring(mpeName.LastIndexOf('_') + 1);
-            int rowIndex;
-            if (!int.TryParse(strIndex, out rowIndex))
-                rowIndex = -1;
-
-            string itemIdentifier = mpe.ID.Replace("mpe_", "");
-            if (itemIdentifier.IndexOf('_') > 0)
+        }
+        void LoadMPE(string mpeNameIn = "", AjaxControlToolkit.ModalPopupExtender mpeIn=null)
+        {
+            AjaxControlToolkit.ModalPopupExtender mpe = new AjaxControlToolkit.ModalPopupExtender();
+            string mpeName = "";
+            if (mpeNameIn != "")
             {
-                itemIdentifier = itemIdentifier.Remove(itemIdentifier.IndexOf('_'));
+                foreach(AjaxControlToolkit.TabPanel tab in tcCRF.Tabs)
+                {
+                    mpe = tab.FindControl(mpeNameIn) as AjaxControlToolkit.ModalPopupExtender;
+                    if (mpe != null)
+                        break;
+                }
+                //mpe = tcCRF.FindControl(mpeNameIn) as AjaxControlToolkit.ModalPopupExtender; //.ActiveTab.FindControl(mpeNameIn)
+                if (mpe != null)
+                    _mpe = mpe;
+                else
+                    throw new ArgumentNullException("Не найдено с указанным id");
+                mpeName = mpeNameIn;
             }
-            Models.CRF_Item ci = CIR.GetManyByFilter(x => x.Identifier == itemIdentifier).FirstOrDefault();
+            else
+                if (mpeIn != null)
+                {
+                    mpeName = mpeIn.ID;
+                    _mpe = mpeIn;
+                    mpe = mpeIn;
+                }
 
-            Models.SubjectsItem si = SIR.SelectByID(_subjectID, _eventID, _crfID, ci.CRF_ItemID, rowIndex);
+            SetDefaultBtnVisibleForMPE();
+
+            string itemIdentifier;
+            int index;
+
+            GetItemIDIndex(mpeName, out itemIdentifier, out index);
+
+            Models.CRF_Item ci = CIR.GetManyByFilter(x => x.Identifier == itemIdentifier).FirstOrDefault();
+            if(ci==null)
+            {
+                throw new Exception("Не удалось найти Итем с указанным идентификатором");
+            }
+            Models.SubjectsItem si = SIR.SelectByID(_subjectID, _eventID, _crfID, ci.CRF_ItemID, index);
+
             if (si == null)
                 return;
             else
                 _si = si;
-            List<Models.Note> Notes = NR
-                .GetManyByFilter(x => x.SubjectID == _subjectID && x.EventID == _eventID && x.CRFID == _crfID && x.ItemID == si.ItemID && x.IndexID == si.IndexID).ToList();
-            gvNotes.DataSource = Notes;
-            gvNotes.DataBind();
+
+            LoadQuery(si);
 
             _mpe.Show();
         }
 
-        void LoadMPE(AjaxControlToolkit.ModalPopupExtender mpe)
+        void GetItemIDIndex(string mpeName, out string itemIdentifier, out int index)
         {
-            string mpeName = mpe.ID;
-            _mpe = mpe;
-            ///////////default//////////////
-            divCreate.Visible = false;
-            btnSaveWindow.Visible = false;
-            btnCreateNote.Visible = true;
-            tbHeader.Visible = true;
-            lbHeader.Visible = true; 
-            
             string strIndex = mpeName.Substring(mpeName.LastIndexOf('_') + 1);
-            int rowIndex;
-            if (!int.TryParse(strIndex, out rowIndex))
-                rowIndex = -1;
+            if (!int.TryParse(strIndex, out index))
+                index = -1;
 
-            string itemIdentifier = mpe.ID.Replace("mpe_", "");
-            if (itemIdentifier.IndexOf('_') > 0)
+            itemIdentifier = mpeName.Replace("mpe_", "");
+            if (itemIdentifier.IndexOf('_') > 0 && index>=0)
             {
                 itemIdentifier = itemIdentifier.Remove(itemIdentifier.IndexOf('_'));
             }
-            Models.CRF_Item ci = CIR.GetManyByFilter(x => x.Identifier == itemIdentifier).FirstOrDefault();
 
-            Models.SubjectsItem si = SIR.SelectByID(_subjectID, _eventID, _crfID, ci.CRF_ItemID, rowIndex);
-            if (si == null)
-                return;
-            else
-                _si = si;
-            List<Models.Note> Notes = NR
-                .GetManyByFilter(x =>
-                    x.SubjectID == _subjectID && 
-                    x.EventID == _eventID && 
-                    x.CRFID == _crfID && 
-                    x.ItemID == si.ItemID && 
-                    x.IndexID == si.IndexID).ToList();
-            gvNotes.DataSource = Notes;
+        }
+        void LoadQuery(Models.SubjectsItem si)
+        {
+            List<Models.Query> queries = GetQueries(si);
+            gvNotes.DataSource = queries;
             gvNotes.DataBind();
+        }
+        List<Models.Query> GetQueries(SubjectsItem si)
+        {
+            List<Models.Query> queries = NR
+                .GetManyByFilter(x =>
+                    x.SubjectID == _subjectID &&
+                    x.EventID == _eventID &&
+                    x.CRFID == _crfID &&
+                    x.ItemID == si.ItemID &&
+                    x.IndexID == si.IndexID).ToList();
 
-            _mpe.Show();
+            queries = Core.Core.FilterQueriesAccess(queries, User);
+
+            return queries;
+        }
+
+        protected void gvNotes_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if(e.Row.RowType == DataControlRowType.DataRow)
+            {
+                bool answer = true;
+                bool close = true;
+                Models.Query _query = (gvNotes.DataSource as List<Models.Query>)[e.Row.RowIndex];
+
+
+                if (!(User.IsInRole(Core.Roles.Auditor.ToString()) || User.IsInRole(Core.Roles.Data_Manager.ToString())))
+                    close = false;
+                if (User.IsInRole(Core.Roles.Administrator.ToString()))
+                    answer = false;
+                if(User.IsInRole(Core.Roles.Monitor.ToString()))
+                {
+                    if(_query.From != User.Identity.Name)
+                    {
+                        answer = false;
+                        close = false;
+                    }
+                    else
+                    {
+                        close = true;
+                    }
+
+                }
+
+                if (_query.Status == Core.QueryStatus.Closed || _query.Status == Core.QueryStatus.Note)
+                {
+                    //ответить
+                    answer = false;
+
+                    //закрыть
+                    close = false;
+                }
+
+                //ответить
+                (e.Row.Cells[10].Controls[1] as Button).Visible = answer;
+
+                //закрыть
+                (e.Row.Cells[11].Controls[1] as Button).Visible = close;
+            }
+        }
+        
+        protected void btnPopUpSeeMessage_Click(object sender, EventArgs e)
+        {
+            Button _btn = sender as Button;
+            int rowIndex = (_btn.Parent.Parent as GridViewRow).RowIndex;
+
+            string itemIdentifier;
+            int index;
+            GetItemIDIndex(_mpe.ID, out itemIdentifier, out index);
+            Models.CRF_Item ci = CIR.GetManyByFilter(x => x.Identifier == itemIdentifier).FirstOrDefault();
+            Models.SubjectsItem si = SIR.SelectByID(_subjectID, _eventID, _crfID, ci.CRF_ItemID, index);
+
+            var queries = GetQueries(si);
+
+            var query = queries[rowIndex];
+
+            LoadMessages(query);
+
+            LoadMPE(_mpe.ID);
+            divMessageLog.Style.Add("display","block");
+
+        }
+
+        void LoadMessages(Models.Query query)
+        {
+            while(tQueries.Rows.Count>1)
+            {
+                tQueries.Rows.RemoveAt(tQueries.Rows.Count-1);
+            }
+            
+            foreach (var message in query.Messages)
+            {
+                System.Web.UI.HtmlControls.HtmlTableRow row = new System.Web.UI.HtmlControls.HtmlTableRow();
+
+                var tc = new System.Web.UI.HtmlControls.HtmlTableCell();
+                tc.InnerText = message.CreationDate.ToShortDateString();
+                row.Cells.Add(tc);
+
+                tc = new System.Web.UI.HtmlControls.HtmlTableCell();
+                tc.InnerText = query.Header;
+                row.Cells.Add(tc);
+
+                tc = new System.Web.UI.HtmlControls.HtmlTableCell();
+                tc.InnerText = message.From;
+                row.Cells.Add(tc);
+
+                tc = new System.Web.UI.HtmlControls.HtmlTableCell();
+                tc.InnerText = message.Text;
+                row.Cells.Add(tc);
+
+                tQueries.Rows.Add(row);
+            }
         }
 
         /// <summary>
@@ -1152,12 +1732,11 @@ namespace EDC.Pages.Subject
             lbHeader.Visible = false;
             tbHeader.Visible = false;
             btnSaveWindow.Visible = true;
-            lbNoteText.Text = "Текст ответа";
+            rfvHeader.EnableClientScript = false;
+            lbNoteText.Text = Resources.LocalizedText.Message;
             Button _btn = sender as Button;
             int rowIndex = (_btn.Parent.Parent as GridViewRow).RowIndex;
             answerRowIndex = rowIndex;
-
-
         }
 
         /// <summary>
@@ -1168,21 +1747,28 @@ namespace EDC.Pages.Subject
         protected void btnCloseNote_Click(object sender, EventArgs e)
         {
             Button _btn = sender as Button;
-            int closingRowIndex = (_btn.Parent.Parent as GridViewRow).RowIndex;
-
-            List<Models.Note> Notes = NR
-                .GetManyByFilter(x => x.SubjectID == _subjectID && x.EventID == _eventID && x.CRFID == _crfID && x.ItemID == _si.ItemID && x.IndexID == _si.IndexID).ToList();
-            Models.Note closingNote = NR.SelectByID(Notes[closingRowIndex].NoteID);
-            CloseNote(closingNote);
+            closeRowIndex = (_btn.Parent.Parent as GridViewRow).RowIndex;
             LoadMPE(_mpe.ID);
+            divCreate.Visible = true;
+            lbHeader.Visible = false;
+            tbHeader.Visible = false;
+            btnSaveWindow.Visible = true;
+            rfvHeader.EnableClientScript = false;
+            lbNoteText.Text = Resources.LocalizedText.ReasonOfQueryResolution;
+            btnSaveWindow.Text = Resources.LocalizedText.ResolveQuery;
+
         }
 
-        void CloseNote(Models.Note note)
+        void CloseQuery(Models.Query query)
         {
-            if (note == null)
+
+            if (query == null)
                 throw new ArgumentNullException();
-            note.Status = Core.QueryStatus.Closed;
-            NR.Update(note);
+            query.Status = Core.QueryStatus.Closed;
+            query.ClosedBy = User.Identity.Name;
+            query.ClosedDate = DateTime.Now;
+            query.ClosedText = tbNoteText.Text;
+            NR.Update(query);
             NR.Save();
         }
 
@@ -1193,43 +1779,57 @@ namespace EDC.Pages.Subject
             divCreate.Visible = true;
             btnSaveWindow.Visible = true;
             btnCreateNote.Visible = false;
-            lbNoteText.Text = "Текст заметки";
+            rfvHeader.EnableClientScript = true;
+            lbNoteText.Text = Resources.LocalizedText.QueryMessage;
         }
         protected void btnSaveWindow_Click(object sender, EventArgs e)
         {
-            Models.Note note = new Models.Note();
+            Models.Query note = new Models.Query();
 
+            if(closeRowIndex > -1)
+            {
+                var queries = GetQueries(_si);
+                CloseQuery(queries[closeRowIndex]);
+            }
+            else
             if (answerRowIndex == -1)
             {
-                note.ForUser = _si.CreatedBy;
+                note.To = _si.CreatedBy;
                 note.Header = tbHeader.Text;
                 note.Status = Core.QueryStatus.New;
+                note.Type = Core.NoteType.Note;
+                note.From = User.Identity.Name;
+                note.CreationDate = DateTime.Now;
+                note.SubjectID = _subjectID;
+                note.EventID = _eventID;
+                note.CRFID = _crfID;
+                note.ItemID = _si.ItemID;
+                note.IndexID = _si.IndexID;
+                note.MedicalCenterID = SR.SelectByID(_subjectID).MedicalCenterID;
+                note = NR.Create(note);
+                NR.Save();
+                NR = new Models.Repository.QueryRepository();
+
+                Models.QueryMessage qm = new QueryMessage();
+                qm.From = User.Identity.Name;
+                qm.To = _si.CreatedBy;
+                qm.Text = tbNoteText.Text;
+                NR.AddMessage(note.QueryID, qm,true);
+
             }
             else
             {
-                List<Models.Note> Notes = NR
+                List<Models.Query> Notes = NR
                     .GetManyByFilter(x => x.SubjectID == _subjectID && x.EventID == _eventID && x.CRFID == _crfID && x.ItemID == _si.ItemID && x.IndexID == _si.IndexID).ToList();
-                Models.Note answeringNote = NR.SelectByID(Notes[answerRowIndex].NoteID);
-                answeringNote.Status = Core.QueryStatus.Updated;
-                note.ForUser = answeringNote.FromUser;
-                note.PreviousNoteID = answeringNote.PreviousNoteID == null ? answeringNote.NoteID : answeringNote.PreviousNoteID;
-                note.Status = Core.QueryStatus.Closed;
-                NR.Update(answeringNote);
+                Models.Query answeringNote = NR.SelectByID(Notes[answerRowIndex].QueryID);
+
+                Models.QueryMessage qm = new QueryMessage();
+                qm.From = User.Identity.Name;
+                qm.To = answeringNote.From;
+                qm.Text = tbNoteText.Text;
+                NR.AddMessage(Notes[answerRowIndex].QueryID,qm,false);
             }
 
-            note.Type = Core.NoteType.Note;
-            note.FromUser = User.Identity.Name;
-            note.Text = tbNoteText.Text;
-            note.CreationDate = DateTime.Now;
-
-            note.SubjectID = _subjectID;
-            note.EventID = _eventID;
-            note.CRFID = _crfID;
-            note.ItemID = _si.ItemID;
-            note.IndexID = _si.IndexID;
-            note.MedicalCenterID = SR.SelectByID(_subjectID).MedicalCenterID;
-
-            NR.Create(note);
             NR.Save();
 
             tbHeader.Text = "";
@@ -1238,95 +1838,83 @@ namespace EDC.Pages.Subject
             LoadMPE(_mpe.ID);
         }
 
-        protected void gvNotes_RowDataBound(object sender, GridViewRowEventArgs e)
+        private void ChangeAuditCrfStatus(string oldValue, string newValue)
         {
-            if(e.Row.RowType == DataControlRowType.DataRow)
-            {
-                bool answer = true;
-                bool close = true;
-                Models.Note _note = (gvNotes.DataSource as List<Models.Note>)[e.Row.RowIndex];
-                if(_note.Status == Core.QueryStatus.Closed || _note.Status == Core.QueryStatus.Note)
-                {
-                    //ответить
-                    answer = false;
-
-                    //закрыть
-                    close = false;
-                }
-                if(_note.PreviousNoteID !=null)
-                {
-                    //закрыть
-                    close = false;
-
-                    if (_note.PreviousNote.Status == Core.QueryStatus.Closed)
-                        answer = false;
-                    else
-                        answer = true;
-                }
-
-                //ответить
-                (e.Row.Cells[6].Controls[1] as Button).Visible = answer;
-
-                //закрыть
-                (e.Row.Cells[7].Controls[1] as Button).Visible = close;
-            }
-        }
-        protected string NotesStatus(long? prevNodeID, Core.QueryStatus status)
-        {
-            if (prevNodeID != null)
-                return "";
-            else
-                return Core.GetQueryStatusRusName(status);
+            var audit = new Models.Audit();
+            audit.UserName = User.Identity.Name;
+            audit.UserID = (Guid)System.Web.Security.Membership.GetUser(User.Identity.Name).ProviderUserKey;
+            audit.SubjectID = _subjectID;
+            audit.EventID = _eventID;
+            audit.CRFID = _crfID;
+            audit.ActionDate = DateTime.Now;
+            audit.ActionType = Core.AuditActionType.SubjectCRFStatus;
+            audit.ChangesType = Core.AuditChangesType.Update;
+            audit.OldValue = oldValue;
+            audit.NewValue = newValue;
+            AR.Create(audit);
+            AR.Save();
         }
 
-
+        #region btnChangeCRFStatus
         protected void btnEnd_Click(object sender, EventArgs e)
         {
             _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
+            List<SubjectsItem> sis = SIR.GetManyByFilter(x => x.EventID == _eventID && x.SubjectID == _subjectID && x.CRFID == _crfID).ToList();
+            //Если есть не закрытые Query
+            if (!(sis == null || (sis.Count > 0 && sis.All(x => x.Queries.Count == 0 || (x.Queries.Count > 0 && x.Queries.All(y => y.Status == Core.QueryStatus.Closed))))))
+            {
+                return;
+            }
             _sCRF.IsEnd = true;
             _sCRF.IsEndBy = User.Identity.Name;
+            _sCRF.IsEndDate = DateTime.Now;
             SCR.Update(_sCRF);
+
+            ChangeAuditCrfStatus(string.Empty,"Завершено");
+
             SCR.Save();
-            //btnEnd.Visible = false;
-            //if (User.IsInRole(Core.Roles.Principal_Investigator.ToString()) || User.IsInRole(Core.Roles.Investigator.ToString()))
-            //    btnEdit.Visible = true;
-            //if (User.IsInRole(Core.Roles.Principal_Investigator.ToString()))
-            //    btnApproved.Visible = true;
+
             readOnly = true;
             LoadForm(_crf);
             ConfigActionButtons();
         }
         protected void btnApproved_Click(object sender, EventArgs e)
         {
-            _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
-            
-            _sCRF.IsApprove = true;
-            _sCRF.IsApprovedBy = User.Identity.Name;
-            SCR.Update(_sCRF);
-            SCR.Save();
-
-            _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
-            //btnApproved.Visible = false;
-            ConfigActionButtons();
+            lblLoginStatus.Visible = false;
+            tbUserName.Text = "";
+            tbPassword.Text = "";
+            AjaxControlToolkit.ModalPopupExtender mpe = btnApproved.Parent.FindControl("mpeLogin") as AjaxControlToolkit.ModalPopupExtender;
+            mpe.Show();
         }
 
         protected void btnCheckAll_Click(object sender, EventArgs e)
         {
             _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
-
+            List<SubjectsItem> sis = SIR.GetManyByFilter(x=>x.EventID == _eventID && x.SubjectID == _subjectID && x.CRFID == _crfID).ToList();
+            //Если есть не закрытые Query
+            if(!(sis==null || (sis.Count>0 && sis.Any(x=>x.Queries.Count == 0 || (x.Queries.Count>0 && x.Queries.Any(y=>y.Status == Core.QueryStatus.Closed))))))
+            {
+                return;
+            }
             _sCRF.IsCheckAll = true;
             _sCRF.IsCheckAllBy = User.Identity.Name;
+            _sCRF.IsCheckAllDate = DateTime.Now;
             SCR.Update(_sCRF);
             SCR.Save();
             _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
 
-            //btnCheckAll.Visible = false;
+            ChangeAuditCrfStatus(string.Empty,"Сверено");
+
             ConfigActionButtons();
         }
+        #endregion
 
         protected void btnEdit_Click(object sender, EventArgs e)
         {
+            if (btnEdit.Text != Resources.LocalizedText.Edit)
+                lblEditReason.Text = Resources.LocalizedText.ReasonForSDVCancelling;
             AjaxControlToolkit.ModalPopupExtender mpe = btnEdit.Parent.FindControl("mpeEditReason") as AjaxControlToolkit.ModalPopupExtender;
+
             mpe.Show();
         }
 
@@ -1342,9 +1930,49 @@ namespace EDC.Pages.Subject
             aer.EditReason = tbEditReason.Text;
             AERR.Create(aer);
             AERR.Save();
-            editing = true;
-            readOnly = false;
-            LoadForm(_crf);
+            if (btnEdit.Text == "Изменить")
+            {
+                editing = true;
+                readOnly = false;
+                LoadForm(_crf);
+            }
+            else
+            {
+                _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
+                _sCRF.IsCheckAll = false;
+                _sCRF.IsCheckAllBy = "";
+                _sCRF.IsCheckAllDate = null;
+                SCR.Update(_sCRF);
+                SCR.Save();
+                _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
+                ConfigActionButtons();
+            }
+        }
+
+        protected void btnOkLogin_Click(object sender, EventArgs e)
+        {
+            if(Membership.ValidateUser(tbUserName.Text,tbPassword.Text))
+            {
+                _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
+
+                _sCRF.IsApproved = true;
+                _sCRF.IsApprovedBy = User.Identity.Name;
+                _sCRF.IsApprovedDate = DateTime.Now;
+                SCR.Update(_sCRF);
+
+                ChangeAuditCrfStatus(string.Empty, "Подписано");
+                
+                SCR.Save();
+
+                _sCRF = SCR.SelectByID(_subjectID, _eventID, _crfID);
+                ConfigActionButtons();
+            }
+            else
+            {
+                lblLoginStatus.Visible = true;
+                AjaxControlToolkit.ModalPopupExtender mpe = btnApproved.Parent.FindControl("mpeLogin") as AjaxControlToolkit.ModalPopupExtender;
+                mpe.Show();
+            }
         }
 
     }

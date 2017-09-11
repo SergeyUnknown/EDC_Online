@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace EDC.Pages.Event
 {
-    public partial class CreateEditEvent : System.Web.UI.Page
+    public partial class CreateEditEvent : BasePage
     {
         Models.Repository.EventRepository ER = new Models.Repository.EventRepository();
 
@@ -15,13 +15,16 @@ namespace EDC.Pages.Event
         static bool Editing = true;
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!User.IsInRole(Core.Roles.Administrator.ToString()))
+                Response.Redirect("~/");
+
             if (!IsPostBack)
             {
-                ddlRequired.DataSource = Core.ddlItemsYesNo;
+                ddlRequired.DataSource = Core.Core.ddlItemsYesNo;
                 ddlRequired.DataBind();
                 if (Request.Url.ToString().IndexOf("Edit") == -1)
                 {
-                    btnOk.Text = "Добавить";
+                    btnOk.Text = Resources.LocalizedText.Add;
                     Title = "Добавление События";
                     Editing = false;
                 }
@@ -30,7 +33,7 @@ namespace EDC.Pages.Event
                     _event = ER.SelectByID(GetIDFromRequest());
                     if (_event == null)
                         throw new NullReferenceException();
-                    btnOk.Text = "Изменить";
+                    btnOk.Text = Resources.LocalizedText.Edit;
                     Title = "Редактирование События " + _event.Name;
                     Editing = true;
 

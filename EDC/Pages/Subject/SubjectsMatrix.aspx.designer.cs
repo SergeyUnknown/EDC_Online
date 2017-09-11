@@ -22,13 +22,22 @@ namespace EDC.Pages.Subject {
         protected global::System.Web.UI.WebControls.Table tLegend;
         
         /// <summary>
-        /// pScrolls элемент управления.
+        /// tcLegendDelete элемент управления.
         /// </summary>
         /// <remarks>
         /// Автоматически создаваемое поле.
         /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pScrolls;
+        protected global::System.Web.UI.WebControls.TableCell tcLegendDelete;
+        
+        /// <summary>
+        /// tMatrixFixColumns элемент управления.
+        /// </summary>
+        /// <remarks>
+        /// Автоматически создаваемое поле.
+        /// Для изменения переместите объявление поля из файла конструктора в файл кода программной части.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Table tMatrixFixColumns;
         
         /// <summary>
         /// tMatrix элемент управления.

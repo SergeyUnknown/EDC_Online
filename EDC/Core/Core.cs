@@ -3,33 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace EDC
+namespace EDC.Core
 {
     public static class Core
     {
-        public enum Roles
-        {
-            Administrator, //администратор
-            Data_Manager,  //Data manager
-            Monitor,       //Монитор
-            Principal_Investigator,  //Главный Исследователь
-            Investigator, //исследователь/координатор
-            Auditor         //Аудитор
-        }
-
-        public enum ResponseType
-        {
-            None,
-            Text,
-            Textarea,
-            SingleSelect,
-            Radio,
-            MultiSelect,
-            Checkbox,
-            Calculation,
-            GroupCalculation,
-            File
-        }
 
         public static ResponseType StringToResponseType(string str)
         {
@@ -38,24 +15,16 @@ namespace EDC
                 case "text": return ResponseType.Text;
                 case "textarea": return ResponseType.Textarea;
                 case "singleselect": return ResponseType.SingleSelect;
+                case "single-select": return ResponseType.SingleSelect;
                 case "radio": return ResponseType.Radio;
                 case "multiselect": return ResponseType.MultiSelect;
                 case "checkbox": return ResponseType.Checkbox;
                 case "calculation": return ResponseType.Calculation;
                 case "groupcalculation": return ResponseType.GroupCalculation;
+                case "group-calculation": return ResponseType.GroupCalculation;
                 case "file": return ResponseType.File;
                 default: return ResponseType.None;
             }
-        }
-
-        public enum DataType
-        {
-            NONE,
-            ST,
-            INT,
-            REAL,
-            DATE,
-            FILE
         }
 
         public static DataType StringToDataType(string str)
@@ -111,37 +80,21 @@ namespace EDC
             }
         }
 
-        public enum QueryStatus
+        public static string QueriesStatus(QueryStatus status)
         {
-            New,
-            Updated,
-            Closed,
-            Note
+            return GetQueryStatusRusName(status);
         }
 
         public static string GetQueryStatusRusName(QueryStatus item)
         {
             switch(item)
             {
-                case QueryStatus.Closed: return "Закрыта";
-                case QueryStatus.New: return "Новая";
+                case QueryStatus.Closed: return "Закрыто";
+                case QueryStatus.New: return "Новое";
                 case QueryStatus.Note: return "Заметка";
-                case QueryStatus.Updated: return "Обновлена";
+                case QueryStatus.Updated: return "Обновлено";
                 default: return "";
             }
-        }
-
-        public enum NoteType
-        {
-            Query,
-            Note
-        }
-
-        public enum AppStatus
-        {
-            Design,
-            Enable,
-            Disable
         }
 
         /// <summary>
@@ -157,16 +110,6 @@ namespace EDC
         /// </summary>
         public const string STUDY_PROTOCOL = "protocolID";
 
-        public enum AuditActionType
-        {
-            Subject,
-            SubjectParam,
-            SubjectEvent,
-            SubjectCRF,
-            SubjectItem,
-            User
-        }
-
         public static string GetAuditActionTypeRusName(AuditActionType item)
         {
             switch (item)
@@ -175,17 +118,11 @@ namespace EDC
                 case AuditActionType.SubjectParam: return "Параметр Субъекта";
                 case AuditActionType.SubjectEvent: return "Событие Субъекта";
                 case AuditActionType.SubjectCRF: return "ИРК Субъекта";
+                case AuditActionType.SubjectCRFStatus: return "Статус ИРК";
                 case AuditActionType.SubjectItem: return "Поле данных";
                 case AuditActionType.User: return "Пользователь";
                 default: return"";
             }
-        }
-
-        public enum AuditChangesType
-        {
-            Create,
-            Update,
-            Delete
         }
 
         public static string GetAuditChangesTypeRusName(AuditChangesType item)
@@ -198,5 +135,58 @@ namespace EDC
                 default: return "";
             }
         }
+
+        public static List<Models.Query> FilterQueriesAccess(List<Models.Query> queries, System.Security.Principal.IPrincipal user)
+        {
+            string currentUserName = user.Identity.Name;
+            if (user.IsInRole(Roles.Administrator.ToString()))
+            {
+                //Если администратор
+            }
+            else if (user.IsInRole(Roles.Data_Manager.ToString()))
+            {
+                //Если ДМ
+            }
+            else if (user.IsInRole(Roles.Monitor.ToString()))
+            {
+                //Если монитор
+            }
+            else if (user.IsInRole(Roles.Principal_Investigator.ToString()))
+            {
+                //Если Гл. Исследователь
+            }
+            else if (user.IsInRole(Roles.Investigator.ToString()))
+            {
+                //Если исследователь
+                queries = queries.Where(x => x.To == currentUserName).ToList();
+            }
+            else if (user.IsInRole(Roles.Auditor.ToString()))
+            {
+                //Если Аудитор
+                queries = queries.Where(x => x.From == currentUserName || x.To == currentUserName).ToList();
+            }
+            return queries;
+        }
+
+        public static bool HaveAccessToCenter(System.Security.Principal.IPrincipal user, long medicalCenterID)
+        {
+            Models.Repository.AccessToCenterRepository ATCR = new Models.Repository.AccessToCenterRepository();
+
+            Guid userID = (Guid)System.Web.Security.Membership.GetUser(user.Identity.Name).ProviderUserKey;
+            if (ATCR.GetManyByFilter(x => x.MedicalCenterID == medicalCenterID && x.UserID == userID).Count() > 0)
+                return true;
+            else
+                return false;
+            
+        }
+
+        public static List<Models.MedicalCenter> AccessToCenters(System.Security.Principal.IPrincipal user)
+        {
+            Models.Repository.AccessToCenterRepository ATCR = new Models.Repository.AccessToCenterRepository();
+            Guid userID = (Guid)System.Web.Security.Membership.GetUser(user.Identity.Name).ProviderUserKey;
+
+            return ATCR.GetManyByFilter(x=>x.UserID == userID).ToList().Select(x=>x.MedicalCenter).ToList();
+        }
+
     }
 }

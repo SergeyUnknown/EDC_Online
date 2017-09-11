@@ -8,7 +8,7 @@ using EDC.Models;
 
 namespace EDC.Pages.MedicalCenter
 {
-    public partial class MedicalCenters : System.Web.UI.Page
+    public partial class MedicalCenters : BasePage
     {
         static List<Models.MedicalCenter> _MCs;
 
@@ -49,17 +49,22 @@ namespace EDC.Pages.MedicalCenter
 
         protected void gvMedicalCenters_RowEditing(object sender, GridViewEditEventArgs e)
         {
-            Response.Redirect("~/MedicalCenters/Edit/"+_MCs[e.NewEditIndex].MedialCenterID);
+            Response.Redirect("~/MedicalCenters/Edit/"+_MCs[e.NewEditIndex].MedicalCenterID);
         }
 
         protected void gvMedicalCenters_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
             Models.MedicalCenter mc = _MCs[e.RowIndex];
             Models.Repository.MedicalCenterRepository mcr = new Models.Repository.MedicalCenterRepository();
-            mcr.Delete(mc.MedialCenterID);
+            mcr.Delete(mc.MedicalCenterID);
             mcr.Save();
             
             LoadMedicalCenters();
+        }
+
+        protected void RedirectToCreate_Click(object sender, ImageClickEventArgs e)
+        {
+            Response.Redirect("~/MedicalCenters/Create");
         }
     }
 }

@@ -17,5 +17,7 @@ namespace EDC.Models
         public virtual CRF CRF { get; set; }
 
         public int Position { get; set; } //Позиция CRF в событии
+
+        public virtual List<UnloadingItem> UnloadingItems { get; set; }
     }
 }

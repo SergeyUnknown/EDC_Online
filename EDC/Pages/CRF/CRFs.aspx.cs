@@ -8,7 +8,7 @@ using EDC.Models.Repository;
 
 namespace EDC.Pages.CRF
 {
-    public partial class CRFs : System.Web.UI.Page
+    public partial class CRFs : BasePage
     {
         CRFRepository CRFR = new CRFRepository();
         static int pageSize = 50;
@@ -18,6 +18,10 @@ namespace EDC.Pages.CRF
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!(User.IsInRole(Core.Roles.Administrator.ToString()) || User.IsInRole(Core.Roles.Data_Manager.ToString())))
+                Response.Redirect("~/");
+            if (User.IsInRole(Core.Roles.Data_Manager.ToString()))
+                dtInfo.ViewButton = false;
             if (!IsPostBack)
             {
                 LoadCRFs();
@@ -53,15 +57,14 @@ namespace EDC.Pages.CRF
 
         void LoadDTDataItem()
         {
-            string pageInfo = String.Format(Localization.Page, CurrentPage, MaxPageCount);
             DownTableDataItem dtDataItem = new DownTableDataItem(
-                "Добавить CRF",
+                Resources.LocalizedText.Add,
                 "~/CRFs/Add",
                 CurrentPage,
                 MaxPageCount,
-                "~/CRFs",
-                Core.DropDownListItems25,
-                pageSize, pageInfo);
+                "~/CRFs/",
+                Core.Core.DropDownListItems25,
+                pageSize);
 
             dtInfo.DataItem = dtDataItem;
             dtInfo.DataBind();
@@ -69,7 +72,7 @@ namespace EDC.Pages.CRF
 
         void LoadCRFs()
         {
-            crfs = CRFR.SelectAll().ToList();
+            crfs = CRFR.SelectAll().OrderBy(x=>x.RussianName).ThenBy(x=>x.Name).ToList();
             gvCRFs.DataSource = crfs;
             gvCRFs.DataBind();
         }

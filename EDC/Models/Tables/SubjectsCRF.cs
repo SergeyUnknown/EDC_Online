@@ -27,33 +27,46 @@ namespace EDC.Models
         [DefaultValue(false)]
         public bool IsStart { get; set; }
         public string IsStartBy { get; set; }
+        public DateTime? IsStartDate { get; set; }
         /// <summary>
         /// Ввод данных завершен
         /// </summary>
         [DefaultValue(false)]
         public bool IsEnd { get; set; }
         public string IsEndBy { get; set; }
+        public DateTime? IsEndDate { get; set; }
 
         /// <summary>
         /// Подписано
         /// </summary>
         [DefaultValue(false)]
-        public bool IsApprove { get; set; }
+        public bool IsApproved { get; set; }
         public string IsApprovedBy { get; set; }
+        public DateTime? IsApprovedDate { get; set; }
 
         /// <summary>
-        /// Сверка завершена
+        /// Сверка проведена
         /// </summary>
         [DefaultValue(false)]
-        public bool IsCheckAll { get; set; } //сверка завершена
+        public bool IsCheckAll { get; set; }
         public string IsCheckAllBy { get; set; }
+        public DateTime? IsCheckAllDate { get; set; }
+
         [DefaultValue(false)]
         public bool IsStopped { get; set; } //ввод данных остановлен
+        public string IsStoppedBy { get; set; }
+        public DateTime? IsStoppedDate { get; set; }
         [DefaultValue(false)]
         public bool IsLock { get; set; } //заблокировано
+        public string IsLockBy { get; set; }
+        public DateTime? IsLockDate { get; set; }
+        
         [DefaultValue(false)]
         public bool IsDeleted { get; set; } //удалено
+        public string IsDeletedBy { get; set; }
+        public DateTime? IsDeletedDate { get; set; }
         public virtual List<Audit> Audits { get; set; } //Аудит
         public virtual List<AuditEditReason> EditReasons { get; set; } //Причины редактирования
+        public virtual List<SubjectsItem> Items { get; set; } //Причины редактирования
     }
 }

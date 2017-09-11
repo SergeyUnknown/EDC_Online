@@ -12,7 +12,7 @@ namespace EDC.Models
         public string Identifier { get; set; }
         public long CRFID { get; set; }
         [ForeignKey("CRFID")]
-        public CRF CRF { get; set; }
+        public virtual CRF CRF { get; set; }
         public string Name { get; set; }
         public string DescriptionLabel { get; set; }
         public string LeftItemText { get; set; }
@@ -45,7 +45,9 @@ namespace EDC.Models
         public bool PHI { get; set; }
         public bool Required { get; set; }
 
-        public virtual List<Note> Notes { get; set; }
+        public virtual List<Query> Notes { get; set; }
         public virtual List<SubjectsItem> SubjectItems { get; set; }
+
+        public virtual List<Rule> Rules { get; set; }
     }
 }

@@ -9,7 +9,7 @@ using System.Net.Mail;
 
 namespace EDC.Pages.Administration
 {
-    public partial class ViewUser : System.Web.UI.Page
+    public partial class ViewUser : BasePage
     {
         static bool Editing = false;
         Models.Repository.UserProfileRepository pr = new Models.Repository.UserProfileRepository();
@@ -27,11 +27,11 @@ namespace EDC.Pages.Administration
                 cblUserRole.Items.Clear();
                 cblCenters.Items.Clear();
                 liCenters.Visible = true;
-                MedicalCenters = MCR.SelectAll().OrderBy(x=>x.MedialCenterID).ToList();
+                MedicalCenters = MCR.SelectAll().OrderBy(x=>x.MedicalCenterID).ToList();
                 foreach (string role in Enum.GetNames(typeof(Core.Roles)))
                 {
-                    Core.GetRoleRusName(role);
-                    ListItem item = new ListItem(Core.GetRoleRusName(role), role);
+                    Core.Core.GetRoleRusName(role);
+                    ListItem item = new ListItem(Core.Core.GetRoleRusName(role), role);
                     cblUserRole.Items.Add(item);
                 }
                 MedicalCenters.ForEach(x=> cblCenters.Items.Add(x.Name));
@@ -39,11 +39,14 @@ namespace EDC.Pages.Administration
                 if (Request.Url.ToString().IndexOf("Edit") > 0)
                 {
                     Editing = true;
-                    btnOk.Text = "Изменить аккаунт";
-                    Title = "Редактирование аккаунта";
+                    btnOk.Text = Resources.LocalizedText.EditAccount;
+                    Title = Resources.LocalizedText.EditAccount;
 
                     user = Membership.GetUser(GetUserGuidFromRequest());
                     userProfile = pr.SelectByID((Guid)user.ProviderUserKey);
+                    cbLock.Checked = !user.IsApproved || user.IsLockedOut;
+                    if (!user.IsApproved || user.IsLockedOut)
+                        btnReCreatePass.Visible = false;
 
                     tbEmail.Text = user.Email;
                     tbUserName.Text = user.UserName;
@@ -66,8 +69,9 @@ namespace EDC.Pages.Administration
                 }
                 else
                 {
-                    btnOk.Text = "Создать аккаунт";
-                    Title = "Создание аккаунта";
+                    btnReCreatePass.Visible = false;
+                    btnOk.Text = Resources.LocalizedText.CreateAccount;
+                    Title = Resources.LocalizedText.CreateAccount;
                     Editing = false;
 
                 }
@@ -92,6 +96,13 @@ namespace EDC.Pages.Administration
         {
             if(Editing)
             {
+                if ((!user.IsApproved || user.IsLockedOut) && !cbLock.Checked)
+                {
+                    user.UnlockUser();
+                    user.IsApproved = true;
+                }
+                if ((user.IsApproved || !user.IsLockedOut) && cbLock.Checked)
+                    user.IsApproved = false;
                 user.Email = tbEmail.Text;
                 Membership.UpdateUser(user);
                 if(userProfile == null)
@@ -129,7 +140,7 @@ namespace EDC.Pages.Administration
                         if(item.Selected)
                         {
                             Models.AccessToCenter access = new Models.AccessToCenter();
-                            access.MedicalCenterID = MedicalCenters.First(x => x.Name == item.Text).MedialCenterID;
+                            access.MedicalCenterID = MedicalCenters.First(x => x.Name == item.Text).MedicalCenterID;
                             access.UserID = (Guid)user.ProviderUserKey;
                             access.CreatedBy = User.Identity.Name;
                             ATCR.Create(access);
@@ -142,29 +153,29 @@ namespace EDC.Pages.Administration
                     foreach (ListItem item in cblCenters.Items)
                     {
                         Models.MedicalCenter mc = MedicalCenters.First(x => x.Name == item.Text);
-                        if (item.Selected && userProfile.MedicalCenters.FirstOrDefault(x=>x.MedicalCenterID == mc.MedialCenterID) == null)
+                        if (item.Selected && userProfile.MedicalCenters.FirstOrDefault(x=>x.MedicalCenterID == mc.MedicalCenterID) == null)
                         {
                             Models.AccessToCenter access = new Models.AccessToCenter();
-                            access.MedicalCenterID = mc.MedialCenterID;
+                            access.MedicalCenterID = mc.MedicalCenterID;
                             access.UserID = (Guid)user.ProviderUserKey;
                             access.CreatedBy = User.Identity.Name;
                             ATCR.Create(access);
                         }
-                        else if(!item.Selected && userProfile.MedicalCenters.FirstOrDefault(x=>x.MedicalCenterID == mc.MedialCenterID) != null)
+                        else if(!item.Selected && userProfile.MedicalCenters.FirstOrDefault(x=>x.MedicalCenterID == mc.MedicalCenterID) != null)
                         {
-                            if (userProfile.CurrentCenterID == mc.MedialCenterID)
+                            if (userProfile.CurrentCenterID == mc.MedicalCenterID)
                             {
                                 userProfile.CurrentCenterID = null;
                                 pr.Update(userProfile);
                                 pr.Save();
                             }
-                            ATCR.Delete(userProfile.UserProfileID, mc.MedialCenterID);
+                            ATCR.Delete(userProfile.UserProfileID, mc.MedicalCenterID);
                         }
                     }
                     ATCR.Save();
 
                 }
-                labelStatus.Text = "Пользователь успешно изменён!";
+                labelStatus.Text = Resources.LocalizedText.PasswordWasChangedSuccessfully;
                 labelStatus.ForeColor = System.Drawing.Color.Green;
                 labelStatus.Visible = true;
             }
@@ -194,7 +205,7 @@ namespace EDC.Pages.Administration
                     if (item.Selected)
                     {
                         Models.AccessToCenter access = new Models.AccessToCenter();
-                        access.MedicalCenterID = MedicalCenters.First(x => x.Name == item.Text).MedialCenterID;
+                        access.MedicalCenterID = MedicalCenters.First(x => x.Name == item.Text).MedicalCenterID;
                         access.UserID = (Guid)newUser.ProviderUserKey;
                         access.CreatedBy = User.Identity.Name;
                         ATCR.Create(access);
@@ -202,12 +213,15 @@ namespace EDC.Pages.Administration
                 }
                 ATCR.Save();
 
-                labelStatus.Text = "Аккаунт успешно создан! Пароль: " + password;
+                labelStatus.Text = Resources.LocalizedText.AccountWasCreatedSuccessfully + "! " + Resources.LocalizedText.Password + ": " + password;
                 labelStatus.ForeColor = System.Drawing.Color.Green;
                 labelStatus.Visible = true;
+
                 MailMessage msg = new MailMessage("noreply.edc.mdp@gmail.com", newUser.Email);
-                msg.Subject = "Аккаунт успешно создан";
-                msg.Body = "Ваш логин: " + newUser.UserName + "<br/>Ваш пароль: " + password;
+                msg.Subject = Resources.LocalizedText.AccountWasCreatedSuccessfully;
+                msg.Body = Resources.LocalizedText.UserName+": " + newUser.UserName + 
+                    "<br/>"+ Resources.LocalizedText.Password +": " + password + "<br/>"
+                    + "Ссылка для входа: http://edc.mdp.group/" + ResolveUrl("~/") + "<br/><br/>";
                 msg.IsBodyHtml = true;
 
                 SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
@@ -216,6 +230,38 @@ namespace EDC.Pages.Administration
                 smtp.Credentials = new System.Net.NetworkCredential("noreply.edc.mdp@gmail.com", "12332145");
 
                 smtp.Send(msg);
+            }
+        }
+
+        protected void btnReCreatePass_Click(object sender, EventArgs e)
+        {
+            string newPass = user.ResetPassword();
+            labelStatus.ForeColor = System.Drawing.Color.Green;
+            labelStatus.Visible = true;
+            labelError.ForeColor = System.Drawing.Color.Red;
+            try
+            {
+                MailMessage msg = new MailMessage("noreply.edc.mdp@gmail.com", user.Email);
+                msg.Subject = Resources.LocalizedText.PasswordWasChangedSuccessfully;
+                msg.Body = string.Format(Resources.LocalizedText.HelloUserName, user.UserName) +"<br/>"
+                    + string.Format("{0} {1}: {2}", Resources.LocalizedText.PasswordWasChangedSuccessfully, Resources.LocalizedText.NewPassword, newPass) +"<br/>"
+                    + "Ссылка для входа: http://edc.mdp.group/" + ResolveUrl("~/") + "<br/><br/>";
+                msg.IsBodyHtml = true;
+
+                SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+                smtp.EnableSsl = true;
+                smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                smtp.UseDefaultCredentials = false;
+                smtp.Credentials = new System.Net.NetworkCredential("noreply.edc.mdp@gmail.com", "12332145");
+
+                smtp.Send(msg);
+                labelStatus.Text = Resources.LocalizedText.PasswordWasChangedSuccessfully+ "<br/>"+ string.Format(Resources.LocalizedText.MessageNewPassword,newPass) + "<br/><br/>";
+            }
+            catch(Exception error)
+            {
+                labelStatus.Text = string.Format("{0} {1}: {2}",Resources.LocalizedText.PasswordWasChangedSuccessfully, Resources.LocalizedText.NewPassword ,newPass);
+                labelError.Visible = true;
+                labelError.Text = "Ошибка при отправке пароля на почту: "+ error.Message;
             }
         }
     }

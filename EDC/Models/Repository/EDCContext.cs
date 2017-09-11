@@ -21,12 +21,18 @@ namespace EDC.Models
         public DbSet<AuditEditReason> AuditsEditReason { get; set; } //Аудит
         public DbSet<Event> Events { get; set; } //События
         public DbSet<CRFInEvent> CRFInEvent { get; set; } //Связующая таблица
-        public DbSet<Note> Notes { get; set; } // 
+        public DbSet<Query> Queries { get; set; } // 
+        public DbSet<QueryMessage> QueryMessages { get; set; } // 
         public DbSet<Subject> Subjects { get; set; } // Субъекты исследования 
         public DbSet<SubjectsEvent> SubjectsEvents { get; set; } //Связующая таблица
         public DbSet<SubjectsCRF> SubjectsCRFs { get; set; }
         public DbSet<SubjectsItem> SubjectsItems { get; set; }
         public DbSet<AccessToCenter> AccessToCenter { get; set; }
+        public DbSet<Rule> Rules { get; set; }
+        public DbSet<UnloadingProfile> UnloadingProfiles { get; set; }
+        public DbSet<UnloadingProfileCenter> UnloadingProfilesCenters { get; set; }
+        public DbSet<UnloadingItem> UnloadingItems { get; set; }
+        public DbSet<UnloadingFile> UnloadingFiles { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -48,6 +54,16 @@ namespace EDC.Models
             modelBuilder.Entity<CRF>()
                 .HasMany(x => x.Sections)
                 .WithRequired(x => x.CRF)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CRF>()
+                .HasMany(x => x.Rules)
+                .WithRequired(x => x.CRF)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<CRF_Group>()
+                .HasMany(x => x.Rules)
+                .WithRequired(x => x.Group)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<CRF_Item>()
@@ -72,9 +88,16 @@ namespace EDC.Models
             modelBuilder.Entity<SubjectsItem>()
                 .HasKey(t => new { t.SubjectID,t.EventID,t.CRFID,t.ItemID,t.IndexID });
 
-            modelBuilder.Entity<Note>()
+            modelBuilder.Entity<SubjectsItem>()
+                .HasRequired(x => x.SubjectCRF)
+                .WithMany(x => x.Items)
+                .HasForeignKey(t => new { t.SubjectID, t.EventID, t.CRFID })
+                .WillCascadeOnDelete(false);
+                
+
+            modelBuilder.Entity<Query>()
                 .HasRequired(x => x.SubjectItem)
-                .WithMany(x => x.Notes)
+                .WithMany(x => x.Queries)
                 .HasForeignKey(t => new { t.SubjectID, t.EventID, t.CRFID, t.ItemID, t.IndexID })
                 .WillCascadeOnDelete(false);
 
@@ -113,6 +136,33 @@ namespace EDC.Models
             modelBuilder.Entity<AccessToCenter>()
                 .HasKey(t => new { t.UserID, t.MedicalCenterID });
 
+            modelBuilder.Entity<UnloadingItem>()
+                .HasKey(t => new { t.UnloadingProfileID, t.EventID, t.CRFID, t.ItemID });
+
+            modelBuilder.Entity<UnloadingItem>()
+                .HasRequired(x => x.CRFInEvent)
+                .WithMany(x => x.UnloadingItems)
+                .HasForeignKey(t => new { t.CRFID, t.EventID })
+                .WillCascadeOnDelete(false);
+                
+
+            modelBuilder.Entity<UnloadingItem>()
+                .HasRequired(x => x.Event)
+                .WithMany()
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<UnloadingItem>()
+                .HasRequired(x => x.CRF)
+                .WithMany()
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<UnloadingItem>()
+                .HasRequired(x => x.Item)
+                .WithMany()
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<UnloadingProfileCenter>()
+                .HasKey(t => new { t.UnloadingProfileID, t.MedicalCenterID });
         }
     }
     public class EDCInitializer : MigrateDatabaseToLatestVersion<EDCContext, Configuration>

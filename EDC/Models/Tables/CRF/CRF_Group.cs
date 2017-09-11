@@ -18,5 +18,6 @@ namespace EDC.Models
         public int RepeatNumber { get; set; }
         public int RepeatMax { get; set; }
         public virtual List<CRF_Item> Items { get; set; }
+        public virtual List<Rule> Rules { get; set; }
     }
 }

@@ -40,14 +40,14 @@ namespace EDC.Controls
             LinkButtonPrevPage.PostBackUrl = DataItem.PrevPageURL;
             LinkButtonNextPage.PostBackUrl = DataItem.NextPageURL;
             LinkButtonLastPage.PostBackUrl = DataItem.LastPageURL;
-            //hlButton.Text = DataItem.ButtonText;
-            //hlButton.NavigateUrl = DataItem.ButtonURL;
             LinkButtonAddNew.PostBackUrl = DataItem.ButtonURL;
+            LinkButtonAddNew.ToolTip = DataItem.ButtonText;
             pageInfo.Text = DataItem.PageInfo;
             ddlItemCount.DataSource = DataItem.DropDownItems;
             ddlItemCount.DataBind();
             ddlItemCount.SelectedValue = DataItem.DropDownSelectedValue.ToString();
             _pageSize = DataItem.DropDownSelectedValue;
+            Image5.ImageUrl = DataItem.ButtonImageURL;
 
             HttpCookie cookie = new HttpCookie("EDC Cookie");
             cookie["PrevPage"] = Request.Url.ToString();
@@ -62,14 +62,14 @@ namespace EDC.Controls
                 LinkButtonPrevPage.PostBackUrl = DataItem.PrevPageURL;
                 LinkButtonNextPage.PostBackUrl = DataItem.NextPageURL;
                 LinkButtonLastPage.PostBackUrl = DataItem.LastPageURL;
-                //LinkButtonAddNew.Text = DataItem.ButtonText;
-                //hlButton.NavigateUrl = DataItem.ButtonURL;
                 LinkButtonAddNew.PostBackUrl = DataItem.ButtonURL;
+                LinkButtonAddNew.ToolTip = DataItem.ButtonText;
                 pageInfo.Text = DataItem.PageInfo;
                 ddlItemCount.DataSource = DataItem.DropDownItems;
                 ddlItemCount.DataBind();
                 ddlItemCount.SelectedValue = DataItem.DropDownSelectedValue.ToString();
                 _pageSize = DataItem.DropDownSelectedValue;
+                Image5.ImageUrl = DataItem.ButtonImageURL;
             }
         }
 

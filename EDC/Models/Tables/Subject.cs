@@ -23,5 +23,18 @@ namespace EDC.Models
         public virtual List<Audit> Audits { get; set; } //Аудит
         [DefaultValue(false)]
         public bool IsDeleted { get; set; }
+        public string IsDeletedBy { get; set; }
+        public DateTime? IsDeletedDate { get; set; }
+
+
+        [DefaultValue(false)]
+        public bool IsStopped { get; set; } //ввод данных остановлен
+        public string IsStoppedBy { get; set; }
+        public DateTime? IsStoppedDate { get; set; }
+
+        [DefaultValue(false)]
+        public bool IsLock { get; set; } //заблокировано
+        public string IsLockBy { get; set; }
+        public DateTime? IsLockDate { get; set; }
     }
 }

@@ -19,6 +19,9 @@ namespace EDC.Models
         public long CRFID { get; set; }
         [ForeignKey("CRFID")]
         public virtual CRF CRF { get; set; }
+
+        public virtual SubjectsCRF SubjectCRF { get; set; }
+
         public long ItemID { get; set; }
         [ForeignKey("ItemID")]
         public virtual CRF_Item Item { get; set; }
@@ -33,7 +36,13 @@ namespace EDC.Models
         [DefaultValue(false)]
         public bool IsDeleted { get; set; } //удалено
 
-        public virtual List<Note> Notes { get; set; }
+        [DefaultValue(false)]
+        public bool IsStopped { get; set; }
+
+        [DefaultValue(false)]
+        public bool IsLock { get; set; }
+
+        public virtual List<Query> Queries { get; set; }
 
         public virtual List<Audit> Audits { get; set; } //Аудит
     }
